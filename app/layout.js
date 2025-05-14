@@ -1,15 +1,13 @@
-import { Geist, Geist_Mono } from "next/font/google";
+// import { Geist, Geist_Mono } from "next/font/google";
+import { Raleway } from "next/font/google";
+import Chakrawrap from "./component/app_wraps/Chakrawrap";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { ChakraProvider } from "@chakra-ui/react";
+const raleway = Raleway({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  variable: '--font-raleway', // optional: use this if you want to apply with CSS variables
+})
 
 export const metadata = {
   title: "Create Next App",
@@ -20,9 +18,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={raleway.className}
       >
+        <Chakrawrap>
         {children}
+        </Chakrawrap>
       </body>
     </html>
   );
