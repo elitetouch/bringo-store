@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an Axios instance
 const axiosInstance = axios.create({
-  baseURL: 'https://api.example.com',
+  baseURL: 'https://www.store.bringofresh.net',
   headers: {
     'Content-Type': 'application/json',
   },

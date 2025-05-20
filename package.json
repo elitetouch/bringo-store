@@ -16,7 +16,9 @@
     "framer-motion": "^12.11.3",
     "next": "15.3.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-code-input": "^3.10.1",
+    "react-dom": "^19.0.0",
+    "react-pin-field": "^4.0.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
