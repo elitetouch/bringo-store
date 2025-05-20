@@ -34,7 +34,7 @@ function OTP({setSignUpPage, profile}) {
 
       // Proceed
       // pagination_function();
-      router.push('/../../sign_in')
+      router.push('/')
     })
     .catch((error) => {
       setSignUpLoader(false);

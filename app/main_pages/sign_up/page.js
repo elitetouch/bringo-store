@@ -69,7 +69,7 @@ export default function Home() {
     formData.append('email',signUpDetails.email)
      formData.append('password',signUpDetails.password)
     console.log(formData)
-    axios.post('https://www.store.bringofresh.net/api/v1/store-user',formData).then((resp)=>{
+    axios.post('https://www.store.api.bringofresh.net/api/v1/store-user',formData).then((resp)=>{
       setSignUpLoader(false)
       console.log(resp)
        pagination_function()

@@ -86,7 +86,7 @@ export default function Home() {
     formData.append('email',signInDetails.email)
      formData.append('password',signInDetails.password)
     console.log(formData)
-    axios.post('https://www.store.bringofresh.net/api/v1/login ',formData).then((resp)=>{
+    axios.post('https://www.store.api.bringofresh.net/api/v1/login ',formData).then((resp)=>{
        setSignInLoader(false)
 console.log(resp)
  localStorage.setItem('accessToken', resp?.data?.token);
