@@ -174,7 +174,7 @@ You’re now in the driver’s seat of your store’s operations. This app is bu
   />
 </svg>
 } />
- <Unboarding_input values={signInDetails.password} handleChange={handleSignInChange} names={'password'} placing={'Password'} icon={<svg
+ <Unboarding_input password values={signInDetails.password} handleChange={handleSignInChange} names={'password'} placing={'Password'} icon={<svg
   width="20"
   height="20"
   viewBox="0 0 20 20"

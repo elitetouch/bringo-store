@@ -44,7 +44,7 @@ export default function Home() {
   const formdata={
     fullname:'',
     country:'',
-    phone:"+2564567890",
+    phone:"",
     email:'',
     password:'',
     confirmPassword:'',
@@ -59,36 +59,58 @@ export default function Home() {
   }
   const [signUpLoader, setSignUpLoader] = useState(false)
   const [profile, setProfile] = useState('')
-  const handleFormSubmission=()=>{
-    setSignUpLoader(true)
-    const formData = new FormData()
-    console.log(signUpDetails)
-     formData.append('fullname',signUpDetails.fullname)
-      formData.append('country',signUpDetails.country)
-       formData.append('phone',signUpDetails.phone)
-    formData.append('email',signUpDetails.email)
-     formData.append('password',signUpDetails.password)
-    console.log(formData)
-    axios.post('https://www.store.api.bringofresh.net/api/v1/store-user',formData).then((resp)=>{
-      setSignUpLoader(false)
-      console.log(resp)
-       pagination_function()
-      localStorage.setItem('accessToken', resp?.data?.token);
-      setProfile(resp?.data?.data?.email)
-console.log(resp?.data?.token)
-    }).catch((error)=>{
-      setSignUpLoader(false)
-      toast({
-            title: "Error",
-            description:
-              error.response?.data?.message || "Something went wrong. Please try again.",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-            position: "top-right",
-          })
-    })
+ const handleFormSubmission = () => {
+  setSignUpLoader(true);
+  const formData = new FormData();
+
+  // Destructure details
+  const { fullname, country, phone, email, password } = signUpDetails;
+
+  // Normalize phone number:
+  let formattedPhone = phone;
+  if (formattedPhone.startsWith('0')) {
+    formattedPhone = formattedPhone.slice(1);
   }
+
+  // Country code map (you can expand this as needed)
+  const countryCodes = {
+   Uganda: '+256',
+  Nigeria: '+234',
+  Kenya: '+254',
+  };
+
+  const countryCode = countryCodes[country] || '';
+  const finalPhoneNumber = `${countryCode}${formattedPhone}`;
+  console.log(finalPhoneNumber)
+  // Append fields
+  formData.append('fullname', fullname);
+  formData.append('country', country);
+  formData.append('phone', finalPhoneNumber);
+  formData.append('email', email);
+  formData.append('password', password);
+
+  axios.post('https://www.store.api.bringofresh.net/api/v1/store-user', formData)
+    .then((resp) => {
+      setSignUpLoader(false);
+      console.log(resp);
+      pagination_function();
+      localStorage.setItem('accessToken', resp?.data?.token);
+      setProfile(resp?.data?.data?.email);
+    })
+    .catch((error) => {
+      setSignUpLoader(false);
+      toast({
+        title: "Error",
+        description:
+          error.response?.data?.message || "Something went wrong. Please try again.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+    });
+};
+
   return (
     <div>
       <Box>

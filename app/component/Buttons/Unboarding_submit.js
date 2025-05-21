@@ -25,7 +25,9 @@ function Unboarding_submit({submit_func, submit_loader, button_text}) {
 
 
         <Box className=' text-[#0E4940] text-[14px]'>{!submit_loader?<Text>{button_text}</Text>:(
-          <Box className='loader'></Box>
+          <Box className=''>
+            <Text>Loading...</Text>
+          </Box>
           )}</Box>
         </Box>
      </Button>
