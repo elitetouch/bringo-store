@@ -14,6 +14,8 @@ import Phone_Password from "./Sign_up_component/Phone_Password";
 import OTP from "./Sign_up_component/OTP";
 import Shop_Setup from "./Sign_up_component/Shop_Setup";
 import Pagination_component from "./Sign_up_component/Pagination_component";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 // import o from './main_pages/sign_up'
 export const Login_mobile=({setSignUpPage,signUpLoader,submit_func, signUpPage, mobile_display })=>{
   const router = useRouter()
@@ -34,6 +36,9 @@ export const Login_mobile=({setSignUpPage,signUpLoader,submit_func, signUpPage, 
 }
 
 export default function Home() {
+   const searchParams = useSearchParams(); 
+   const reroute = searchParams.get('reroute');
+   console.log({'reroute': reroute})
   const [signUpPage, setSignUpPage]= useState(0)
   const pagination_function =()=>{
     setSignUpPage(signUpPage + 1)
@@ -110,7 +115,10 @@ export default function Home() {
       });
     });
 };
-
+// brings up a popup on mounting
+useEffect(()=>{
+ reroute && setSignUpPage(2)
+},[reroute])
   return (
     <div>
       <Box>
@@ -143,7 +151,7 @@ You’re now in the driver’s seat of your store’s operations. This app is bu
             <Box className="  w-11/12 m-auto mt-[50px] pb-[40px] ">
              <Login_mobile setSignUpPage={setSignUpPage} mobile_display={<Box>{signUpPage===0 && <Country_Email signUpDetails={signUpDetails} signInLoader={signUpLoader} handleSignUpChange={handleSignUpChange}   />}
                  {signUpPage===1 && <Phone_Password signUpDetails={signUpDetails} handleSignUpChange={handleSignUpChange}/>}
-                  {signUpPage===2 && <OTP profile={profile||''} setSignUpPage={setSignUpPage}  />}
+                  {signUpPage===2 && <OTP profile={reroute?reroute:profile||''} setSignUpPage={setSignUpPage}  />}
                    {/* {signUpPage===3 && <Shop_Setup signUpDetails={signUpDetails}  handleSignUpChange={handleSignUpChange} />} */}
                    </Box>} 
              signUpPage={signUpPage} 

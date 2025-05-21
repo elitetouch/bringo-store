@@ -90,7 +90,11 @@ export default function Home() {
        setSignInLoader(false)
 console.log(resp)
  localStorage.setItem('accessToken', resp?.data?.token);
- router.push('./main_pages/new_user_dashboard')
+ if (resp?.data?.status === true) {
+  router.push('./main_pages/new_user_dashboard');
+} else {
+  router.push(`/./main_pages/sign_up?reroute=${resp?.data?.user?.email}`);
+}
     }).catch((error)=>{
       setSignInLoader(false)
       toast({
