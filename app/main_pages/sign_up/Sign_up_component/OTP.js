@@ -1,8 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Box, Text, Button, useToast } from '@chakra-ui/react';
-import PinField from 'react-pin-field';
+import {
+  Box,
+  Text,
+  Button,
+  useToast,
+  HStack,
+  PinInput,
+  PinInputField,
+} from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import axiosInstance from '@/app/api/Api_Instance';
 
@@ -54,7 +61,7 @@ function OTP({ setSignUpPage, profile }) {
   const resendOTP = () => {
     setResendLoader(true);
     axiosInstance
-      .post('/api/v1/resend-otp',{})
+      .post('/api/v1/resend-otp', {})
       .then(() => {
         setResendLoader(false);
         toast({
@@ -86,21 +93,32 @@ function OTP({ setSignUpPage, profile }) {
       <Text className="text-[15px] pt-[20px]">
         A 4-character verification code has been sent to email {profile}
       </Text>
+<Box className=''>
+ <HStack spacing={[2, 4]} mt={10} flex >
+  <PinInput otp onChange={setOTP} >
+    {[...Array(4)].map((_, idx) => (
+      <PinInputField
+        key={idx}
+        borderColor="#85CB14"
+        backgroundColor="transparent"
+        color="white"
+        width={['60px', '100px']}     // 40px on mobile, 70px on desktop
+        height={['60px', '100px']}    // 40px on mobile, 70px on desktop
+        fontSize={['20px', '28px']}  // Optional: adjust font size responsively
+        textAlign="center"
+        _focus={{ borderColor: "#85CB14", boxShadow: '0 0 0 1px #85CB14' }}
+        _hover={{ borderColor: "#85CB14" }}
+      />
+    ))}
+  </PinInput>
+</HStack>
 
-      <Box className="mt-[40px] flex items-center justify-between w-10/12">
-        <PinField
-          length={4}
-          onChange={(val) => setOTP(val)}
-          value={OTP}
-          autoFocus
-          className="otp-input h-[20px] w-[20px] lg:w-[70px] lg:h-[70px] text-white"
-        />
-      </Box>
+</Box>
+
 
       <Text className="text-white pt-[15px]">Resend code in 01:49</Text>
 
       <Box className="flex items-center gap-x-[40px] mt-[20px] mb-[30px]">
-        {/* Verify Button */}
         <Button
           minWidth={121}
           onClick={handleFormSubmission}
@@ -129,7 +147,6 @@ function OTP({ setSignUpPage, profile }) {
           </Box>
         </Button>
 
-        {/* Resend Button */}
         <Button
           minWidth={121}
           onClick={resendOTP}

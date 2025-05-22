@@ -24,7 +24,7 @@ function Pagination_component({pagination_determinant, setSignUpPage}) {
             {/* Third page */}
              <Box className=' flex items-center'>
             <Box cursor={'pointer'} 
-            // onClick={()=>{setSignUpPage(2)}}
+            onClick={()=>{setSignUpPage(2)}}
              className={` ${pagination_determinant===2 ?'bg-white':'bg-gray-500'} rounded-full h-[33px] w-[33px] grid items-center justify-center`}>
             <Text>3</Text>
         </Box>
