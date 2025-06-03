@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-:root {
+/* :root {
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -17,7 +17,7 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 :root {
   --font-raleway: 'Raleway', sans-serif;
 }
@@ -72,7 +72,7 @@ body {
   border-color: #FF3D00 transparent;
 }
 .background {
-  background-image: url('/supermarketcounter.jpg'); /* Image in /public/images */
+  background-image: url('/supermarket.jpg'); /* Image in /public/images */
   background-size: cover;
   background-position: center;
 
@@ -108,4 +108,21 @@ body {
     height: 70px;
   }
 }
-
+.custom-scrollbar::-webkit-scrollbar {
+  width: 7px;
+  ; /* Adjust the width of the scrollbar */
+  transition-duration: 0.5s;
+  
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #88888872; /* Scrollbar color */
+  border-radius: 5px; /* Rounded scrollbar */
+  /* display: none; */
+  transition-duration: 0.5s;
+  height:10px
+  
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  display: block;
+  
+}

@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import axiosInstance from '@/app/api/Api_Instance';
-
+// import ex from ''
 function OTP({ setSignUpPage, profile }) {
   const toast = useToast();
   const router = useRouter();
@@ -42,7 +42,8 @@ function OTP({ setSignUpPage, profile }) {
       .post('/api/v1/verify-code', formData)
       .then((resp) => {
         setSignUpLoader(false);
-        router.push('/');
+        localStorage.setItem('accessToken', resp?.data?.token);
+        router.push('/../../Dashboard/new_user_dashboard');
       })
       .catch((error) => {
         setSignUpLoader(false);

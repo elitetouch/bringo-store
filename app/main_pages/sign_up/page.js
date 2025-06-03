@@ -64,8 +64,24 @@ export default function Home() {
   }
   const [signUpLoader, setSignUpLoader] = useState(false)
   const [profile, setProfile] = useState('')
+   const Validation = () =>{  
+      const errors={}    
+      // State parameters to be made compulsory in the form for submission to go through //
+      const objectKeys=[ 'fullname','country','phone','email','password','confirmPassword'
+         ]
+      objectKeys.forEach((field)=>{
+       if(!signUpDetails[field]){
+         errors[field]= `Input ${field.replace(/_/g, " ")}`
+     }
+       errors[field]
+       console.log(errors[field])
+      })
+      //note:This function returns boolean which can be either true or false //
+      return Object.keys(errors).length === 0
+     }
  const handleFormSubmission = () => {
-  setSignUpLoader(true);
+  if(Validation()){
+setSignUpLoader(true);
   const formData = new FormData();
 
   // Destructure details
@@ -114,6 +130,18 @@ export default function Home() {
         position: "top-right",
       });
     });
+  }
+  else{
+ toast({
+        title: "Error",
+        description:"Please input all fields",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+  }
+  
 };
 // brings up a popup on mounting
 useEffect(()=>{

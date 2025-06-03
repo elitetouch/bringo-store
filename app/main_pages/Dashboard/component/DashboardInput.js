@@ -1,16 +1,20 @@
 'use client'
 import React, { useState } from 'react';
-import { Input, Box, IconButton } from '@chakra-ui/react';
+import { Input, Box, IconButton, Text } from '@chakra-ui/react';
 
-function Unboarding_input({ placing, icon, names, values, handleChange, password,dashboard }) {
+function DashBoardInput({ placing, icon, names, values, handleChange, password,label }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
   return (
-    <form className={`w-full rounded-l-lg rounded-r-lg h-[48px] ${dashboard?'bg-[#F6F6F6]':'bg-white'} grid items-center`}>
-      <Box className='flex items-center gap-x-[10px] w-11/12 m-auto'>
-        {icon}
+    <Box>
+        <Text className=' text-[15px] font-semibold'>
+            {label}
+        </Text>
+    <div className='w-full rounded-l-lg rounded-r-lg h-[48px] grid items-center mt-[10px] bg-[#F6F6F6] text-[15px]'>
+      <Box className={`flex items-center ${icon&&'gap-x-[10px]'}  w-11/12 m-auto`}>
+        {icon && icon}
 
         <Input
           name={names}
@@ -18,10 +22,8 @@ function Unboarding_input({ placing, icon, names, values, handleChange, password
           onChange={handleChange}
           type={password ? (showPassword ? 'text' : 'password') : 'text'}
           border='none'
-          className='text-[#7C7C7C] text-[14px] mr-[10px]'
+          className={`text-[#7C7C7C] text-[14px] ${icon&&'mr-[10px]'} `}
           placeholder={placing}
-          _autofill={false}
-          autoComplete='off'
         />
 
         {/* Toggle Button (only show if it's a password field) */}
@@ -82,8 +84,10 @@ function Unboarding_input({ placing, icon, names, values, handleChange, password
           />
         )}
       </Box>
-    </form>
+    </div>
+
+    </Box>
   );
 }
 
-export default Unboarding_input;
+export default DashBoardInput;

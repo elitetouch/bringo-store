@@ -79,34 +79,62 @@ export default function Home() {
   const handleSignInChange= (e)=>{
     setSignInDetails({...signInDetails,[e.target.name]:e.target.value})
   }
+   const Validation = () =>{  
+      const errors={}    
+      // State parameters to be made compulsory in the form for submission to go through //
+      const objectKeys=[ 'email','password'
+         ]
+      objectKeys.forEach((field)=>{
+       if(!signInDetails[field]){
+         errors[field]= `Input ${field.replace(/_/g, " ")}`
+     }
+       errors[field]
+       console.log(errors[field])
+      })
+      //note:This function returns boolean which can be either true or false //
+      return Object.keys(errors).length === 0
+     }
   const handleFormSubmission=()=>{
-    setSignInLoader(true)
-    const formData = new FormData()
-    console.log(signInDetails)
-    formData.append('email',signInDetails.email)
-     formData.append('password',signInDetails.password)
-    console.log(formData)
-    axios.post('https://www.store.api.bringofresh.net/api/v1/login ',formData).then((resp)=>{
-       setSignInLoader(false)
-console.log(resp)
- localStorage.setItem('accessToken', resp?.data?.token);
- if (resp?.data?.status === true) {
-  router.push('./main_pages/new_user_dashboard');
-} else {
-  router.push(`/./main_pages/sign_up?reroute=${resp?.data?.user?.email}`);
-}
-    }).catch((error)=>{
-      setSignInLoader(false)
+    // router.push('./main_pages/Dashboard/new_user_dashboard');
+    if(Validation()){
+      setSignInLoader(true)
+      const formData = new FormData()
+      console.log(signInDetails)
+      formData.append('email',signInDetails.email)
+       formData.append('password',signInDetails.password)
+      console.log(formData)
+      axios.post('https://www.store.api.bringofresh.net/api/v1/login ',formData).then((resp)=>{
+         setSignInLoader(false)
+  console.log(resp)
+   localStorage.setItem('accessToken', resp?.data?.token);
+   if (resp?.data?.status === true) {
+    router.push('./main_pages/Dashboard/new_user_dashboard');
+  } else {
+    router.push(`/./main_pages/sign_up?reroute=${resp?.data?.user?.email}`);
+  }
+      }).catch((error)=>{
+        setSignInLoader(false)
+        toast({
+              title: "Error",
+              description:
+                error.response?.data?.message || "Something went wrong. Please try again.",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+              position: "top-right",
+            })
+      })
+
+    } else{
       toast({
-            title: "Error",
-            description:
-              error.response?.data?.message || "Something went wrong. Please try again.",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-            position: "top-right",
-          })
-    })
+        title: "Error",
+        description:"Please input all fields",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+  }
   }
   return (
     <div>

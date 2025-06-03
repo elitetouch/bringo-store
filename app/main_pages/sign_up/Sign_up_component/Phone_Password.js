@@ -13,7 +13,7 @@ function Phone_Password({signUpDetails, handleSignUpChange}) {
        <Box className=' grid gap-y-[16px] mt-[40px]'>
          <Box className=' flex items-center gap-x-[10px]'>
            <Box>
-             <Number_country />
+             <Number_country countryDetails={signUpDetails} />
            </Box>
             <Box className=' w-full'>
                <Unboarding_input values={signUpDetails.phone} handleChange={handleSignUpChange} names={'phone'} placing={'+2564567890'} />
