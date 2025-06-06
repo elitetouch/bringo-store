@@ -95,7 +95,7 @@ export default function Home() {
       return Object.keys(errors).length === 0
      }
   const handleFormSubmission=()=>{
-    // router.push('./main_pages/Dashboard/new_user_dashboard');
+    router.push('./main_pages/Dashboard/new_user_dashboard');
     if(Validation()){
       setSignInLoader(true)
       const formData = new FormData()

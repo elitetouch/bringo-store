@@ -35,20 +35,20 @@ function NewDashTable({setDisplayBtn}) {
           </div> )
       },
       {
-        name:'Date',selector:row => row.date
+        name:'Date',selector:row =><Text className='text-[12px]'>{row.date}</Text>
       },
       {
-        name:'Customer',selector:row => row.customer
+        name:'Customer',selector:row => <Text className='text-[12px]'>{row.customer}</Text>
       },
       {
-        name:'Shopper',selector:row => row.shopper
+        name:'Shopper',selector:row =><Text className='text-[12px]'>{row.shopper}</Text>
       },
       {
-        name:'Price',selector:row => row.price
+        name:'Price',selector:row => <Text className='text-[12px]'>{row.price}</Text>
       },
       {
         name:'Status',selector:row =><Box>
-          <Text className={`${row.status==='pending'&&'text-[#FF392B]'||row.status==='completed'&&'text-[#279F51]'||row.status==='shipping'&&'text-black'||row.status==='Refund'&&'text-[#FFA000]'}`}>{row.status}</Text>
+          <Text className={` text-[12px] ${row.status==='pending'&&'text-[#FF392B]'||row.status==='completed'&&'text-[#279F51]'||row.status==='shipping'&&'text-black'||row.status==='Refund'&&'text-[#FFA000]'}`}>{row.status}</Text>
         </Box>
       },
       {
@@ -72,7 +72,7 @@ function NewDashTable({setDisplayBtn}) {
 }
           backgroundColor={'transparent'}
           />
-           <IconButton
+           {/* <IconButton
           icon={<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M7.9987 8.66683C8.36689 8.66683 8.66536 8.36835 8.66536 8.00016C8.66536 7.63197 8.36689 7.3335 7.9987 7.3335C7.63051 7.3335 7.33203 7.63197 7.33203 8.00016C7.33203 8.36835 7.63051 8.66683 7.9987 8.66683Z" stroke="#C8CAD8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 <path d="M12.6667 8.66683C13.0349 8.66683 13.3333 8.36835 13.3333 8.00016C13.3333 7.63197 13.0349 7.3335 12.6667 7.3335C12.2985 7.3335 12 7.63197 12 8.00016C12 8.36835 12.2985 8.66683 12.6667 8.66683Z" stroke="#C8CAD8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -80,7 +80,7 @@ function NewDashTable({setDisplayBtn}) {
 </svg>
 }
           backgroundColor={'transparent'}
-          />
+          /> */}
         </Box>
       },
 

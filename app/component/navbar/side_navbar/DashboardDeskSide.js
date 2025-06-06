@@ -10,8 +10,9 @@ import { sideNavTools } from '../../Data/SideNav'
 import { Switch } from '@chakra-ui/react'
 import user from '../../../../public/user.svg'
 import bringo from '../../../../public/bringologo.svg'
+import { useRouter } from 'next/navigation'
 function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
- 
+ const router = useRouter()
 
   const [dropdown, setDropDown] = useState(false)
   const dropdownFunc=()=>{
@@ -104,7 +105,7 @@ function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
                       {
                         SideNavData.map((item)=>{
                           return(
-                            <Box key={item.id}>
+                            <Box cursor={'pointer'} onClick={()=>{router.push(item.destination)}} key={item.id}>
                             <Box  cursor={'pointer'}   className=' text-[15px] hover:bg-[#E6F1EF] hover:font-semibold duration-500 h-[50px] grid items-center rounded-lg'>
                               <Box className=' flex items-center justify-between w-11/12 m-auto '>
                                  <Box className=' flex items-center gap-x-[10px] '>
