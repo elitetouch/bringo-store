@@ -123,7 +123,7 @@ setSignUpLoader(true);
       toast({
         title: "Error",
         description:
-          error.response?.data?.message || "Something went wrong. Please try again.",
+          error.response?.data?.errors || "Something went wrong. Please try again.",
         status: "error",
         duration: 5000,
         isClosable: true,

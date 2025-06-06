@@ -20,7 +20,7 @@ function Country_Email({signUpDetails,handleSignUpChange, setSignUpDetails}) {
                 <DropDown onChangeFunc={handleSignUpChange} currentValue={signUpDetails} />
                 <p className=' italic text-[12px] text-white pt-[8px]'>Only for sellers registered & selling in their own country</p>
               </Box>
-                 <Unboarding_input values={signUpDetails.email} handleChange={handleSignUpChange} names={'email'} placing={'Email'} icon={<svg
+                 <Unboarding_input values={signUpDetails.email} handleChange={handleSignUpChange} types={'email'} names={'email'} placing={'Email'} icon={<svg
   width="20"
   height="20"
   viewBox="0 0 20 20"
