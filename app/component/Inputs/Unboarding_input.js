@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Input, Box, IconButton } from '@chakra-ui/react';
 
-function Unboarding_input({ placing, icon, names, values, handleChange, password,dashboard, types }) {
+function Unboarding_input({ placing, icon, names, values, handleChange, password,dashboard, types, emailType}) {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
@@ -11,12 +11,11 @@ function Unboarding_input({ placing, icon, names, values, handleChange, password
     <form className={`w-full rounded-l-lg rounded-r-lg h-[48px] ${dashboard?'bg-[#F6F6F6]':'bg-white'} grid items-center`}>
       <Box className='flex items-center gap-x-[10px] w-11/12 m-auto'>
         {icon}
-
         <Input
           name={names}
           value={values}
           onChange={handleChange}
-          type={password ? (showPassword ? 'text' : 'password') : 'text'}
+          type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
           border='none'
           className='text-[#7C7C7C] text-[14px] mr-[10px]'
           placeholder={placing}
@@ -24,7 +23,7 @@ function Unboarding_input({ placing, icon, names, values, handleChange, password
           autoComplete='off'
     _focus={{ border: 'none', boxShadow: 'none' }} // disables focus border and shadow
     _hover={{ border: 'none' }}
-    typeof={types}                    // disables hover border
+    // typeof={types}                    // disables hover border
         />
 
         {/* Toggle Button (only show if it's a password field) */}

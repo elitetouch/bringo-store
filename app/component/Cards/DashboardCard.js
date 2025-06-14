@@ -31,11 +31,11 @@ function DashboardCard({title, routeFunc,formPage,storeTracker}) {
                 </Box>
             </Box>
             <Box className=' mt-[15px]'>
-             <Progress colorScheme='green' size='sm' value={storeTracker*10} />
+             <Progress colorScheme='green' size='sm' value={storeTracker} />
             </Box>
             <Box className=' flex items-center justify-between lg:text-[15px] text-[12px] mt-[15px]'>
                 <Text>
-                    {storeTracker*10}%
+                    {storeTracker}%
                 </Text>
                 <Text className=' font-semibold'>
                     Completed

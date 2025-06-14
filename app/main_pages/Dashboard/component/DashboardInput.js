@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Input, Box, IconButton, Text } from '@chakra-ui/react';
 
-function DashBoardInput({ placing, icon, names, values, handleChange, password,label }) {
+function DashBoardInput({ placing, icon, names, values, handleChange, password,label, types, addProduct }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
@@ -12,7 +12,7 @@ function DashBoardInput({ placing, icon, names, values, handleChange, password,l
         <Text className=' text-[15px] font-semibold'>
             {label}
         </Text>
-    <div className='w-full rounded-l-lg rounded-r-lg h-[48px] grid items-center mt-[10px] bg-[#F6F6F6] text-[15px]'>
+    <div className={`w-full rounded-l-lg rounded-r-lg h-[48px] grid items-center mt-[10px] ${addProduct?addProduct:'bg-[#F6F6F6]'}  text-[15px]`}>
       <Box className={`flex items-center ${icon&&'gap-x-[10px]'}  w-11/12 m-auto`}>
         {icon && icon}
 
@@ -20,10 +20,11 @@ function DashBoardInput({ placing, icon, names, values, handleChange, password,l
           name={names}
           value={values}
           onChange={handleChange}
-          type={password ? (showPassword ? 'text' : 'password') : 'text'}
+          type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
           border='none'
           className={`text-[#7C7C7C] text-[14px] ${icon&&'mr-[10px]'} `}
           placeholder={placing}
+          
         />
 
         {/* Toggle Button (only show if it's a password field) */}

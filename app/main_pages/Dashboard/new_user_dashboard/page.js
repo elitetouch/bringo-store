@@ -8,12 +8,24 @@ import BusinessInformation from '../component/BusinessInformation'
 import PaymentInformation from '../component/PaymentInformation'
 import SubmitButton from '../component/SubmitButton'
 import { useToast } from '@chakra-ui/react'
+import { BusinessInfo } from '@/app/api/reactQuery'
+import { StoreInfo } from '@/app/api/reactQuery'
+import { useSearchParams } from "next/navigation";
 function Page() {
+  const searchParams = useSearchParams(); 
+  const newSupermarket = searchParams.get('newSupermarket');
+//Api on Top level to be passed down
+const data= BusinessInfo()
+console.log(data?.data?.data?.data)
+const businessData = data?.data?.data?.data
+const storeInfo = StoreInfo()
+const storeData = storeInfo?.data?.data?.data
+console.log(storeInfo?.data?.data?.data)
   const toast = useToast()
   const [formPage, setFormPage] = useState(1)
-   const[storeTracker, setStoreTracker]= useState(0)
-      const[businessTracker, setbusinessTracker]= useState(0)
-      const[paymentTracker, setPaymentTracker]= useState(0)
+  //  const[storeTracker, setStoreTracker]= useState(0)
+  //     const[businessTracker, setbusinessTracker]= useState(0)
+       const[paymentTracker, setPaymentTracker]= useState(0)
   return (
     <div className=' min-h-screen lg:pb-[40px] pb-[20px]'>
       <Box className=' w-11/12 m-auto flex justify-between items-center pt-[20px] lg:pt-[30px]'>
@@ -40,24 +52,30 @@ function Page() {
       <Box>
       <Box className=' lg:mt-[40px] mt-[20px] grid lg:grid-cols-3 justify-center grid-cols-2 gap-y-[15px] gap-x-[10px] lg:gap-x-[20px] w-11/12 m-auto'>
           <Box className=' grid w-full'>
-            <DashboardCard storeTracker={businessTracker} routeFunc={()=>setFormPage(1)} formPage={formPage} title={'Business Information'} />
+            <DashboardCard storeTracker={businessData?.length > 0 && newSupermarket === null?100:0} routeFunc={()=>setFormPage(1)} formPage={formPage} title={'Business Information'} />
           </Box>
           <Box className=' grid  w-full'>
-            <DashboardCard storeTracker={storeTracker} routeFunc={()=>setFormPage(0)} formPage={formPage} title={'Store Information'} />
+            <DashboardCard storeTracker={storeData?.length > 0&& newSupermarket === null?100:0} routeFunc={()=>{businessData?.length > 0?setFormPage(0):alert('Please Fill in Business Information')}} formPage={formPage} title={'Store Information'} />
           </Box>
           <Box className=' grid w-full'>
-            <DashboardCard storeTracker={paymentTracker} routeFunc={()=>setFormPage(2)} formPage={formPage} title={'Payment Information'} />
+            <DashboardCard storeTracker={paymentTracker} routeFunc={()=>{storeData?.length > 0?setFormPage(2):alert('Please Fill in Store information')}} formPage={formPage} title={'Payment Information'} />
           </Box>
       </Box>
       <Box >
         {
-         formPage ===1 && <BusinessInformation setbusinessTracker={setbusinessTracker}/>
+         formPage ===1 && <BusinessInformation setFormPage={setFormPage} 
+        // setbusinessTracker={setbusinessTracker}
+         />
        }
         {
-          formPage ===0 && <StoreInformation  setPaymentTracker={setStoreTracker}/>
+          formPage ===0 && <StoreInformation dropData={businessData} setFormPage={setFormPage} 
+          // setPaymentTracker={setStoreTracker}
+           />
         }
          {
-          formPage ===2 && <PaymentInformation setPaymentTracker={setPaymentTracker}/>
+          formPage ===2 && <PaymentInformation dropData={storeData} setFormPage={setFormPage} 
+        //  setPaymentTracker={setPaymentTracker}
+          />
         }
       </Box>
           

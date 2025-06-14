@@ -1,8 +1,13 @@
+'use client'
 import React from 'react'
 import { Button, Box, Text } from '@chakra-ui/react'
+import { useRouter } from 'next/navigation'
+import DashBoardInput from './DashboardInput'
+// import imp from '../../main_pages/Dashboard/AddProduct'
 function AddProduct() {
+  const router = useRouter()
   return (
-     <Button backgroundColor={'#0E4940'} className=' h-[40px] w-[120px] lg:w-[137px]'>
+     <Button onClick={()=>router.push('/../../main_pages/Dashboard/AddProduct')} backgroundColor={'#0E4940'} className=' h-[40px] w-[120px] lg:w-[137px]'>
               <Box className=' flex items-center gap-x-[10px]'>
                 <Box>
                   <svg width="12" height="12" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">

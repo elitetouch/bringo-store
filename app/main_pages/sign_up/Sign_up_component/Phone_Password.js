@@ -16,11 +16,12 @@ function Phone_Password({signUpDetails, handleSignUpChange}) {
              <Number_country countryDetails={signUpDetails} />
            </Box>
             <Box className=' w-full'>
-               <Unboarding_input values={signUpDetails.phone} handleChange={handleSignUpChange} names={'phone'} placing={'+2564567890'} />
+               <Unboarding_input types={'number'} values={signUpDetails.phone} handleChange={handleSignUpChange} names={'phone'} placing={'+2564567890'} />
             </Box>
          </Box>
           <Box>
-            <Unboarding_input password values={signUpDetails.password} handleChange={handleSignUpChange} names={'password'} placing={'Password'} icon={<svg
+            <Unboarding_input password values={signUpDetails.password} handleChange={handleSignUpChange} names={'password'} placing={'Password'}
+             icon={<svg
   width="20"
   height="20"
   viewBox="0 0 20 20"

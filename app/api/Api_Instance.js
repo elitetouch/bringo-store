@@ -3,9 +3,10 @@ import axios from 'axios';
 // Create an Axios instance
 const axiosInstance = axios.create({
   baseURL: 'https://www.store.api.bringofresh.net',
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  // headers: {
+  //   'Content-Type': 'application/json',
+    
+  // },
 });
 
 // Request interceptor to add the token to every request.. Adding an interception function //

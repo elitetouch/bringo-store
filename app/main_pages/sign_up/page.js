@@ -120,15 +120,25 @@ setSignUpLoader(true);
     })
     .catch((error) => {
       setSignUpLoader(false);
-      toast({
-        title: "Error",
-        description:
-          error.response?.data?.errors || "Something went wrong. Please try again.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "top-right",
-      });
+     const errors = error.response?.data?.errors;
+
+    let description = "Something went wrong. Please try again.";
+
+    if (errors && typeof errors === "object") {
+      // Flatten all field error arrays into a single array of messages
+      description = Object.values(errors)
+        .flat()
+        .join("\n");
+    }
+
+    toast({
+      title: "Error",
+      description,
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
     });
   }
   else{

@@ -105,7 +105,7 @@ function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
                       {
                         SideNavData.map((item)=>{
                           return(
-                            <Box cursor={'pointer'} onClick={()=>{router.push(item.destination)}} key={item.id}>
+                            <Box cursor={'pointer'} onClick={()=>{router.push(item.destination);mobileTog?toogleMobile():toogleFunc()}} key={item.id}>
                             <Box  cursor={'pointer'}   className=' text-[15px] hover:bg-[#E6F1EF] hover:font-semibold duration-500 h-[50px] grid items-center rounded-lg'>
                               <Box className=' flex items-center justify-between w-11/12 m-auto '>
                                  <Box className=' flex items-center gap-x-[10px] '>

@@ -43,7 +43,7 @@ function OTP({ setSignUpPage, profile }) {
       .then((resp) => {
         setSignUpLoader(false);
         localStorage.setItem('accessToken', resp?.data?.token);
-        router.push('/../../Dashboard/new_user_dashboard');
+        router.push('/../../main_pages/Dashboard/new_user_dashboard');
       })
       .catch((error) => {
         setSignUpLoader(false);

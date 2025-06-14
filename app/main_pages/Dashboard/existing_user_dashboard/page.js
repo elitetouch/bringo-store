@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import NewDashTable from '@/app/component/Table/NewDashTable'
 import LineCharts from '@/app/component/Charts/LineCharts'
@@ -9,15 +10,35 @@ import Card from './components/Card'
 import { SellingProduct } from './components/SellingProductData'
 import Image from 'next/image'
 import MobileTable from '@/app/component/Table/MobileTable'
+import { useRouter } from 'next/navigation'
+//import imp from '../../../main_pages/Dashboard/new_user_dashboard'
 function Page() {
+  const router = useRouter()
   return (
     <div>
-       <Box className=' w-11/12 m-auto flex justify-between items-center pt-[20px] lg:pt-[30px]'>
+       
+       <Box className=' w-11/12 m-auto lg:flex grid gap-y-[20px] justify-between items-center pt-[20px] lg:pt-[30px]'>
             <Box>
               <Text className=' text-[20px] font-bold'>Welcome, Uzumaki.</Text>
               <Text className=' text-[15px] mt-[10px]'>Please, complete your store set up to go live!</Text>
             </Box>
-            <Box className=' lg:grid hidden'>
+            <Box className=' lg:grid'>
+              <Button onClick={()=>router.push('/../../../main_pages/Dashboard/new_user_dashboard?newSupermarket=true')} backgroundColor={'#0E4940'}>
+                <Box className=' flex items-center lg:gap-x-[10px] gap-x-[5px] p-[5px]'>
+                  <Box>
+                    <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7.8794 10.8275H0.113281V8.23877H7.8794V0.472656H10.4681V8.23877H18.2342V10.8275H10.4681V18.5936H7.8794V10.8275Z" fill="#F5ECBE"/>
+      </svg>
+      
+                  </Box>
+                  <Box>
+                    <Text className=' text-[15px] text-white font-semibold'>Add New Supermarket</Text>
+                  </Box>
+                </Box>
+              </Button>
+            </Box>
+            </Box>
+             {/* <Box className=' lg:hidden grid justify-end pt-[20px]'>
               <Button backgroundColor={'#0E4940'}>
                 <Box className=' flex items-center gap-x-[10px] p-[5px]'>
                   <Box>
@@ -31,8 +52,7 @@ function Page() {
                   </Box>
                 </Box>
               </Button>
-            </Box>
-            </Box>
+            </Box> */}
             <Box className=' w-11/12 m-auto lg:mt-[40px] mt-[20px]'>
               <Box className=' grid lg:grid-cols-4 grid-cols-2 gap-y-[20px] gap-x-[20px]'>
                 {

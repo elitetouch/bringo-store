@@ -37,7 +37,7 @@ export const Login_mobile=({signInDetails,handleSignInChange,signInLoader,handle
   />
 </svg>
 } />
- <Unboarding_input values={signInDetails.password} handleChange={handleSignInChange} names={'password'} placing={'Password'} icon={<svg
+ <Unboarding_input password values={signInDetails.password} handleChange={handleSignInChange} names={'password'} placing={'Password'} icon={<svg
   width="20"
   height="20"
   viewBox="0 0 20 20"
@@ -91,11 +91,11 @@ export default function Home() {
        errors[field]
        console.log(errors[field])
       })
-      //note:This function returns boolean which can be either true or false //
+      //note:This function returns boolean which can be either true or false... Object.keys get an array of Keys //
       return Object.keys(errors).length === 0
      }
   const handleFormSubmission=()=>{
-    router.push('./main_pages/Dashboard/new_user_dashboard');
+    // router.push('./main_pages/Dashboard/new_user_dashboard');
     if(Validation()){
       setSignInLoader(true)
       const formData = new FormData()
@@ -107,8 +107,8 @@ export default function Home() {
          setSignInLoader(false)
   console.log(resp)
    localStorage.setItem('accessToken', resp?.data?.token);
-   if (resp?.data?.status === true) {
-    router.push('./main_pages/Dashboard/new_user_dashboard');
+   if (resp?.data?.user?.email_verified_at != null) {
+    router.push('/./main_pages/Dashboard/new_user_dashboard');
   } else {
     router.push(`/./main_pages/sign_up?reroute=${resp?.data?.user?.email}`);
   }
