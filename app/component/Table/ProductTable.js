@@ -6,7 +6,9 @@ import { IconButton } from '@chakra-ui/react'
 import productOne from '../../../public/productOne.svg'
 import productTwo from '../../../public/productTwo.svg'
 import productThree from '../../../public/productThree.svg'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+// import imp from '../../main_pages/Dashboard/AddProduct'
 import {
   Menu,
   MenuButton,
@@ -15,14 +17,15 @@ import {
   Button
 } from '@chakra-ui/react'
 
-export const TableOptions=()=>{
+export const TableOptions=({id})=>{
+  const router = useRouter()
   const [displayDropDown, setDisplayDropDown]= useState(false)
   const dropDownFunc=()=>{
     setDisplayDropDown(!displayDropDown)
   }
   return (
     <Box className=' flex items-center gap-x-[5px]'>
-  <IconButton onClick={dropDownFunc} icon={<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <IconButton onClick={()=>router.push(`/../../main_pages/Dashboard/AddProduct?ProductId=${id}`)} icon={<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M8 13.3335H14" stroke="#C8CAD8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 <path d="M11 2.33316C11.2652 2.06794 11.6249 1.91895 12 1.91895C12.1857 1.91895 12.3696 1.95553 12.5412 2.0266C12.7128 2.09767 12.8687 2.20184 13 2.33316C13.1313 2.46448 13.2355 2.62038 13.3066 2.79196C13.3776 2.96354 13.4142 3.14744 13.4142 3.33316C13.4142 3.51888 13.3776 3.70277 13.3066 3.87435C13.2355 4.04593 13.1313 4.20184 13 4.33316L4.66667 12.6665L2 13.3332L2.66667 10.6665L11 2.33316Z" stroke="#C8CAD8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>} />
@@ -51,6 +54,7 @@ export const TableOptions=()=>{
 }
 
 function ProductTable({setDisplayBtn}) {
+  const router = useRouter()
   const column=[
     {
         name:'Products',selector:row =>(<div className=' flex items-center gap-x-[5px] gap-y-[5px] pt-[5px] pb-[5px]'>
@@ -83,7 +87,7 @@ function ProductTable({setDisplayBtn}) {
       {
         name:'Actions',selector:row => 
         <Box>
-         <TableOptions />
+         <TableOptions id={row.id} />
         </Box>,
       },
 

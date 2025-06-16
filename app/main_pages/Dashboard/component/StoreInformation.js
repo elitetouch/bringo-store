@@ -205,7 +205,7 @@ const Validation = () => {
                 onChangeFunc={handleInputChange}
                  names={'bussiness_id'}
                  label={'Bussiness Name'}
-                  dropDownOpt={dropData}
+                  dropDownOpt={dropData||[]}
                   placing={'Select Bussiness Name'}
                 />}
                    {err?.bussiness_id && (

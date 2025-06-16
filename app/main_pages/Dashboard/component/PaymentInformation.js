@@ -160,7 +160,7 @@ const router = useRouter()
                 onChangeFunc={handleBusinessInput}
                  names={'store_id'}
                  label={'Store Name'}
-                  dropDownOpt={dropData}
+                  dropDownOpt={dropData || []}
                   placing={'Select Store Name'}
                 />}
                    {err?.bussiness_id && (

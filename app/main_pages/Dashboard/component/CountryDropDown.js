@@ -44,9 +44,9 @@ function CountryDropDown({ onChangeFunc, currentValue, dashboard, values,label, 
             placeholder={placing?placing:"Select country"}
             className="text-[#A5A6AB]"
           >
-            {dropDownOpt.map((item,index)=>{
+            {dropDownOpt?.length > 0 && dropDownOpt?.map((item,index)=>{
               return(
-              <option key={index} value={item.value || item.id}>{item.title || item.company_name || item.store_name}</option>
+              <option key={index} value={item.value || item.id || ''}>{item.title || item.company_name || item.store_name || ''}</option>
               )
             })}
           </Select>
