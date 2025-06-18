@@ -19,7 +19,7 @@ function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
         setDropDown(!dropdown)
   }
   return (
-    <div className={` lg:grid ${(!toogleSideMenu)?'lg:w-[280px] w-full':'w-[110px]'} custom-scrollbar lg:overflow-y-auto h-screen`}>
+    <div className={`  ${(!toogleSideMenu)?'lg:w-[280px] w-full':'w-[110px]'} custom-scrollbar lg:overflow-y-auto h-screen`}>
       <Box className=' w-11/12 lg:flex flex-col  justify-between m-auto lg:pt-[20px] pt-[15px] pb-[32px] '>
       <Box>
       <Box  className=' w-11/12 m-auto'>

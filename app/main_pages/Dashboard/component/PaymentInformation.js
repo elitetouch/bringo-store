@@ -149,7 +149,7 @@ const router = useRouter()
 )}
                               </Box>
                               <Box>
-                              <DashBoardInput types={'number'} placing={''}  names={'swiftCode'} values={businessData.swiftCode} handleChange={handleBusinessInput} label={'*SWIFT Code'} /> 
+                              <DashBoardInput  placing={''}  names={'swiftCode'} values={businessData.swiftCode} handleChange={handleBusinessInput} label={'*SWIFT Code'} /> 
                               {err?.swiftCode && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include SWIFT CODE</p>
 )}

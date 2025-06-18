@@ -26,7 +26,7 @@ function Dashboard_Deskwrap({children}) {
       <Box className='lg:flex'>
       <Box>
         <Box className=' lg:grid hidden lg:fixed'>
-        <DashboardDeskSide toogleFunc={toogleFunc} toogleSideMenu={toogleSideMenu} />
+        <DashboardDeskSide  toogleMobile={()=>{}} toogleFunc={toogleFunc} toogleSideMenu={toogleSideMenu} />
 
         </Box>
         <DashboardMobileSide onClose={onClose} isOpen={isOpen} />

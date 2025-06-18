@@ -33,7 +33,7 @@ console.log(storeInfo?.data?.data?.data)
         <Text className=' text-[20px] font-bold'>Welcome, Uzumaki.</Text>
         <Text className=' text-[15px] mt-[10px]'>Please, complete your store set up to go live!</Text>
       </Box>
-      <Box className=' lg:grid hidden'>
+      {/* <Box className=' lg:grid hidden'>
         <Button backgroundColor={'#0E4940'}>
           <Box className=' flex items-center gap-x-[10px] p-[5px]'>
             <Box>
@@ -47,7 +47,7 @@ console.log(storeInfo?.data?.data?.data)
             </Box>
           </Box>
         </Button>
-      </Box>
+      </Box> */}
       </Box>
       <Box>
       <Box className=' lg:mt-[40px] mt-[20px] grid lg:grid-cols-3 justify-center grid-cols-2 gap-y-[15px] gap-x-[10px] lg:gap-x-[20px] w-11/12 m-auto'>

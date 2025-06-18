@@ -31,8 +31,8 @@ function page() {
                         <ProductSearch placing={'Search for id, name product'} />
                       </Box>
                       <Box className=' flex  items-center gap-x-[10px]'>
-                      <Filter />
-                      <ExportButton />
+                      {/* <Filter />
+                      <ExportButton /> */}
                       <AddProduct />
                       </Box>
                     </Box>

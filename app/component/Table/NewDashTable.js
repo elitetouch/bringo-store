@@ -8,7 +8,10 @@ import productTwo from '../../../public/productTwo.svg'
 import productThree from '../../../public/productThree.svg'
 import Image from 'next/image'
 import { Select } from '@chakra-ui/react'
+import { useRouter } from 'next/navigation'
+// import imp from '/../../main_pages/Dashboard/Product'
 function NewDashTable({setDisplayBtn}) {
+  const router = useRouter()
   const column=[
     {
       name:'Order ID',selector:row => row.orderID
@@ -153,6 +156,7 @@ function NewDashTable({setDisplayBtn}) {
     <Box className=' w-11/12 m-auto flex items-center justify-between  mb-[20px]'>
       <Text className=' text-[15px] font-semibold'>Latest Orders</Text>
       <IconButton
+      onClick={()=>router.push('/../../main_pages/Dashboard/Orders')}
      icon={<Box className=' flex items-center gap-x-[5px] p-[10px]'>
       <Text className=' text-[15px]'>More</Text>
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">

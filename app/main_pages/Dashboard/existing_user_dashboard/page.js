@@ -23,7 +23,10 @@ function Page() {
               <Text className=' text-[15px] mt-[10px]'>Please, complete your store set up to go live!</Text>
             </Box>
             <Box className=' lg:grid'>
-              <Button onClick={()=>router.push('/../../../main_pages/Dashboard/new_user_dashboard?newSupermarket=true')} backgroundColor={'#0E4940'}>
+              <Button onClick={()=>
+                // router.push('/../../../main_pages/Dashboard/new_user_dashboard?newSupermarket=true')
+                router.push('/../../../main_pages/Dashboard/AddProduct')
+                } backgroundColor={'#0E4940'}>
                 <Box className=' flex items-center lg:gap-x-[10px] gap-x-[5px] p-[5px]'>
                   <Box>
                     <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -31,8 +34,8 @@ function Page() {
       </svg>
       
                   </Box>
-                  <Box>
-                    <Text className=' text-[15px] text-white font-semibold'>Add New Supermarket</Text>
+                  <Box cursor={'pointer'} >
+                    <Text className=' text-[15px] text-white font-semibold'>Add Product</Text>
                   </Box>
                 </Box>
               </Button>
