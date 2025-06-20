@@ -1,0 +1,99 @@
+import Banana from '../../../public/banana.svg'
+import grapes from '../../../public/grapes.svg'
+import watermelon from '../../../public/watermelon.svg'
+import strawberry from '../../../public/strawberry.svg'
+import lemons from '../../../public/lemons.svg'
+import orange from '../../../public/orange.svg'
+import pepper from '../../../public/pepper.svg'
+export const MarketData=[
+    {
+        id:1,
+        name:'Banana',
+        price:'UGX150',
+        rating:'4.8',
+        quantity:'287',
+        weight:'2kg',
+        images:Banana
+    },
+     {
+        id:2,
+        name:'Pepper',
+        price:'UGX150',
+        rating:'4.8',
+        quantity:'287',
+        weight:'2kg',
+        images:pepper
+    },
+     {
+        id:3,
+        name:'Orange',
+       price:'UGX150',
+        rating:'4.8',
+        quantity:'287',
+        weight:'2kg',
+        images:orange
+    },
+     {
+        id:4,
+        name:'Strawberry',
+       price:'UGX150',
+        rating:'4.8',
+        quantity:'287',
+        weight:'2kg',
+        images:strawberry
+    },
+     {
+        id:5,
+        name:'Berries',
+        price:'UGX150',
+        rating:'4.8',
+        quantity:'287',
+        weight:'2kg',
+        images:grapes
+    },
+     {
+        id:6,
+        name:'Lemon',
+       price:'UGX150',
+        rating:'4.8',
+        quantity:'287',
+        weight:'2kg',
+        images:lemons
+    },
+     {
+        id:7,
+        name:'Waterlemon',
+        price:'UGX150',
+        rating:'4.8',
+        quantity:'287',
+        weight:'2kg',
+        images:watermelon
+    },
+     {
+        id:8,
+         name:'Berries',
+        price:'UGX150',
+        rating:'4.8',
+        quantity:'287',
+        weight:'2kg',
+        images:grapes
+    },
+     {
+        id:9,
+        name:'Orange',
+       price:'UGX150',
+        rating:'4.8',
+        quantity:'287',
+        weight:'2kg',
+        images:orange
+    },
+     {
+        id:10,
+        name:'Banana',
+        price:'UGX150',
+        rating:'4.8',
+        quantity:'287',
+        weight:'2kg',
+        images:Banana
+    },
+]

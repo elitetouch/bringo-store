@@ -11,6 +11,7 @@ import { Switch } from '@chakra-ui/react'
 import user from '../../../../public/user.svg'
 import bringo from '../../../../public/bringologo.svg'
 import { useRouter } from 'next/navigation'
+// import imp from '../../../main_pages/Dashboard/Market'
 function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
  const router = useRouter()
 
@@ -65,7 +66,7 @@ function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
          </Box>
       </Box>
       </Box>
-            <Box border="1px" borderColor="gray.300" borderRadius="lg"  className=' rounded-lg grid items-center w-full border border-gray-700 h-[70px] mt-[20px] lg:mt-[30px]'>
+            <Box cursor={'pointer'} onClick={()=>{router.push('/../../../main_pages/Dashboard/Market')}} border="1px" borderColor="gray.300" borderRadius="lg"  className=' rounded-lg grid items-center w-full border border-gray-700 h-[70px] mt-[20px] lg:mt-[30px]'>
               <Box className='  flex items-center justify-between w-11/12 m-auto '>
                 <Box className='  flex items-center gap-x-[10px]'>
                   <Box>
@@ -78,6 +79,7 @@ function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
                 </Box>
                {!toogleSideMenu && <Box>
                   <IconButton
+                  onClick={()=>{router.push('/../../../main_pages/Dashboard/Market')}}
                    backgroundColor={'transparent'}
                   icon={<svg
   width="20"
@@ -105,7 +107,7 @@ function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
                       {
                         SideNavData.map((item)=>{
                           return(
-                            <Box cursor={'pointer'} onClick={()=>{router.push(item.destination);mobileTog?toogleMobile():toogleFunc()}} key={item.id}>
+                            <Box cursor={'pointer'} onClick={()=>{mobileTog?(toogleMobile(),router.push(item.destination)):(router.push(item.destination))}} key={item.id}>
                             <Box  cursor={'pointer'}   className=' text-[15px] hover:bg-[#E6F1EF] hover:font-semibold duration-500 h-[50px] grid items-center rounded-lg'>
                               <Box className=' flex items-center justify-between w-11/12 m-auto '>
                                  <Box className=' flex items-center gap-x-[10px] '>
