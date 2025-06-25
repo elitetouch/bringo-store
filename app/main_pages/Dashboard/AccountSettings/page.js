@@ -14,6 +14,7 @@ import {
  
 } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
+import Subscrption from '../component/Subscrption'
 //import imp from '../../../main_pages/Dashboard/new_user_dashboard'
 export const SocialMedia =()=>{
   return(
@@ -189,6 +190,7 @@ export const CreditCardInfo=({value,changes})=>{
 
 function Page() {
   const router = useRouter()
+  const [subscription, setSuscription]= useState(false)
     const [pages, setPages] = useState(0)
     const [editProfile, setEditProfile] = useState({
       firstName:'',
@@ -206,7 +208,11 @@ function Page() {
     const editFuncChange=(e)=>{
       setEditProfile({...editProfile,[e.target.name]:e.target.value})
     }
-
+    
+   const SubmitEditFuncChange=()=>{
+    console.log(editProfile)
+    const formData= new FormData()
+   }
     const [changePassword, setChangePassword] = useState({
       currentPassword:'',
       newPassword:'',
@@ -216,6 +222,28 @@ function Page() {
       setChangePassword({...changePassword,[e.target.name]:e.target.value})
         
     }
+ const Validation = () =>{  
+      const errors={}    
+      // State parameters to be made compulsory in the form for submission to go through //
+      const objectKeys=[ 'currentPassword','newPassword','confirmPassword'
+         ]
+      objectKeys.forEach((field)=>{
+       if(!signInDetails[field]){
+         errors[field]= `Input ${field.replace(/_/g, " ")}`
+     }
+       errors[field]
+       console.log(errors[field])
+      })
+      //note:This function returns boolean which can be either true or false... Object.keys get an array of Keys //
+      return Object.keys(errors).length === 0
+     }
+     const submitPasswordFunc=()=>{
+      if(Validation()){
+        console.log(changePassword)
+      }
+     }
+//For billing validation//
+ 
 
     const [billingInfo, setBillingInfo] = useState({
       fullName:'',
@@ -223,12 +251,33 @@ function Page() {
       Address:'',
       TaxID:''
     })
+    const ValidationBills = () =>{  
+      const errors={}    
+      // State parameters to be made compulsory in the form for submission to go through //
+      const objectKeys=[ 'fullName','CompanyName','Address','TaxID'
+         ]
+      objectKeys.forEach((field)=>{
+       if(!signInDetails[field]){
+         errors[field]= `Input ${field.replace(/_/g, " ")}`
+     }
+       errors[field]
+       console.log(errors[field])
+      })
+      //note:This function returns boolean which can be either true or false... Object.keys get an array of Keys //
+      return Object.keys(errors).length === 0
+     }
 const handleBillingChange=(e)=>{
   setBillingInfo({...billingInfo, [e.target.name]: e.target.value})
 }
-
+const handleBillSubmission=()=>{
+  if(ValidationBills()){
+console.log(billingInfo)
+  }
+}
   return (
-    <div className=' min-h-screen'><Box>
+    <div className=' min-h-screen'>
+     {!subscription? <Box>
+      <Box>
           <Box className=' w-11/12 m-auto lg:pt-[40px] pt-[20px]'>
                                 <Text className=' text-[18px] font-semibold'>Account & Settings</Text>
                                 <Box className=' flex items-center gap-x-[10px] text-[14px] mt-[10px]'>
@@ -243,11 +292,11 @@ const handleBillingChange=(e)=>{
 
                              <Box className=' grid lg:grid-cols-2 grid-cols-2 items-center lg:gap-x-[40px] gap-x-[30px] lg:w-11/12 m-auto  '>
                                         
-                                          <Button onClick={()=>setPages(0)} _hover={{backgroundColor:'#E6F1EF', color:'#007460'}} backgroundColor={pages===0&&'#E6F1EF'||'transparent'} color={'#737373'} height={45} width={''}>
+                                          <Button onClick={()=>setSuscription(false)} _hover={{backgroundColor:'#E6F1EF', color:'#007460'}} backgroundColor={pages===0&&'#E6F1EF'||'transparent'} color={'#737373'} height={45} width={''}>
                                             <Text color={pages===0&&'#007460'|| '#737373'} className=' text-[14px] font-semiBold'>Accounts</Text>
                                           </Button>
-                                          <Button onClick={()=>setPages(1)} _hover={{backgroundColor:'#E6F1EF', color:'#007460'}} backgroundColor={pages===1&&'#E6F1EF'||'transparent'} color={'#737373'} height={45} width={''}>
-                                            <Text color={pages===1&&'#007460'|| '#737373'}  className=' text-[14px] font-semiBold'>Suscription</Text>
+                                          <Button onClick={()=>router.push('/../../../main_pages/Dashboard/Subscription')} _hover={{backgroundColor:'#E6F1EF', color:'#007460'}} backgroundColor={pages===1&&'#E6F1EF'||'transparent'} color={'#737373'} height={45} width={''}>
+                                            <Text color={pages===1&&'#007460'|| '#737373'}  className=' text-[14px] font-semiBold'>Subscription</Text>
                                           </Button>
                                         
                                       </Box>
@@ -366,7 +415,7 @@ values={changePassword.confirmPassword}
   />
               </Box>
               <Box className=' mt-[20px] w-7/12 m-auto pb-[20px]'>
-                <Button height={42} backgroundColor={'#007460'} className=' w-full'>
+                <Button onClick={submitPasswordFunc} height={42} backgroundColor={'#007460'} className=' w-full'>
                     <Text color={'white'} className=' text-[14px]'>Save Change</Text>
                   </Button>
               </Box>
@@ -482,13 +531,13 @@ values={editProfile.location}
   label={'Location'} /> 
                   </Box>
                       <Box className=' w-11/12 m-auto grid justify-end mt-[20px]'>
-      <Button height={42} backgroundColor={'#007460'}>
+      <Button onClick={SubmitEditFuncChange} height={42} backgroundColor={'#007460'}>
                     <Text color={'white'} className=' text-[14px]'>Submit</Text>
                   </Button>
     </Box>
                 </Box>
                 <Box className=' mt-[30px]'>
-                 <CreditCardInfo value={editProfile}  changes={editFuncChange}/>
+                 <CreditCardInfo value={editProfile}  changes={editFuncChange} />
                 </Box>
               </Box>
               <Box></Box>
@@ -550,12 +599,16 @@ values={billingInfo.TaxID}
            </Box>
         </Box>
            <Box className=' mt-[20px] grid justify-end lg:w-11/12 w-11/12  m-auto pb-[40px]'>
-                <Button height={42} backgroundColor={'#007460'} className=' w-full'>
+                <Button onClick={handleBillSubmission} height={42} backgroundColor={'#007460'} className=' w-full'>
                     <Text color={'white'} className=' text-[14px]'>Save Change</Text>
                   </Button>
               </Box>
 
           </Box>
+
+      </Box>:<Box>
+        <Subscrption />
+        </Box>}
         </div>
   )
 }
