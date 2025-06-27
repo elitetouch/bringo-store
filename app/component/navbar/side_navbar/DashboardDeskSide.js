@@ -11,14 +11,20 @@ import { Switch } from '@chakra-ui/react'
 import user from '../../../../public/user.svg'
 import bringo from '../../../../public/bringologo.svg'
 import { useRouter } from 'next/navigation'
+import { useColorMode } from '@chakra-ui/react'
 // import imp from '../../../main_pages/Dashboard/Market'
 function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
  const router = useRouter()
-
+//const { colorMode, toggleColorMode } = useColorMode();
+//console.log(colorMode)
   const [dropdown, setDropDown] = useState(false)
   const dropdownFunc=()=>{
         setDropDown(!dropdown)
   }
+  //  const phoneNumber = '2348012345678'; // Nigeria number (e.g., +2348012345678)
+  // const message = encodeURIComponent('Hello! I’d like to chat with you via WhatsApp.');
+
+  // const url = `https://wa.me/${phoneNumber}?text=${message}`;
   return (
     <div className={`  ${(!toogleSideMenu)?'lg:w-[280px] w-full':'w-[110px]'} custom-scrollbar lg:overflow-y-auto h-screen`}>
       <Box className=' w-11/12 lg:flex flex-col  justify-between m-auto lg:pt-[20px] pt-[15px] pb-[32px] '>
@@ -165,14 +171,16 @@ function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
                         sideNavTools.map((item)=>{
                           return(
                            <Box  cursor={'pointer'}
-                          onClick={()=>{mobileTog?(toogleMobile(),router.push(item.destination)):(router.push(item.destination))}}
+                          onClick={()=>{mobileTog && !item.darkmode?(toogleMobile(),router.push(item.destination)):(router.push(item.destination))}}
                             key={item.id} className=' text-[15px] hover:bg-[#E6F1EF] hover:font-semibold duration-500 h-[50px] grid items-center rounded-lg'>
                               <Box className=' flex items-center justify-between w-11/12 m-auto'>
                                   <Box className=' flex items-center gap-x-[10px] '>
                            <Box>{item.icon}</Box>
                              {(!toogleSideMenu) && <Box>{item.title}</Box>}
                                  </Box>
-                               {item.darkmode && <Box>
+                               {item.darkmode && <Box 
+                              //  onClick={()=>toggleColorMode()}
+                               >
                                 <Switch id='email-alerts' />
                                 </Box>}
                               </Box>
@@ -189,7 +197,10 @@ function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
           <Box>
              <Image alt='' src={user} />
           </Box>
-          <Box className=' flex justify-between w-full text-[15px]'>
+          <Box
+          cursor={'pointer'}
+          onClick={()=>router.push(`/../../../main_pages/Dashboard/AccountSettings`)}
+          className=' flex justify-between w-full text-[15px]'>
             {(!toogleSideMenu) && <Box>
               <Text className='text-[#454545]'>Kate Holland</Text>
               <Text className=' mt-[10px] text-[#B0B0B0]'>Admin</Text>

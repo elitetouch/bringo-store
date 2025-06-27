@@ -1,14 +1,20 @@
+'use client'
 import React from 'react'
 import { Box } from '@chakra-ui/react'
 import Image from 'next/image'
 import user from '../../../../public/user.svg'
 import { Text } from '@chakra-ui/react'
 import { IconButton } from '@chakra-ui/react'
+import { useRouter } from 'next/navigation'
 function DashboardMobileNav({toogleSideNav}) {
+  const router = useRouter()
   return (
     <div className='lg:hidden h-[68px] grid items-center'>
       <Box className=' flex justify-between w-11/12 m-auto items-center'>
-        <Box className=' flex items-center gap-x-[20px] pl-[10px] '>
+        <Box
+        cursor={'pointer'}
+         onClick={()=>router.push(`/../../../main_pages/Dashboard/AccountSettings`)}
+        className=' flex items-center gap-x-[20px] pl-[10px] '>
                               <Box className=' relative'>
                                  <Image alt='' src={user} />
                                   <Box className=' h-[12px] w-[12px] rounded-full bg-[#23A149] absolute bottom-0 right-0'></Box>

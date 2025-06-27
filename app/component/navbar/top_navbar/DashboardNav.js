@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import SearchInput from '../../Inputs/SearchInput'
 import { Box } from '@chakra-ui/react'
@@ -16,7 +17,9 @@ import {
   MenuOptionGroup,
   MenuDivider,
 } from '@chakra-ui/react'
+import { useRouter } from 'next/navigation'
 function DashboardNav() {
+  const router = useRouter()
   return (
     <Box  className=' lg:grid hidden bg-white h-[80px] grid items-center bg-white'>
       <Box className=' flex w-11/12 m-auto items-center justify-between'>
@@ -82,7 +85,10 @@ function DashboardNav() {
             </Box>}
             />
           </Box>
-          <Box borderLeft="1px" borderColor="gray.300" >
+          <Box 
+          cursor={'pointer'}
+          onClick={()=>router.push(`/../../../main_pages/Dashboard/AccountSettings`)}
+          borderLeft="1px" borderColor="gray.300" >
               <Box className=' flex items-center gap-x-[10px] m-auto w-[200px] pl-[10px] '>
                       <Box className=' relative'>
                          <Image alt='' src={user} />

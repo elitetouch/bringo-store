@@ -80,8 +80,7 @@ function BillTable({setDisplayBtn}) {
     highlightOnHover
     customStyles={customStyles}
     pagination
-    responsive
-  
+    responsive 
   />
 </Box>
 
