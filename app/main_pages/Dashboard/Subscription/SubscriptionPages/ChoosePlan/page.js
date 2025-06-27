@@ -1,9 +1,13 @@
+'use client'
 import React from 'react'
 import { Box, Button, Text } from '@chakra-ui/react'
-
-export const SubCard=({plan, price})=>{
+import { useRouter } from 'next/navigation'
+//import imp from '../ProService'
+export const SubCard=({plan, price, planFunc})=>{
     return(
-        <Box className=' shadow-lg pb-[50px] rounded-lg'>
+        <Box
+        onClick={planFunc}
+        cursor={'pointer'} className=' shadow-lg pb-[50px] rounded-lg'>
         <Box className=' w-11/12 m-auto'>
             <Box className=' mt-[10px]'>
                 <Box className= {`rounded-l-full rounded-r-full h-[26px] w-[71px] grid items-center justify-center rounded-l-full rounded-r-full ${plan==='Lite'&&'text-[#CC9600]'||plan==='Pro'&&'text-[#3BC251]'} ${plan==='Lite'&&'bg-[#FFF8E6]'||plan==='Pro'&&'bg-[#EDFEF0]'}`}>
@@ -37,7 +41,7 @@ export const SubCard=({plan, price})=>{
                     <Text className=' pl-[5px] pr-[5px] text-[#2C2E33] text-[12px]'>10% off Annual billing</Text>
                  </Box>
             </Box>
-            <Box className=' grid gap-y-[20px] mt-[20px]'>
+           {plan ==='Lite' && <Box className=' grid gap-y-[20px] mt-[20px]'>
                 <Box className=' flex items-center gap-x-[5px]'>
                     <Box><svg width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M13.4356 1.16351C13.7871 1.51498 13.7871 2.08483 13.4356 2.4363L5.63562 10.2363C5.28414 10.5878 4.71429 10.5878 4.36282 10.2363L0.462823 6.3363C0.111351 5.98483 0.111351 5.41498 0.462823 5.06351C0.814295 4.71203 1.38414 4.71203 1.73561 5.06351L4.99922 8.32711L12.1628 1.16351C12.5143 0.812034 13.0841 0.812034 13.4356 1.16351Z" fill="#32A06E"/>
@@ -56,6 +60,26 @@ export const SubCard=({plan, price})=>{
                         <Text className=' text-[12px]'>Maximum of 500 product uploads per store</Text>
                     </Box>
                 </Box>
+            </Box>}
+            {plan ==='Pro' && <Box className=' grid gap-y-[20px] mt-[20px]'>
+                <Box className=' flex items-center gap-x-[5px]'>
+                    <Box><svg width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13.4356 1.16351C13.7871 1.51498 13.7871 2.08483 13.4356 2.4363L5.63562 10.2363C5.28414 10.5878 4.71429 10.5878 4.36282 10.2363L0.462823 6.3363C0.111351 5.98483 0.111351 5.41498 0.462823 5.06351C0.814295 4.71203 1.38414 4.71203 1.73561 5.06351L4.99922 8.32711L12.1628 1.16351C12.5143 0.812034 13.0841 0.812034 13.4356 1.16351Z" fill="#32A06E"/>
+</svg>
+</Box>
+                    <Box>
+                        <Text className=' text-[12px]'>Unlimited stores</Text>
+                    </Box>
+                </Box>
+                  <Box className=' flex items-center gap-x-[5px]'>
+                    <Box><svg width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13.4356 1.16351C13.7871 1.51498 13.7871 2.08483 13.4356 2.4363L5.63562 10.2363C5.28414 10.5878 4.71429 10.5878 4.36282 10.2363L0.462823 6.3363C0.111351 5.98483 0.111351 5.41498 0.462823 5.06351C0.814295 4.71203 1.38414 4.71203 1.73561 5.06351L4.99922 8.32711L12.1628 1.16351C12.5143 0.812034 13.0841 0.812034 13.4356 1.16351Z" fill="#32A06E"/>
+</svg>
+</Box>
+                    <Box>
+                        <Text className=' text-[12px]'>Unlimited product uploads</Text>
+                    </Box>
+                </Box>
                  <Box className=' flex items-center gap-x-[5px]'>
                     <Box><svg width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M13.4356 1.16351C13.7871 1.51498 13.7871 2.08483 13.4356 2.4363L5.63562 10.2363C5.28414 10.5878 4.71429 10.5878 4.36282 10.2363L0.462823 6.3363C0.111351 5.98483 0.111351 5.41498 0.462823 5.06351C0.814295 4.71203 1.38414 4.71203 1.73561 5.06351L4.99922 8.32711L12.1628 1.16351C12.5143 0.812034 13.0841 0.812034 13.4356 1.16351Z" fill="#32A06E"/>
@@ -65,7 +89,7 @@ export const SubCard=({plan, price})=>{
                         <Text className=' text-[12px]'>10% discount per store</Text>
                     </Box>
                 </Box>
-            </Box>
+            </Box>}
             <Box className=' mt-[20px] w-11/12 m-auto'>
                 <Button backgroundColor={'#007460'} color={'white'} width={'full'}>
                     <Box className=' flex items-center gap-x-[10px]'>
@@ -82,6 +106,11 @@ export const SubCard=({plan, price})=>{
 }
 
 function Page() {
+    const router = useRouter()
+    const ProFunc=(plan)=>{
+     router.push(`./Service?plan=${plan}`)
+    }
+    const LiteFunc=()=>{}
   return (
     <div className=' min-h-screen'>
         <Box className=' mt-[20px] b-[20px]'>
@@ -99,8 +128,8 @@ At Bringo, we’re committed to helping supermarkets grow with ease and efficien
 
                 </Box>
         <Box className=' grid lg:grid-cols-2 mt-[40px] w-11/12 m-auto gap-x-[40px] gap-y-[40px] mb-[40px]'>
-            <SubCard plan={'Lite'} price={'UGX20,000'} />
-             <SubCard plan={'Pro'} price={'UGX50,000'} />
+            <SubCard planFunc={()=>{ProFunc('Lite')}} plan={'Lite'} price={'UGX20,000'} />
+             <SubCard planFunc={()=>{ProFunc('Pro')}} plan={'Pro'} price={'UGX50,000'} />
         </Box>
         </Box>
             </Box>
