@@ -16,3 +16,24 @@ export const StoreInfo =()=>{
             axiosInstance.get('/api/v1/store-information')})
         return {isPending, error, data }
 } 
+export const ProfileInfo =()=>{
+    const { isPending, error, data } = useQuery({
+        queryKey: ['ProfileInfo'],
+        queryFn: () =>
+            axiosInstance.get('')})
+        return {isPending, error, data }
+}
+export const Products =()=>{
+    const { isPending, error, data } = useQuery({
+        queryKey: ['Products'],
+        queryFn: () =>
+            axiosInstance.get('')})
+        return {isPending, error, data }
+}
+export const Orders =()=>{
+    const { isPending, error, data } = useQuery({
+        queryKey: ['Orders'],
+        queryFn: () =>
+            axiosInstance.get('')})
+        return {isPending, error, data }
+}

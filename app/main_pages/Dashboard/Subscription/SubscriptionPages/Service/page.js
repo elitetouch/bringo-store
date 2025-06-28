@@ -45,9 +45,9 @@ function Page() {
                     <Text className=' text-black text-[15px]'>Monthly</Text>
                     <Text className=' text-[#909296] text-[12px] mt-[5px]'>Description.</Text>
                 </Box>
-                <Box>
+                {/* <Box>
                     <Text className=' text-[#909296] text-[14px] italic'>(UGX5,000 per store monthly)</Text>
-                </Box>
+                </Box> */}
             </Box>
         </Radio>
       </Stack>
@@ -69,11 +69,11 @@ function Page() {
                              borderBottom={'1px'}
                              borderBottomColor={'#DEE2E6'}
                             className=' mt-[5px] pb-[10px]'>
-                                <Text className=' lg:text-[15px] text-[14px] text-[#2C2E33]'>UGX 45000 / store / month – billed yearly</Text>
+                                <Text className=' lg:text-[15px] text-[14px] text-[#2C2E33]'>{plan ==='Lite'&&'UGX 18,000'||plan ==='Pro'&&'UGX 45000'} / store / month – billed yearly</Text>
                             </Box>
                             <Box className=' flex mt-[20px] text-[15px] justify-between'>
                                 <Text>Total</Text>
-                                <Text className=' font-semibold'>UGX 45,000</Text>
+                                <Text className=' font-semibold'>{plan ==='Lite'&&'UGX 18,000'||plan ==='Pro'&&'UGX 45000'}</Text>
                             </Box>
                             <Box className=' mt-[20px] w-10/12 m-auto'>
                              <Button backgroundColor={'#007460'} color={'white'} width={'full'}>

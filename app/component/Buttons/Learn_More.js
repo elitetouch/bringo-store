@@ -1,9 +1,16 @@
 'use client'
 import React from 'react'
 import { Button, Text, Box } from '@chakra-ui/react'
+//import imp from '../../../public'
 function Learn_More() {
   return (
     <div>
+       <a
+     href="/Sellercontract.docx" // path to your document
+      download // triggers download instead of navigation
+      target="_blank"
+      rel="noopener noreferrer"
+    >
      <Button backgroundColor={'transparent'} border={'1px'} borderColor={'white'}>
         <Box className=' flex items-center gap-x-[10px]'>
            <svg
@@ -26,6 +33,8 @@ function Learn_More() {
         <Text className=' text-white text-[14px]'>Learn More</Text>
         </Box>
      </Button>
+
+    </a>
     </div>
   )
 }

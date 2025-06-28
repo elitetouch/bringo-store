@@ -104,9 +104,33 @@ const handleFileChange = (e) => {
     }
      const [category_value, setCategoryValue] = useState('1')
     const [addProductLoader, setAddProductLoader]= useState(false)
+    const [err, setErr]= useState({})
+        const Validation = () =>{  
+          const errors={}    
+          // State parameters to be made compulsory in the form for submission to go through //
+        const objectKeys=[ 'productTitle','description','StockQuantity','amount','brandName','featureOne'
+         ]
+          objectKeys.forEach((field)=>{
+           if(!addProduct[field]){
+             errors[field]= `Input ${field.replace(/_/g, " ")}`
+         }
+           errors[field]
+           console.log(errors[field])
+    
+          })
+          //note:This function returns boolean which can be either true or false //
+          Object.keys(errors).length && setErr(errors)
+          return Object.keys(errors).length === 0
+         }
     const addProductFunction=()=>{
-        setAddProductLoader(true)
+       
+        console.log(images)
+        if(Validation()){
+ setAddProductLoader(true)
+        // const formData= new FormData()
+        // formData.append('')
         console.log(addProduct)
+        }
     }
   return (
     <div className=' min-h-screen   pb-[50px]'>
@@ -152,7 +176,9 @@ const handleFileChange = (e) => {
                                    placeholder={'Input your text'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
-
+                           {err?.productTitle && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please fill in product name</p>
+)}
                         </Box>
                       </Box>
                       <Box className=' mt-[20px]'>
@@ -172,7 +198,9 @@ const handleFileChange = (e) => {
                                    onChange={addProductChange}
                         className=' min-h-[112px] w-full pt-[10px] bg-[#8A8A8A]'
                         />
-
+                         {err?.description && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please fill in product description</p>
+)}
                         </Box>
                       </Box>
                       <Box className=' mt-[20px]'>
@@ -186,6 +214,7 @@ const handleFileChange = (e) => {
 
                         </Box>
                         <Box className=' w-full pt-[10px] grid grid-cols-2 gap-x-[20px] gap-y-[20px]'>
+                          <Box>
                          <Input
                                    name={'featureOne'}
                                    value={addProduct.featureOne}
@@ -196,6 +225,11 @@ const handleFileChange = (e) => {
                                    placeholder={'Value'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
+                             {err?.featureOne && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please input key features</p>
+)}
+                          </Box>
+                          <Box>
                             <Input
                                name={'featureTwo'}
                                    value={addProduct.featureTwo}
@@ -206,6 +240,11 @@ const handleFileChange = (e) => {
                                    placeholder={'Value'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
+                             {err?.featureTwo && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please input key features</p>
+)}
+                          </Box>
+                          <Box>
                             <Input
                                name={'featureThree'}
                                    value={addProduct.featureThree}
@@ -216,6 +255,11 @@ const handleFileChange = (e) => {
                                    placeholder={'Value'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
+                               {err?.featureThree && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please input key features</p>
+)}
+                          </Box>
+                          <Box>
                             <Input
                                name={'featureFour'}
                                    value={addProduct.featureFour}
@@ -226,6 +270,10 @@ const handleFileChange = (e) => {
                                    placeholder={'Value'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
+                             {err?.featureFour && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please input key features</p>
+)}
+                          </Box>
 
                         </Box>
                       </Box>
@@ -245,7 +293,9 @@ const handleFileChange = (e) => {
                                    placeholder={'Input your text'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
-
+                             {err?.brandName && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please fill in brand name</p>
+)}
                         </Box>
                   </Box>
                   <Box className=' grid grid-cols-2 gap-y-[20px] gap-x-[20px] mt-[20px]'>
@@ -262,7 +312,9 @@ const handleFileChange = (e) => {
                                    placeholder={''}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
-
+                             {err?.Isle && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please fill in isle</p>
+)}
                         </Box>
                   </Box>
                     <Box className=''>
@@ -278,7 +330,9 @@ const handleFileChange = (e) => {
                                    placeholder={''}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
-
+                         {err?.Row && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please include Row</p>
+)}
                         </Box>
                   </Box>
                     <Box className=''>
@@ -294,7 +348,9 @@ const handleFileChange = (e) => {
                                    placeholder={''}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
-
+                               {err?.ItemCode && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please input Item Code</p>
+)}
                         </Box>
                   </Box>
                     <Box className=''>
@@ -310,7 +366,9 @@ const handleFileChange = (e) => {
                                    placeholder={''}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
-
+                           {err?.StockQuantity && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please input Stock Quantity</p>
+)}
                         </Box>
                   </Box>
                   </Box>
@@ -320,10 +378,25 @@ const handleFileChange = (e) => {
                   <Box>
                      <Box className=' mt-[20px]'>   
                         <Box className=' '>
+                          <Box>
                          <PriceInput names={'amount'} changes={addProductChange} values={addProduct.amount} title={'Amount'} />
+                          {err?.amount && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please input Amount</p>
+)}
+                          </Box>
                         <Box className=' grid grid-cols-2 gap-y-[20px] gap-x-[20px] mt-[20px]'>
+                          <Box>
                          <PriceInput names={'min_amount'} changes={addProductChange} values={addProduct.min_amount} title={'Minimum amount'} />
+                          {err?.min_amount && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please include minimum amount</p>
+)}
+                          </Box>
+                          <Box>
                           <PriceInput title={'Suggested amount'} names={'sug_amount'} changes={addProductChange} values={addProduct.sug_amount} />
+                           {err?.sug_amount && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please include suggested amount</p>
+)}
+                          </Box>
                         </Box>
                         </Box>
                       </Box>
@@ -340,6 +413,7 @@ const handleFileChange = (e) => {
 </svg>
 
                         </Box>
+                        <Box>
                         <Box border="1px" borderColor="gray.300" borderRadius="lg" className='w-full h-[40px] grid items-center mt-[10px]'>
                           <Box className=' flex justify-between w-11/12 m-auto'>
                             <Box className=' flex items-center gap-x-[5px] w-full'>
@@ -357,14 +431,21 @@ const handleFileChange = (e) => {
                                 border={'none'} placeholder='Purchase now' className='w-full'>
   <option value='Purchase now'>Purchase now</option>
 </Select>
+ 
                               </Box>
                             </Box>
                            
                           </Box>
                         </Box>
+
+                        </Box>
+                        {err?.bussiness_id && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please select Bussiness name</p>
+)}
                    </Box>
                    <Box>
                      <Box >
+                      <Box>
                                                    <Box className=' flex items-center lg:gap-x-[10px] gap-x-[3px] mt-[20px]'>
                         <Text className=' text-[14px] font-semibold'>Compatibility</Text>
                         <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -374,6 +455,10 @@ const handleFileChange = (e) => {
 </svg>
 
                         </Box>
+                         {err?.bussiness_id && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please select Bussiness name</p>
+)}
+                      </Box>
                         <Box className=' mt-[10px]'>
                           <RadioGroup onChange={setCategoryValue} value={category_value} className=' grid grid-cols-3  gap-y-[10px] gap-x-[10px]'>
                             {
@@ -427,16 +512,34 @@ const handleFileChange = (e) => {
 
                           </Box>
                         </Box>
+                         {err?.tag && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please include tags</p>
+)}
                    </Box>
                    </Box>
                 <Box className=' pb-[30px]'>
                   <Box className=' mt-[20px]'>   
                         <Box className=' '>
                         <Box className=' grid grid-cols-2 gap-y-[20px] gap-x-[20px]  mb-[20px]'>
+                          <Box>
                          <PriceInput names={'stock_quantity'} changes={addProductChange} values={addProduct.stock_quantity} title={'Stock quantity'} />
+                          {err?.stock_quantity && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please include stock quantity</p>
+)}
+                          </Box>
+                          <Box>
                           <PriceInput title={'Sale Price'} names={'sale_price'} changes={addProductChange} values={addProduct.sale_price} />
+                           {err?.sale_price && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please include sales price</p>
+)}
+                          </Box>
                         </Box>
+                        <Box>
                          <PriceInput names={'item_code'} changes={addProductChange} values={addProduct.item_code} title={'Item code'} />
+                          {err?.item_code && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please include item code</p>
+)}
+                        </Box>
                         </Box>
                       </Box>
                 </Box>
