@@ -31,6 +31,10 @@ function Page() {
                    axiosInstance.post('/api/v1/payment/initiate',formData).then((resp)=>{
                        console.log(resp)
                         setPaymentLoader(false)
+                        if (resp?.data?.payment_url) {
+               // Redirect to the authorization URL
+               window.location.href = resp?.data?.payment_url;
+             }
            //   console.log(resp.data.url[0].data)
            //   console.log(resp.data.url[0].message)
            //   setVerifyPayment({'reference':resp.data.url[0].data.reference})
