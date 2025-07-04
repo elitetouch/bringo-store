@@ -148,7 +148,7 @@ const [err, setErr]= useState({})
     }
           )
           // router.push('/');
-        setFormPage(0)  
+     suscribeStatus === "inactive"?router.push('../../main_pages/Dashboard/Subscription'): setFormPage(0)  
         })
         .catch((error) => {
           setPaymentLoader(false);
@@ -396,8 +396,8 @@ values={paymentData.idNumber}
            <SubmitButton
           
            submitFunc={
-              //handlePaymentDetailsSubmit
-               ()=>{suscribeStatus === "inactive"?router.push('../../main_pages/Dashboard/Subscription'):handlePaymentDetailsSubmit()}
+              handlePaymentDetailsSubmit
+             //  ()=>{handlePaymentDetailsSubmit()}
               } loading={paymentLoader} />
           </Box>
           }
