@@ -115,13 +115,13 @@ function LineCharts() {
                     <Text className=' lg:text-[18px] font-semibold text-[12px]'>Sale Graph</Text>
                 </Box>
                 <Box className=' flex items-center gap-x-[10px]'>
-                    <Button  border="1px" borderColor="gray.300" borderRadius="lg" backgroundColor={'white'}>
+                    <Button  position={'unset'} border="1px" borderColor="gray.300" borderRadius="lg" backgroundColor={'white'}>
                         <Text className=' text-[#232321] lg:text-[15px] text-[12px]'>Weekly</Text>
                     </Button>
-                     <Button backgroundColor={'#007460'}>
+                     <Button position={'unset'} backgroundColor={'#007460'}>
                         <Text className=' text-white lg:text-[15px] text-[12px]'>Monthly</Text>
                     </Button>
-                     <Button border="1px" borderColor="gray.300" borderRadius="lg" backgroundColor={'white'}>
+                     <Button position={'unset'} border="1px" borderColor="gray.300" borderRadius="lg" backgroundColor={'white'}>
                         <Text className=' text-[#232321] lg:text-[15px] text-[12px]'>Yearly</Text>
                     </Button>
                 </Box>

@@ -1,9 +1,14 @@
-import React, { useRef, useState } from 'react';
+'use client'
+import React, { useRef, useState, useEffect} from 'react';
 import { Box, Text } from '@chakra-ui/react';
 
-function DashboardFileUpload({ label, attachFile, names }) {
+function DashboardFileUpload({ label, attachFile, names, UploadedFileName}) {
   const [fileName, setFileName] = useState('');
   const inputRef = useRef(null);
+ useEffect(()=>{
+  UploadedFileName != '' && setFileName(UploadedFileName)
+ },[UploadedFileName])
+
 
 const handleFileChange = (e) => {
   const file = e.target.files[0];

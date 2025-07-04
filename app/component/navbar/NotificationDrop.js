@@ -35,6 +35,7 @@ function NotificationDrop() {
         <Box className=' flex items-center justify-between w-11/12 m-auto pt-[15pxpx]'>
             <Text className=' text-[18px] font-semibold'>Notification</Text>
                 <IconButton
+                position={'unset'}
                 backgroundColor={'transparent'}
                 icon={<svg width="18" height="4" viewBox="0 0 18 4" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M4.20156 2.01191C4.20156 3.00603 3.39567 3.81191 2.40156 3.81191C1.40745 3.81191 0.601562 3.00603 0.601562 2.01191C0.601562 1.0178 1.40745 0.211914 2.40156 0.211914C3.39567 0.211914 4.20156 1.0178 4.20156 2.01191Z" fill="#303030"/>

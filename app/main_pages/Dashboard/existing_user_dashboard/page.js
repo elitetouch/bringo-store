@@ -11,15 +11,19 @@ import { SellingProduct } from './components/SellingProductData'
 import Image from 'next/image'
 import MobileTable from '@/app/component/Table/MobileTable'
 import { useRouter } from 'next/navigation'
+import { ProfileInfo } from '@/app/api/reactQuery'
 //import imp from '../../../main_pages/Dashboard/new_user_dashboard'
 function Page() {
   const router = useRouter()
+  const profile= ProfileInfo()
+  const ProfileObject= profile?.data?.data?.user
+  console.log(ProfileObject)
   return (
     <div>
        
        <Box className=' w-11/12 m-auto lg:flex grid gap-y-[20px] justify-between items-center pt-[20px] lg:pt-[30px]'>
             <Box>
-              <Text className=' text-[20px] font-bold'>Welcome, Uzumaki.</Text>
+              <Text className=' text-[20px] font-bold'>Welcome, {ProfileObject?.fullname || ''}.</Text>
               <Text className=' text-[15px] mt-[10px]'>Please, complete your store set up to go live!</Text>
             </Box>
             <Box className=' lg:grid'>

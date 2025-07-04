@@ -16,11 +16,25 @@ export const StoreInfo =()=>{
             axiosInstance.get('/api/v1/store-information')})
         return {isPending, error, data }
 } 
+export const SingletoreInfo =(id)=>{
+    const { isPending, error, data } = useQuery({
+        queryKey: ['StoreInfo'],
+        queryFn: () =>
+         axiosInstance.get(`/api/v1/store-information/${id}`)})
+        return {isPending, error, data }
+} 
 export const ProfileInfo =()=>{
     const { isPending, error, data } = useQuery({
         queryKey: ['ProfileInfo'],
         queryFn: () =>
-            axiosInstance.get('')})
+            axiosInstance.get('/api/v1/profile')})
+        return {isPending, error, data }
+}
+export const SubscriptionPlan =()=>{
+    const { isPending, error, data } = useQuery({
+        queryKey: ['SubscriptionPlan'],
+        queryFn: () =>
+            axiosInstance.get(`/api/v1/supermarket-fee`)})
         return {isPending, error, data }
 }
 export const Products =()=>{

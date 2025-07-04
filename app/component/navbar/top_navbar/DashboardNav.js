@@ -7,6 +7,7 @@ import { Text } from '@chakra-ui/react'
 import user from '../../../../public/user.svg'
 import Image from 'next/image'
 import NotificationDrop from '../NotificationDrop'
+import { ProfileInfo } from '@/app/api/reactQuery'
 import {
   Menu,
   MenuButton,
@@ -20,8 +21,11 @@ import {
 import { useRouter } from 'next/navigation'
 function DashboardNav() {
   const router = useRouter()
+  const profile= ProfileInfo()
+  const ProfileObject= profile?.data?.data?.user
+  console.log(ProfileObject)
   return (
-    <Box  className=' lg:grid hidden bg-white h-[80px] grid items-center bg-white'>
+    <Box position={'unset'}  className=' lg:grid hidden bg-white h-[80px] grid items-center bg-white'>
       <Box className=' flex w-11/12 m-auto items-center justify-between'>
         <Box>
           <SearchInput />
@@ -64,6 +68,7 @@ function DashboardNav() {
           </Box>
            <Box>
             <IconButton
+            position={'unset'}
             className=' w-[49px]'
             icon={<Box className=' flex items-center gap-x-[5px] '>
               <Box>
@@ -89,18 +94,20 @@ function DashboardNav() {
           cursor={'pointer'}
           onClick={()=>router.push(`/../../../main_pages/Dashboard/AccountSettings`)}
           borderLeft="1px" borderColor="gray.300" >
-              <Box className=' flex items-center gap-x-[10px] m-auto w-[200px] pl-[10px] '>
+              <Box className=' flex items-center gap-x-[10px] m-auto w-fit pl-[10px] '>
                       <Box className=' relative'>
                          <Image alt='' src={user} />
                           <Box className=' h-[12px] w-[12px] rounded-full bg-[#23A149] absolute bottom-0 right-0'></Box>
                       </Box>
                       <Box className=' flex justify-between w-full text-[15px]'>
                        <Box>
-                          <Text className='text-[#454545]'>Kate Holland</Text>
+                          <Text className='text-[#454545]'>{ProfileObject?.fullname || ''}</Text>
                           <Text className=' mt-[10px] text-[#B0B0B0]'>Admin</Text>
                         </Box>
                         <Box className=''>
                           <IconButton 
+                          position={'unset'}
+                          zIndex={0}
                            backgroundColor={'transparent'}
                           icon={<Box><svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M1 1L9 9L17 1" stroke="#454545" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

@@ -3,7 +3,8 @@ import React from 'react'
 import { Box, Button, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 //import imp from '../ProService'
-export const SubCard=({plan, price, planFunc})=>{
+import { SubscriptionPlan } from '@/app/api/reactQuery'
+export const SubCard=({plan, price, planFunc, month_price,currency, year_price})=>{
     return(
         <Box
         onClick={planFunc}
@@ -26,7 +27,7 @@ export const SubCard=({plan, price, planFunc})=>{
                 </Box>
             </Box>
             <Box className=' mt-[20px]'>
-                <Text className=' text-black font-semibold text-[20px]'>{price}</Text>
+                <Text className=' text-black font-semibold text-[20px]'>{currency} {month_price || ''}</Text>
             </Box>
             <Box className='  flex items-center justify-between mt-[10px]'>
                 <Box className=' text-[14px]'>
@@ -34,7 +35,7 @@ export const SubCard=({plan, price, planFunc})=>{
                         <Text>per store</Text>
                      </Box>
                       <Box>
-                        <Text>per month</Text>
+                        <Text>{currency} {year_price || ''} per year</Text>
                       </Box>
                 </Box>
                  <Box className=' h-[24px] grid items-center rounded-l-full rounded-r-full bg-[#DEE2E6]'>
@@ -90,7 +91,7 @@ export const SubCard=({plan, price, planFunc})=>{
                     </Box>
                 </Box>
             </Box>}
-            <Box className=' mt-[20px] w-11/12 m-auto'>
+            <Box className={` w-11/12 m-auto ${plan==='Lite'?' lg:mt-[55px] mt-[20px]':'mt-[20px]'}`}>
                 <Button backgroundColor={'#007460'} color={'white'} width={'full'}>
                     <Box className=' flex items-center gap-x-[10px]'>
                         <Text>Subscription</Text>
@@ -110,6 +111,9 @@ function Page() {
     const ProFunc=(plan)=>{
      router.push(`./Service?plan=${plan}`)
     }
+    const subscriptionPlan = SubscriptionPlan()
+    console.log(subscriptionPlan?.data?.data)
+    const planz= subscriptionPlan?.data?.data?.package
     const LiteFunc=()=>{}
   return (
     <div className=' min-h-screen'>
@@ -127,10 +131,17 @@ function Page() {
 At Bringo, we’re committed to helping supermarkets grow with ease and efficiency. To get started and manage your store on our platform, a service fee applies giving you access to powerful tools including inventory management, real-time order tracking, marketing support, and seamless customer engagement.</Text>
 
                 </Box>
-        <Box className=' grid lg:grid-cols-2 mt-[40px] w-11/12 m-auto gap-x-[40px] gap-y-[40px] mb-[40px]'>
-            <SubCard planFunc={()=>{ProFunc('Lite')}} plan={'Lite'} price={'UGX20,000'} />
-             <SubCard planFunc={()=>{ProFunc('Pro')}} plan={'Pro'} price={'UGX50,000'} />
-        </Box>
+       {planz && <Box className=' grid lg:grid-cols-2 mt-[40px] w-11/12 m-auto gap-x-[40px] gap-y-[40px] mb-[40px]'>
+            <SubCard planFunc={()=>{ProFunc('lite')}} plan={'Lite'} price={'UGX20,000'}
+             month_price={planz?.lite_month}
+            year_price={planz?.lite_year}
+              currency={subscriptionPlan?.data?.data?.currency} />
+             <SubCard planFunc={()=>{ProFunc('pro')}} plan={'Pro'} price={'UGX50,000'} 
+                 month_price={planz?.pro_month}
+            year_price={planz?.pro_year}
+              currency={subscriptionPlan?.data?.data?.currency}
+                />
+        </Box>}
         </Box>
             </Box>
         </Box>

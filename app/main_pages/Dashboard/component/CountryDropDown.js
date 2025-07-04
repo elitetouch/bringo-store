@@ -46,7 +46,7 @@ function CountryDropDown({ onChangeFunc, currentValue, dashboard, values,label, 
           >
             {dropDownOpt?.length > 0 && dropDownOpt?.map((item,index)=>{
               return(
-              <option key={index} value={item.value || item.id || ''}>{item.title || item.company_name || item.store_name || ''}</option>
+              <option key={index} value={item.value || item.id || ''}>{item.title || item.companyName || item.storeName || ''}</option>
               )
             })}
           </Select>

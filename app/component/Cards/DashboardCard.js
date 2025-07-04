@@ -31,8 +31,9 @@ function DashboardCard({title, routeFunc,formPage,storeTracker}) {
                 </Box>
             </Box>
             <Box className=' mt-[15px]'>
-             <Progress colorScheme='green' size='sm' value={storeTracker} />
+             <Progress position={'unset'} colorScheme='green' size='sm' value={storeTracker} />
             </Box>
+          
             <Box className=' flex items-center justify-between lg:text-[15px] text-[12px] mt-[15px]'>
                 <Text>
                     {storeTracker}%
@@ -41,6 +42,9 @@ function DashboardCard({title, routeFunc,formPage,storeTracker}) {
                     Completed
                 </Text>
             </Box>
+              {/* <Box className=' text-start mt-[10px]'>
+                {title==='Business Information'&&<Text className=' text-[12px] text-red-700'>Not verified</Text>}
+            </Box> */}
         </Box>
     </Box>
   )

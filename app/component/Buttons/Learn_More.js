@@ -11,7 +11,7 @@ function Learn_More() {
       target="_blank"
       rel="noopener noreferrer"
     >
-     <Button backgroundColor={'transparent'} border={'1px'} borderColor={'white'}>
+     <Button position={'unset'} backgroundColor={'transparent'} border={'1px'} borderColor={'white'}>
         <Box className=' flex items-center gap-x-[10px]'>
            <svg
   width="18"

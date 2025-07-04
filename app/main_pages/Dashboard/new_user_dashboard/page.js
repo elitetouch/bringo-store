@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, Text, Button } from '@chakra-ui/react'
 import DashboardCard from '@/app/component/Cards/DashboardCard'
 import { useState } from 'react'
@@ -9,20 +9,30 @@ import PaymentInformation from '../component/PaymentInformation'
 import SubmitButton from '../component/SubmitButton'
 import { useToast } from '@chakra-ui/react'
 import { BusinessInfo } from '@/app/api/reactQuery'
+import { ProfileInfo } from '@/app/api/reactQuery'
 import { StoreInfo } from '@/app/api/reactQuery'
 import { useSearchParams } from "next/navigation";
 function Page() {
   const searchParams = useSearchParams(); 
   const newSupermarket = searchParams.get('newSupermarket');
+//To get profile information
+const profile= ProfileInfo()
+const ProfileObject= profile?.data?.data?.user
+console.log(ProfileObject)
+
 //Api on Top level to be passed down
 const data= BusinessInfo()
-console.log(data?.data?.data?.data)
+console.log(data)
 const businessData = data?.data?.data?.data
+console.log(businessData)
 const storeInfo = StoreInfo()
-const storeData = storeInfo?.data?.data?.data
-console.log(storeInfo?.data?.data?.data)
+const storeData = storeInfo?.data?.data?.data?.data
+console.log(storeInfo?.data?.data?.data?.data)
   const toast = useToast()
   const [formPage, setFormPage] = useState(1)
+  useEffect(()=>{
+    newSupermarket && setFormPage(0)
+  },[newSupermarket])
   //  const[storeTracker, setStoreTracker]= useState(0)
   //     const[businessTracker, setbusinessTracker]= useState(0)
        const[paymentTracker, setPaymentTracker]= useState(0)
@@ -30,7 +40,7 @@ console.log(storeInfo?.data?.data?.data)
     <div className=' min-h-screen lg:pb-[40px] pb-[20px]'>
       <Box className=' w-11/12 m-auto flex justify-between items-center pt-[20px] lg:pt-[30px]'>
       <Box>
-        <Text className=' text-[20px] font-bold'>Welcome, Uzumaki.</Text>
+        <Text className=' text-[20px] font-bold'>Welcome, {ProfileObject?.fullname || ''}.</Text>
         <Text className=' text-[15px] mt-[10px]'>Please, complete your store set up to go live!</Text>
       </Box>
       {/* <Box className=' lg:grid hidden'>
@@ -51,19 +61,19 @@ console.log(storeInfo?.data?.data?.data)
       </Box>
       <Box>
       <Box className=' lg:mt-[40px] mt-[20px] grid lg:grid-cols-3 justify-center grid-cols-2 gap-y-[15px] gap-x-[10px] lg:gap-x-[20px] w-11/12 m-auto'>
-          <Box className=' grid w-full'>
-            <DashboardCard storeTracker={businessData?.length > 0 && newSupermarket === null?100:0} routeFunc={()=>setFormPage(1)} formPage={formPage} title={'Business Information'} />
-          </Box>
-          <Box className=' grid  w-full'>
-            <DashboardCard storeTracker={storeData?.length > 0&& newSupermarket === null?100:0} routeFunc={()=>{businessData?.length > 0?setFormPage(0):alert('Please Fill in Business Information')}} formPage={formPage} title={'Store Information'} />
-          </Box>
+          {businessData &&<Box className=' grid w-full'>
+            <DashboardCard storeTracker={Object?.keys(businessData).length > 0 && newSupermarket === null?100:0} routeFunc={()=>setFormPage(1)} formPage={formPage} title={'Business Information'} />
+          </Box>}
+          {businessData &&<Box className=' grid  w-full'>
+            <DashboardCard storeTracker={storeData?.length > 0&& newSupermarket === null?100:0} routeFunc={()=>{Object?.keys(businessData).length > 0?setFormPage(0):alert('Please Fill in Business Information and Subscribe')}} formPage={formPage} title={'Store Information'} />
+          </Box>}
           <Box className=' grid w-full'>
             <DashboardCard storeTracker={paymentTracker} routeFunc={()=>{storeData?.length > 0?setFormPage(2):alert('Please Fill in Store information')}} formPage={formPage} title={'Payment Information'} />
           </Box>
       </Box>
       <Box >
         {
-         formPage ===1 && <BusinessInformation setFormPage={setFormPage} 
+         formPage ===1 && <BusinessInformation suscribeStatus={ProfileObject?.subStatus} Data={businessData} setFormPage={setFormPage} 
         // setbusinessTracker={setbusinessTracker}
          />
        }

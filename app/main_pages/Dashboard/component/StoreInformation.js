@@ -14,6 +14,9 @@ import { LoadScript } from '@react-google-maps/api';
 
 const libraries = ['places'];
 function StoreInformation({setPaymentTracker, setFormPage, dropData}) {
+  //const ToArray = Object.entries(dropData).map(([key, value])=>([key, value]))
+  const ToArray= [dropData]
+  console.log([dropData])
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const toast = useToast()
     const [storeInfo, setStoreInfo] = useState({
@@ -200,21 +203,21 @@ const Validation = () => {
          </Box>
                 </Box> */}
                 <Box>
-                {dropData?.length > 0 && <CountryDropDown
+                {Object?.keys(dropData).length>0 && <CountryDropDown
                  values={storeInfo.bussiness_id}
                 onChangeFunc={handleInputChange}
                  names={'bussiness_id'}
                  label={'Bussiness Name'}
-                  dropDownOpt={dropData||[]}
+                  dropDownOpt={ToArray||[]}
                   placing={'Select Bussiness Name'}
                 />}
                    {err?.bussiness_id && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please select Bussiness name</p>
 )}
-<p className="text-gray-600 text-[12px] pt-[5px]">Create a new bussiness information on bussiness information tab </p>
+{/* <p className="text-gray-600 text-[12px] pt-[5px]">Create a new bussiness information on bussiness information tab </p> */}
                 </Box>
                 <Box>
-              <DashBoardInput placing={'Company'}  names={'bussinessType'} values={storeInfo.bussinessType} handleChange={handleInputChange} label={'Business type'} /> 
+              <DashBoardInput placing={'Limited'}  names={'bussinessType'} values={storeInfo.bussinessType} handleChange={handleInputChange} label={'Business type'} /> 
                  {err?.bussinessType && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include Business type</p>
 )}

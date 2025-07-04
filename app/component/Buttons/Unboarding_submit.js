@@ -4,7 +4,7 @@ import { Button, Text, Box } from '@chakra-ui/react'
 function Unboarding_submit({submit_func, submit_loader, button_text}) {
   return (
     <div>
-     <Button isLoading={submit_loader} minWidth={121} className=' w-full lg:w-fit' onClick={submit_func} backgroundColor={'#85CB14'} border={'1px'} borderColor={'white'}>
+     <Button position={'unset'} isLoading={submit_loader} minWidth={121} className=' w-full lg:w-fit' onClick={submit_func} backgroundColor={'#85CB14'} border={'1px'} borderColor={'white'}>
         <Box className=' flex items-center gap-x-[10px]'>
           <svg
   width="10"

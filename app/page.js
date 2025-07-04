@@ -107,9 +107,13 @@ export default function Home() {
          setSignInLoader(false)
   console.log(resp)
    localStorage.setItem('accessToken', resp?.data?.token);
-   if (resp?.data?.user?.email_verified_at != null) {
+   if (resp?.data?.user?.emailVerifiedAt != null && resp?.data?.user?.defaultStoreId === null) {
     router.push('/./main_pages/Dashboard/new_user_dashboard');
-  } else {
+  } 
+    if (resp?.data?.user?.emailVerifiedAt != null && resp?.data?.user?.defaultStoreId != null) {
+    router.push('/./main_pages/Dashboard/existing_user_dashboard');
+  } 
+  if (resp?.data?.user?.emailVerifiedAt === null) {
     router.push(`/./main_pages/sign_up?reroute=${resp?.data?.user?.email}`);
   }
       }).catch((error)=>{

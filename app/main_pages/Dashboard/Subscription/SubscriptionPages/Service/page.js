@@ -1,12 +1,58 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Button, Text } from '@chakra-ui/react'
 import { Radio, RadioGroup, Stack } from '@chakra-ui/react'
 import { useSearchParams } from 'next/navigation'
+import Image from 'next/image'
+import axiosInstance from '@/app/api/Api_Instance'
+import { useToast } from '@chakra-ui/react'
+import { SubscriptionPlan } from '@/app/api/reactQuery'
 function Page() {
+    const toast = useToast()
       const [value, setValue] = React.useState('yearly')
+       const [paymentPlan, setPaymentPlan] = React.useState('')
       const searchParams = useSearchParams(); 
         const plan = searchParams.get('plan');
+
+ const subscriptionPlan = SubscriptionPlan()
+    console.log(subscriptionPlan?.data?.data)
+    const planz= subscriptionPlan?.data?.data?.package
+
+
+        const [paymentLoader, setPaymentLoader] = useState('')
+        const InitiatePayment=()=>{
+            if(paymentPlan != ''){
+                  setPaymentLoader(true)
+               const formData = new FormData()
+               value ==='yearly' && plan==='pro' && formData.append('package', `pro-year`)
+            value ==='monthly' && plan==='pro' && formData.append('package', `pro-month`)
+             value ==='monthly' && plan==='lite' && formData.append('package', `lite-month`)
+                value ==='yearly' && plan==='lite' && formData.append('package', `lite-year`)
+                   axiosInstance.post('/api/v1/payment/initiate',formData).then((resp)=>{
+                       console.log(resp)
+                        setPaymentLoader(false)
+           //   console.log(resp.data.url[0].data)
+           //   console.log(resp.data.url[0].message)
+           //   setVerifyPayment({'reference':resp.data.url[0].data.reference})
+           //   if (resp.data.url) {
+           //     // Redirect to the authorization URL
+           //     window.location.href = resp.data.url[0].data.authorization_url;
+           //   }
+                   }).catch((error)=>{
+                       setPaymentLoader(false)
+                           console.log(error)
+                   })
+            }else{
+                toast({
+        title: "Error",
+        description:"Please choose a Payment Method",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+            } 
+        }
   return (
     <div className=' pb-[40px] lg:pb-[10px]'>
         <Box className=' bg-white rounded-lg pl-[10px] pr-[10px] mt-[20px] m-auto pb-[30px] '>
@@ -25,9 +71,9 @@ function Page() {
                     <Box className=' mt-[15px]'>
                      <Text className=' text-[15px] font-semibold'>Billing Interval </Text> 
                      <Box className=' mt-[15px] pb-[40px]'>
-                         <RadioGroup onChange={setValue} value={value}>
+                         <RadioGroup position={'unset'} onChange={setValue} value={value}>
       <Stack direction='column'>
-        <Radio value='yearly'>
+        <Radio position={'unset'}  value='yearly'>
             <Box className=' flex items-center gap-x-[10px]'>
                 <Box>
                     <Text className=' text-black text-[15px]'>Yearly – Save 10%</Text>
@@ -39,7 +85,7 @@ function Page() {
             </Box>
 
         </Radio>
-        <Radio value='monthly'>
+        <Radio   position={'unset'} value='monthly'>
              <Box className=' flex items-center gap-x-[10px]'>
                 <Box>
                     <Text className=' text-black text-[15px]'>Monthly</Text>
@@ -51,9 +97,52 @@ function Page() {
             </Box>
         </Radio>
       </Stack>
+      
     </RadioGroup>
+                     <RadioGroup position={'unset'} onChange={setPaymentPlan} value={paymentPlan}>
+                        <Box>
+        <Box className=' mt-[20px]'>
+            <Text className=' font-semibold text-[15px]'>Select Payment Method</Text>
+        </Box>
+         <Stack direction='row' marginTop={2}>
+            <Box 
+            border="1px" borderColor="gray.300" borderRadius="lg" shadow={'lg'}
+            className=' flex items-center h-[40px] lg:w-[150px] w-fit grid items-center justify-center'>
+                <Box>
+            <Box className=' flex items-center lg:gap-x-[20px ] gap-x-[10px] pr-[5px] pl-[5px]'>
+
+             <Box paddingRight={10}> <Text className=' text-[12px]'>Paystack</Text></Box>  
+        <Radio position={'unset'} value='Paystack' />
+        
+            </Box>
+
+                </Box>
+
+            </Box>
+              <Box 
+              marginLeft={5}
+            border="1px" borderColor="gray.300" borderRadius="lg" shadow={'lg'}
+            className=' flex items-center h-[40px] lg:w-[150px] w-fit grid items-center justify-center'>
+                <Box>
+            <Box className=' flex items-center lg:gap-x-[20px ] gap-x-[10px] pr-[5px] pl-[5px]'>
+
+             <Box paddingRight={10}> <Text className=' text-[12px]'>Pesapal</Text></Box>  
+        <Radio position={'unset'} value='Pesapal'/>
+       
+            </Box>
+
+                </Box>
+
+            </Box>
+        {/* <Radio value='Pesapal'>
+             <Box></Box>
+        </Radio> */}
+      </Stack>
+      </Box>
+                     </RadioGroup>
                      </Box>
                     </Box>
+
                 </Box>
                 <Box className=' lg:col-span-2'>
                     <Box>
@@ -63,20 +152,23 @@ function Page() {
                             <Box
                             className=' flex items-center justify-between text-[14px] font-semibold mt-[10px]'>
                                 <Text>{plan} service fee</Text>
-                                <Text className=''>{plan ==='Lite'&&'UGX 20,000'||plan ==='Pro'&&'UGX 50,000'}</Text>
+                                <Text className=''>{plan ==='lite'&& value==='monthly'&&(`${subscriptionPlan?.data?.data?.currency} ${planz?.lite_month}`)||plan ==='lite'&& value==='yearly'&&(`${subscriptionPlan?.data?.data?.currency} ${planz?.lite_year}`) ||plan ==='pro'&& value==='monthly'&&(`${subscriptionPlan?.data?.data?.currency} ${planz?.pro_month}`)|| plan ==='pro'&& value==='yearly'&&(`${subscriptionPlan?.data?.data?.currency} ${planz?.pro_year}`) }</Text>
                             </Box>
                             <Box
                              borderBottom={'1px'}
                              borderBottomColor={'#DEE2E6'}
                             className=' mt-[5px] pb-[10px]'>
-                                <Text className=' lg:text-[15px] text-[14px] text-[#2C2E33]'>{plan ==='Lite'&&'UGX 18,000'||plan ==='Pro'&&'UGX 45000'} / store / month – billed yearly</Text>
+                                <Text className=' lg:text-[15px] text-[14px] text-[#2C2E33]'>{plan ==='lite'&& value==='monthly'&&(`${subscriptionPlan?.data?.data?.currency} ${planz?.lite_month}`)||plan ==='lite'&& value==='yearly'&&(`${subscriptionPlan?.data?.data?.currency} ${planz?.lite_year}`) ||plan ==='pro'&& value==='monthly'&&(`${subscriptionPlan?.data?.data?.currency} ${planz?.pro_month}`)|| plan ==='pro'&& value==='yearly'&&(`${subscriptionPlan?.data?.data?.currency} ${planz?.pro_year}`) } / store / month – billed yearly</Text>
                             </Box>
                             <Box className=' flex mt-[20px] text-[15px] justify-between'>
                                 <Text>Total</Text>
-                                <Text className=' font-semibold'>{plan ==='Lite'&&'UGX 18,000'||plan ==='Pro'&&'UGX 45000'}</Text>
+                                <Text className=' font-semibold'>{plan ==='lite'&& value==='monthly'&&(`${subscriptionPlan?.data?.data?.currency} ${planz?.lite_month}`)||plan ==='lite'&& value==='yearly'&&(`${subscriptionPlan?.data?.data?.currency} ${planz?.lite_year}`) ||plan ==='pro'&& value==='monthly'&&(`${subscriptionPlan?.data?.data?.currency} ${planz?.pro_month}`)|| plan ==='pro'&& value==='yearly'&&(`${subscriptionPlan?.data?.data?.currency} ${planz?.pro_year}`) }</Text>
                             </Box>
                             <Box className=' mt-[20px] w-10/12 m-auto'>
-                             <Button backgroundColor={'#007460'} color={'white'} width={'full'}>
+                             <Button
+                              isLoading={paymentLoader}
+                             onClick={()=>InitiatePayment()}
+                             backgroundColor={'#007460'} color={'white'} width={'full'}>
                                                 <Box className=' flex items-center'>
                                                     <Text>Subscription</Text>
                                                 </Box>

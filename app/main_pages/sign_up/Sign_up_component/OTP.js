@@ -42,8 +42,9 @@ function OTP({ setSignUpPage, profile }) {
       .post('/api/v1/verify-code', formData)
       .then((resp) => {
         setSignUpLoader(false);
-        localStorage.setItem('accessToken', resp?.data?.token);
-        router.push('/../../main_pages/Dashboard/new_user_dashboard');
+        console.log(resp)
+      // resp?.data?.token && localStorage.setItem('accessToken', resp?.data?.token);
+         router.push('/../../main_pages/Dashboard/new_user_dashboard');
       })
       .catch((error) => {
         setSignUpLoader(false);

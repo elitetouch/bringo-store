@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, Button, Text } from '@chakra-ui/react'
 import { useState } from 'react'
 import Image from 'next/image'
@@ -12,9 +12,75 @@ import user from '../../../../public/user.svg'
 import bringo from '../../../../public/bringologo.svg'
 import { useRouter } from 'next/navigation'
 import { useColorMode } from '@chakra-ui/react'
+import {
+  Menu,
+  MenuButton,
+  MenuList
+} from '@chakra-ui/react'
+import { SwitchStoreDropDown } from '@/app/main_pages/Dashboard/Market/page'
+import { StoreInfo } from '@/app/api/reactQuery'
+import { useToast } from '@chakra-ui/react'
 // import imp from '../../../main_pages/Dashboard/Market'
+import MarketListPopUp from '../../PopUp/MarketList'
+import { SingletoreInfo } from '@/app/api/reactQuery'
+import { ProfileInfo } from '@/app/api/reactQuery'
+import axiosInstance from '@/app/api/Api_Instance'
+import { QueryClient } from '@tanstack/react-query'
+export const ProfileComponent =({toogleSideMenu, profileData})=>{
+  const router = useRouter()
+  
+  return (
+     <Box border="1px" borderColor="gray.300" borderRadius="lg" className=' border border-red-900 rounded-lg mt-[20px] mb-[20px] h-[50px] grid items-center'>
+         <Box className=' flex items-center gap-x-[10px] w-11/12 m-auto  '>
+          <Box >
+             <Image alt='' src={user} />
+          </Box>
+          <Box
+          cursor={'pointer'}
+          onClick={()=>router.push(`/../../../main_pages/Dashboard/AccountSettings`)}
+          className=' flex justify-between w-full text-[15px]'>
+            {(!toogleSideMenu) && <Box>
+              <Text className='text-[#454545]'>{profileData?.fullname}</Text>
+              <Text className=' mt-[10px] text-[#B0B0B0]'>Admin</Text>
+            </Box>}
+            <Box>
+              <IconButton 
+              position={'unset'}
+               backgroundColor={'transparent'}
+              icon={<svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 1L9 9L17 1" stroke="#454545" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+</svg>
+}
+              />
+            </Box>
+          </Box>
+         </Box>
+      </Box>
+  )
+}
+
+
+
 function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
- const router = useRouter()
+  
+ const profile= ProfileInfo()
+   const ProfileObject= profile?.data?.data?.user || ''
+   console.log(ProfileObject)
+  //  const singleStore =  SingletoreInfo(ProfileObject?.defaultStoreId)
+  //  const SingleStoreDetails= singleStore?.data?.data?.data?.data
+  //  console.log(SingleStoreDetails)
+  const[SingleStoreDetails, setSingleStoreDetails]= useState('')
+   useEffect(()=>{
+ProfileObject?.defaultStoreId && axiosInstance.get(`/api/v1/store-information/${ProfileObject?.defaultStoreId}`).then((resp)=>{
+  console.log(resp?.data?.data)
+  setSingleStoreDetails(resp?.data?.data)
+}).catch((error)=>{
+console.log(error)
+})
+
+ },[ProfileObject?.defaultStoreId])
+  const router = useRouter()
+ const toast = useToast()
 //const { colorMode, toggleColorMode } = useColorMode();
 //console.log(colorMode)
   const [dropdown, setDropDown] = useState(false)
@@ -25,17 +91,27 @@ function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
   // const message = encodeURIComponent('Hello! I’d like to chat with you via WhatsApp.');
 
   // const url = `https://wa.me/${phoneNumber}?text=${message}`;
+  const storeInfo = StoreInfo()
+  const storeData = storeInfo?.data?.data?.data
+  console.log(storeData)
+  const ErrorPops =()=>{
+     alert('"Please Complete your Profile and Subscribe"')
+  }
+  const [showModal, setShowModal]= useState(false)
   return (
     <div className={`  ${(!toogleSideMenu)?'lg:w-[280px] w-full':'w-[110px]'} custom-scrollbar lg:overflow-y-auto h-screen`}>
       <Box className=' w-11/12 lg:flex flex-col  justify-between m-auto lg:pt-[20px] pt-[15px] pb-[32px] '>
       <Box>
       <Box  className=' w-11/12 m-auto'>
       <Box className=' flex items-center justify-between'>
-        <Box> 
+        <Box
+        //onClick={()=>setShowModal(true)}
+        > 
           <Image alt='' src={bringo} />
         </Box>
          <Box>
             <IconButton
+            position={'unset'}
             backgroundColor={'transparent'}
             onClick={mobileTog?toogleMobile:toogleFunc}
             icon={<svg
@@ -72,22 +148,28 @@ function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
          </Box>
       </Box>
       </Box>
-            <Box cursor={'pointer'} onClick={()=>{router.push('/../../../main_pages/Dashboard/Market')}} border="1px" borderColor="gray.300" borderRadius="lg"  className=' rounded-lg grid items-center w-full border border-gray-700 h-[70px] mt-[20px] lg:mt-[30px]'>
+           { ProfileObject?.defaultStoreId !=null?<Box  cursor={'pointer'} 
+            //onClick={()=>{router.push('/../../../main_pages/Dashboard/Market')}} 
+            border="1px" borderColor="gray.300" borderRadius="lg"  className=' rounded-lg grid items-center w-full border border-gray-700 h-[70px] mt-[20px] lg:mt-[30px] lg:mb-[20px] mb-[10px]'>
               <Box className='  flex items-center justify-between w-11/12 m-auto '>
-                <Box className='  flex items-center gap-x-[10px]'>
+                <Box 
+                cursor={'pointer'}
+                onClick={()=>{router.push(`/../../../main_pages/Dashboard/Market?marketId=${ProfileObject?.defaultStoreId}`)}} 
+                className='  flex items-center gap-x-[10px]'>
                   <Box>
                     <Image alt='' src={supermarket} />
                   </Box>
                   {(!toogleSideMenu) && <Box className=' text-[14px]'>
                     <Text className=' text-[#B0B0B0]'>Company</Text>
-                    <Text className=' font-bold mt-[10px] text-[#535961]'>Nakasero market</Text>
+                    <Text className=' font-bold mt-[10px] text-[#535961]'>
+                      {SingleStoreDetails?.storeName} market</Text>
                   </Box>}
                 </Box>
-               {!toogleSideMenu && <Box>
-                  <IconButton
-                  onClick={()=>{router.push('/../../../main_pages/Dashboard/Market')}}
-                   backgroundColor={'transparent'}
-                  icon={<svg
+               {!toogleSideMenu && <Box zIndex={0}  className=' z-90 bg-white'>
+                <Menu >
+                  <MenuButton  as={'button'}>
+                    {/* <Button backgroundColor={'#007460'} color={'white'}> */}
+                   <svg
   width="20"
   height="10"
   viewBox="0 0 20 10"
@@ -102,18 +184,38 @@ function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
     fill="#535961"
   />
 </svg>
-} />
+                                        {/* </Button> */}
+                  </MenuButton>
+                  {storeData?.length > 0 && <MenuList zIndex={90}  >
+                   {/* <SwitchStoreDropDown
+                   stores={storeData}
+                   /> */}
+                  </MenuList>}
+                </Menu>
                 </Box>}
               </Box>
-            </Box>
+            </Box>:<ProfileComponent
+            profileData={ProfileObject}
+            toogleSideMenu={toogleSideMenu}/>}
+            {/* <Box className=' lg:mb-[20px] mb-[10px]' >
+              <ProfileComponent
+              toogleSideMenu={toogleSideMenu}
+              />
+            </Box> */}
                   <Box className=' pt-[10px]'>
-                    <Box className='  w-11/12 m-auto lg:mt-[20px] mt-[10px]'>
+                    <Box className='  w-11/12 m-auto '>
                     <Text className='  text-[#535961]'>GENERAL</Text>
                     <Box className=' mt-[10px] grid gap-y-[10px]'>
                       {
                         SideNavData.map((item)=>{
                           return(
-                            <Box cursor={'pointer'} onClick={()=>{mobileTog?(toogleMobile(),router.push(item.destination)):(router.push(item.destination))}} key={item.id}>
+                            <Box 
+                           // onClick={()=>ProfileObject?.defaultStoreId===null && ErrorPops()}
+                            key={item.id} >
+                            <Box cursor={'pointer'} onClick={()=>{
+                            ProfileObject?.defaultStoreId===null? ErrorPops():( mobileTog?(toogleMobile(),router.push(item.destination)):(router.push(item.destination)))
+                            }} 
+                            key={item.id}>
                             <Box  cursor={'pointer'}   className=' text-[15px] hover:bg-[#E6F1EF] hover:font-semibold duration-500 h-[50px] grid items-center rounded-lg'>
                               <Box className=' flex items-center justify-between w-11/12 m-auto '>
                                  <Box className=' flex items-center gap-x-[10px] '>
@@ -157,6 +259,7 @@ function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
 )}
 
                             </Box>
+                            </Box>
                           )
                         })
                       }
@@ -170,8 +273,13 @@ function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
                       {
                         sideNavTools.map((item)=>{
                           return(
+                            <Box 
+                             // onClick={()=>ProfileObject?.defaultStoreId === null && ErrorPops()}
+                            key={item.id}>
                            <Box  cursor={'pointer'}
-                          onClick={()=>{mobileTog && !item.darkmode?(toogleMobile(),router.push(item.destination)):(router.push(item.destination))}}
+                          onClick={()=>{
+                          ProfileObject?.defaultStoreId === null?ErrorPops(): ( mobileTog && !item.darkmode?(toogleMobile(),router.push(item.destination)):(router.push(item.destination)))
+                          }}
                             key={item.id} className=' text-[15px] hover:bg-[#E6F1EF] hover:font-semibold duration-500 h-[50px] grid items-center rounded-lg'>
                               <Box className=' flex items-center justify-between w-11/12 m-auto'>
                                   <Box className=' flex items-center gap-x-[10px] '>
@@ -185,6 +293,7 @@ function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
                                 </Box>}
                               </Box>
                             </Box>
+                            </Box>
                           )
                         })
                       }
@@ -192,31 +301,17 @@ function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
                     </Box>
                   </Box>
       </Box>
-      <Box border="1px" borderColor="gray.300" borderRadius="lg" className=' border border-red-900 rounded-lg mt-[50px] mb-[20px] h-[50px] grid items-center'>
-         <Box className=' flex items-center gap-x-[10px] w-11/12 m-auto  '>
-          <Box>
-             <Image alt='' src={user} />
-          </Box>
-          <Box
-          cursor={'pointer'}
-          onClick={()=>router.push(`/../../../main_pages/Dashboard/AccountSettings`)}
-          className=' flex justify-between w-full text-[15px]'>
-            {(!toogleSideMenu) && <Box>
-              <Text className='text-[#454545]'>Kate Holland</Text>
-              <Text className=' mt-[10px] text-[#B0B0B0]'>Admin</Text>
-            </Box>}
-            <Box>
-              <IconButton 
-               backgroundColor={'transparent'}
-              icon={<svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1 1L9 9L17 1" stroke="#454545" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-</svg>
-}
-              />
-            </Box>
-          </Box>
-         </Box>
-      </Box>
+     { ProfileObject?.defaultStoreId != null && <Box className=' pt-[30px]'>
+      <ProfileComponent
+      profileData={ProfileObject}
+      toogleSideMenu={toogleSideMenu}
+      />
+     </Box>}
+     <Box zIndex={1} className=''>
+      {
+        showModal && <MarketListPopUp openSuccessfull={showModal} setOpenSuccessfull={()=>setShowModal(!showModal)} />
+      }
+     </Box>
       </Box>
     </div>
   )

@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import Subscrption from '../component/Subscrption'
+import { ProfileInfo } from '@/app/api/reactQuery'
 //import imp from '../../../main_pages/Dashboard/new_user_dashboard'
 export const SocialMedia =()=>{
   return(
@@ -189,6 +190,9 @@ export const CreditCardInfo=({value,changes})=>{
 }
 
 function Page() {
+   const profile= ProfileInfo()
+     const ProfileObject= profile?.data?.data?.user || ''
+     console.log(ProfileObject)
   const router = useRouter()
   const [subscription, setSuscription]= useState(false)
     const [pages, setPages] = useState(0)
@@ -334,9 +338,9 @@ console.log(billingInfo)
                 <Box className=' mt-[10px] grid w-full justify-center'>
                     <Image alt='' src={ProfilePicture} height={96} width={96} />
                   </Box>
-                  <Text className=' mt-[10px] font-semibold text-center'>Katie Holland</Text>
+                  <Text className=' mt-[10px] font-semibold text-center'>{ProfileObject?.fullname || ''}</Text>
                   <Box className=' flex items-center gap-x-[5px] justify-center '>
-                    <Text className=' text-[14px]'>wade.warren@example.com</Text>
+                    <Text className=' text-[14px]'>{ProfileObject?.email || ''}</Text>
                     <IconButton 
                     icon={<svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M3.32812 10.5641H2.66146C2.30784 10.5641 1.9687 10.4237 1.71865 10.1736C1.4686 9.92355 1.32813 9.58442 1.32812 9.23079V3.23079C1.32812 2.87717 1.4686 2.53803 1.71865 2.28799C1.9687 2.03794 2.30784 1.89746 2.66146 1.89746H8.66146C9.01508 1.89746 9.35422 2.03794 9.60427 2.28799C9.85432 2.53803 9.99479 2.87717 9.99479 3.23079V3.89746M7.32812 6.56413H13.3281C14.0645 6.56413 14.6615 7.16108 14.6615 7.89746V13.8975C14.6615 14.6338 14.0645 15.2308 13.3281 15.2308H7.32812C6.59174 15.2308 5.99479 14.6338 5.99479 13.8975V7.89746C5.99479 7.16108 6.59174 6.56413 7.32812 6.56413Z" stroke="#007AFF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -536,9 +540,9 @@ values={editProfile.location}
                   </Button>
     </Box>
                 </Box>
-                <Box className=' mt-[30px]'>
+                {/* <Box className=' mt-[30px]'>
                  <CreditCardInfo value={editProfile}  changes={editFuncChange} />
-                </Box>
+                </Box> */}
               </Box>
               <Box></Box>
               <Box></Box>

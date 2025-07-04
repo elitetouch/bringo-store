@@ -6,8 +6,12 @@ import user from '../../../../public/user.svg'
 import { Text } from '@chakra-ui/react'
 import { IconButton } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
+import { ProfileInfo } from '@/app/api/reactQuery'
 function DashboardMobileNav({toogleSideNav}) {
   const router = useRouter()
+  const profile= ProfileInfo()
+  const ProfileObject= profile?.data?.data?.user
+  console.log(ProfileObject)
   return (
     <div className='lg:hidden h-[68px] grid items-center'>
       <Box className=' flex justify-between w-11/12 m-auto items-center'>
@@ -21,7 +25,7 @@ function DashboardMobileNav({toogleSideNav}) {
                               </Box>
                               <Box className=' flex justify-between w-full text-[15px]'>
                                <Box>
-                                  <Text className='text-[#454545]'>Kate Holland</Text>
+                                  <Text className='text-[#454545]'>{ProfileObject?.fullname ||  ''}</Text>
                                   <Text className=' mt-[10px] text-[#B0B0B0]'>Admin</Text>
                                 </Box>
                               </Box>
