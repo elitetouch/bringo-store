@@ -24,10 +24,10 @@ function Page() {
             if(paymentPlan != ''){
                   setPaymentLoader(true)
                const formData = new FormData()
-               value ==='yearly' && plan==='pro' && formData.append('package', `pro-year`)
-            value ==='monthly' && plan==='pro' && formData.append('package', `pro-month`)
-             value ==='monthly' && plan==='lite' && formData.append('package', `lite-month`)
-                value ==='yearly' && plan==='lite' && formData.append('package', `lite-year`)
+               value ==='yearly' && plan==='pro' && formData.append('package', `pro_year`)
+            value ==='monthly' && plan==='pro' && formData.append('package', `pro_month`)
+             value ==='monthly' && plan==='lite' && formData.append('package', `lite_month`)
+                value ==='yearly' && plan==='lite' && formData.append('package', `lite_year`)
                    axiosInstance.post('/api/v1/payment/initiate',formData).then((resp)=>{
                        console.log(resp)
                         setPaymentLoader(false)
