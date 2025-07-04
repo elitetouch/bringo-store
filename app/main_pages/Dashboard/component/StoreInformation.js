@@ -294,6 +294,12 @@ const Validation = () => {
                             </Box>
                         </Box>
                     </Button>
+                    <a
+     href="/Sellercontract.docx" // path to your document
+      download // triggers download instead of navigation
+      target="_blank"
+      rel="noopener noreferrer"
+    >
                      <Button border="1px" borderColor="gray.400" borderRadius="lg">
                         <Box className=' flex items-center p-[2px] gap-x-[20px]'>
                             <Box>
@@ -307,6 +313,7 @@ const Validation = () => {
                             </Box>
                         </Box>
                     </Button>
+    </a>
                 </Box>
                 <Box className=' mt-[30px] pb-[20px]'>
                     <Text className=' text-[#007AFF] text-[12px]'>Bringo policies and guidelines | Privacy policy | Cookie</Text>
