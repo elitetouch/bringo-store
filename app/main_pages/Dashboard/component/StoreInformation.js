@@ -11,10 +11,11 @@ import SubmitButton from './SubmitButton'
 import { LoadScript } from '@react-google-maps/api';
 // import LocationInput from './LocationInput';
  import LocationInput  from './GoogleApiInput'
-
+import { useQueryClient } from '@tanstack/react-query'
 const libraries = ['places'];
 function StoreInformation({setPaymentTracker, setFormPage, dropData}) {
   //const ToArray = Object.entries(dropData).map(([key, value])=>([key, value]))
+   const queryClient = useQueryClient();
   const ToArray= [dropData]
   console.log([dropData])
   const [scriptLoaded, setScriptLoaded] = useState(false);
@@ -70,6 +71,7 @@ const Validation = () => {
 
     const submitStore =()=>{
       if(Validation()){
+        queryClient.invalidateQueries()
         console.log(storeInfo)
         setStoreLoader(true)
         const formData= new FormData()
@@ -117,6 +119,7 @@ const Validation = () => {
           console.log(resp)
         })
         .catch((error) => {
+          queryClient.invalidateQueries()
           console.log(error)
           setStoreLoader(false);
           toast({
