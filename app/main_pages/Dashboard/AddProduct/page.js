@@ -146,12 +146,12 @@ formData.append("category_name", addProduct.category_name);//
 formData.append("product_title", addProduct.productTitle);
 formData.append("brand_name", addProduct.brandName);
 formData.append("description", addProduct.description);
-formData.append("compatibility", addProduct.compatibility);//
+formData.append("compatibility", addProduct.tag);
 formData.append("quantity", addProduct.stock_quantity);
 formData.append("sales_price", addProduct.amount);
-formData.append("stock_status", addProduct.stock_status);//
-formData.append("featured", addProduct.featured);//
-formData.append("save_status", addProduct.save_status);//
+formData.append("stock_status", 'instock');
+formData.append("featured", true);
+formData.append("save_status", 'draft');
 // productData.key_feature.forEach((feature, index) => {
 //   formData.append(`key_feature[${index}]`, feature);
 // });
