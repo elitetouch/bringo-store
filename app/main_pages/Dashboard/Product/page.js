@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import ExportButton from '../component/ExportButton'
 import Filter from '../component/Filter'
@@ -7,7 +8,11 @@ import { Box , Text, Button, IconButton} from '@chakra-ui/react'
 import ProductTable from '@/app/component/Table/ProductTable'
 import { Select } from '@chakra-ui/react'
 import MobileProductTable from '@/app/component/Table/MobileProductTable'
+import { Products } from '@/app/api/reactQuery'
 function page() {
+  const product = Products()
+  console.log(product?.data?.data?.products)
+  const ProductArray= product?.data?.data?.products
   return (
     <div className='lg:pt-[78px] pt-[30px] min-h-screen'>
             <Box className=' bg-white rounded-lg w-11/12 m-auto '>
@@ -37,10 +42,10 @@ function page() {
                       </Box>
                     </Box>
                     <Box></Box>
-                    <Box className=' mt-[20px] w-11/12 m-auto'>
-                      <ProductTable />
+                    {ProductArray && <Box className=' mt-[20px] w-11/12 m-auto'>
+                      <ProductTable data= {ProductArray} />
                       <MobileProductTable />
-                    </Box>
+                    </Box>}
                 </Box>
             </Box>
             <Box className=' flex items-center justify-between mt-[30px] lg:w-10/12 w-11/12  m-auto pb-[30px]'>

@@ -11,6 +11,8 @@ import { Select } from '@chakra-ui/react'
 import { Radio, RadioGroup } from '@chakra-ui/react'
 import { useSearchParams } from "next/navigation";
 import { useEffect } from 'react'
+import axiosInstance from '@/app/api/Api_Instance'
+import { useQueryClient } from '@tanstack/react-query'
 // import imp from '../../../../public/grape.svg'
 export const CompatibilityData=['Fruit','Produce','Bakery','Vegetables','sea food','Meat',
   'laundry','Foods','Dairy','Beverages','Snacks',
@@ -48,10 +50,20 @@ export const PriceInput=({names, values, changes, title})=>{
 }
 
 function Page() {
+   const queryClient = useQueryClient();
    const searchParams = useSearchParams(); 
    const ProductId = searchParams.get('ProductId');
+   const [singleProduct, setSingleProductData] = useState({})
+   const [singleProductLoader, setSingleProductLoader] = useState(false)
    useEffect(()=>{
+    setSingleProductLoader(true)
     console.log(ProductId)
+    ProductId && axiosInstance.get(`/api/v1/products/${ProductId}`).then((resp)=>{
+      console.log(resp?.data)
+      setSingleProductData(resp?.data)
+    }).catch((err)=>{
+      console.log(err)
+    })
    },[])
 //code to add and display added iamges //
 const [images, setImages] = useState([null, null, null]);
@@ -78,7 +90,7 @@ const handleFileChange = (e) => {
   updatedPreviews[activeIndex] = newPreviewUrl;     // Replace preview
   setPreviewUrls(updatedPreviews);
 };
-    const [addProduct, setAddProduct] = useState({
+const initialPaymentData = {
         productTitle:'',
         featureOne:'',
         featureTwo:'',
@@ -97,7 +109,8 @@ const handleFileChange = (e) => {
         stock_quantity:'',
         sale_price:'',
         item_code:''
-    })
+    }
+    const [addProduct, setAddProduct] = useState(initialPaymentData)
     const addProductChange=(e)=>{
         setAddProduct({...addProduct,[e.target.name]: e.target.value})
         console.log(images)
@@ -127,11 +140,74 @@ const handleFileChange = (e) => {
         console.log(images)
         if(Validation()){
  setAddProductLoader(true)
-        // const formData= new FormData()
-        // formData.append('')
+        const formData= new FormData()     
+formData.append("category_id", category_value);
+formData.append("category_name", addProduct.category_name);//
+formData.append("product_title", addProduct.productTitle);
+formData.append("brand_name", addProduct.brandName);
+formData.append("description", addProduct.description);
+formData.append("compatibility", addProduct.compatibility);//
+formData.append("quantity", addProduct.stock_quantity);
+formData.append("sales_price", addProduct.amount);
+formData.append("stock_status", addProduct.stock_status);//
+formData.append("featured", addProduct.featured);//
+formData.append("save_status", addProduct.save_status);//
+// productData.key_feature.forEach((feature, index) => {
+//   formData.append(`key_feature[${index}]`, feature);
+// });
+formData.append('key_feature[]', addProduct.featureOne);
+formData.append('key_feature[]', addProduct.featureTwo);
+formData.append('key_feature[]', addProduct.featureThree);
+formData.append('key_feature[]', addProduct.featureFour);
+// Append nested object (location)
+formData.append("location[row]", addProduct.Row);
+formData.append("location[isle]", addProduct.Isle);
+
+// Append nested object (price)
+formData.append("price[usd]", addProduct.price.usd);//
+formData.append("price[ngn]", addProduct.price.ngn);//
+
+// Append images (File objects)
+images.forEach((file, index) => {
+  formData.append(`images[${index}]`, file);
+});
+axiosInstance.post(`/api/v1/products`, formData).then((resp)=>{
+   queryClient.invalidateQueries()
+  console.log(resp)
+}).catch((err)=>{
+  console.log(err)
+})
         console.log(addProduct)
         }
     }
+// For product updates or Edits
+ const getChangedFields = () => {
+  const changed = {};
+
+  for (const key in addProduct) {
+    if (addProduct[key] !== initialPaymentData[key]) {
+      changed[key] = addProduct[key];
+    }
+  }
+
+  return changed;
+};
+const [editLoader, setEditLoader]= useState(false)
+ const EditFunc=(id)=>{
+      setEditLoader(true)
+         const changedFields = getChangedFields();
+ console.log(changedFields)
+ const formData = new FormData()
+      axiosInstance.post(`/api/v1/edit-store-product/${id}`, formData).then((resp)=>{
+  console.log(resp)
+   queryClient.invalidateQueries()
+setEditLoader(false)
+}).catch((err)=>{
+  console.log(err)
+  setEditLoader(false)
+})
+ }
+
   return (
     <div className=' min-h-screen   pb-[50px]'>
         <Box className=' w-11/12 m-auto pt-[20px]'>
@@ -604,11 +680,15 @@ const handleFileChange = (e) => {
              <Button border="1px" borderColor="gray.300" borderRadius="lg"  backgroundColor={'transparent'}>
               <Text className=' text-[14px]'>Save Draft</Text>
             </Button>
-            <Button onClick={addProductFunction}
+            {ProductId?<Button onClick={addProductFunction}
             isLoading={addProductLoader}
             backgroundColor={'#007460'} color={'#FFFF'}>
               <Text className=' text-[14px]'>Save Product</Text>
-            </Button>
+            </Button>:<Button onClick={()=>{EditFunc(ProductId)}}
+            isLoading={addProductLoader}
+            backgroundColor={'#007460'} color={'#FFFF'}>
+              <Text className=' text-[14px]'>Edit Product</Text>
+            </Button>}
             <IconButton
             
             icon={<svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">

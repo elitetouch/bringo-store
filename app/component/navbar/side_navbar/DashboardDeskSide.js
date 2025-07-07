@@ -213,7 +213,7 @@ console.log(error)
                            // onClick={()=>ProfileObject?.defaultStoreId===null && ErrorPops()}
                             key={item.id} >
                             <Box cursor={'pointer'} onClick={()=>{
-                            ProfileObject?.defaultStoreId===null? ErrorPops():( mobileTog?(toogleMobile(),router.push(item.destination)):(router.push(item.destination)))
+                            ProfileObject?.defaultStoreId === null? ErrorPops():( mobileTog?(toogleMobile(),router.push(item.destination)):(router.push(item.destination)))
                             }} 
                             key={item.id}>
                             <Box  cursor={'pointer'}   className=' text-[15px] hover:bg-[#E6F1EF] hover:font-semibold duration-500 h-[50px] grid items-center rounded-lg'>

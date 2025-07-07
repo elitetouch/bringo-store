@@ -41,7 +41,7 @@ export const Products =()=>{
     const { isPending, error, data } = useQuery({
         queryKey: ['Products'],
         queryFn: () =>
-            axiosInstance.get('')})
+            axiosInstance.get('/api/v1/products')})
         return {isPending, error, data }
 }
 export const Orders =()=>{

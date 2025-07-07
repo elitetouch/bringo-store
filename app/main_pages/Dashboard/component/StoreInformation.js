@@ -1,6 +1,7 @@
 import React, { useState} from 'react'
 import { Box, Text } from '@chakra-ui/react'
 import DashBoardInput from './DashboardInput'
+import DashboardFileUpload from './DashboardFileUpload'
 import Number_country from '@/app/component/DropDown/Number_country'
 import Unboarding_input from '@/app/component/Inputs/Unboarding_input'
 import CountryDropDown from './CountryDropDown'
@@ -9,6 +10,7 @@ import axiosInstance from '@/app/api/Api_Instance'
 import { useToast } from '@chakra-ui/react'
 import SubmitButton from './SubmitButton'
 import { LoadScript } from '@react-google-maps/api';
+import { useRef } from 'react'
 // import LocationInput from './LocationInput';
  import LocationInput  from './GoogleApiInput'
 import { useQueryClient } from '@tanstack/react-query'
@@ -16,7 +18,7 @@ const libraries = ['places'];
 function StoreInformation({setPaymentTracker, setFormPage, dropData}) {
   //const ToArray = Object.entries(dropData).map(([key, value])=>([key, value]))
    const queryClient = useQueryClient();
-  const ToArray= [dropData]
+  const ToArray= [dropData] || []
   console.log([dropData])
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const toast = useToast()
@@ -33,7 +35,8 @@ function StoreInformation({setPaymentTracker, setFormPage, dropData}) {
     country:'',
     postalCode:'',
     bussinessType:'',
-    bussiness_id:''
+    bussiness_id:'',
+    signed_document:""
     })
   const handleInputChange = (e) => {
   const updatedStoreInfo = {
@@ -48,6 +51,26 @@ function StoreInformation({setPaymentTracker, setFormPage, dropData}) {
   // console.log(`Filled fields: ${filledCount}`);
 };
 
+//for File change //
+  const [fileName, setFileName] = useState('');
+const inputRef = useRef(null);
+const handleFileChange = (e) => {
+  const file = e.target.files[0];
+  const name = e.target.name;
+  if (file) {
+    setFileName(file.name);
+    if (setFileName && typeof setFileName === 'function') {
+      setStoreInfo((prev) => ({
+        ...prev,
+        [name]: file
+      }));
+    }
+  }
+};
+  const handleBoxClick = () => {
+    inputRef.current.click();
+  };
+
       const [storeLoader, setStoreLoader]= useState(false)
 const [err, setErr]= useState({})
 const Validation = () => {
@@ -55,7 +78,7 @@ const Validation = () => {
   const requiredFields = [
     'storeName', 'email', 'country',
     'bussinessType', 'addressOne', 'addressTwo',
-    'city', 'postalCode', 'state', 'bussiness_id'
+    'city', 'postalCode', 'state', 'bussiness_id','signed_document'
   ];
 
   requiredFields.forEach(field => {
@@ -68,7 +91,7 @@ const Validation = () => {
   return Object.keys(errors).length === 0;
 };
 
-
+const [submitStoreReturn, setSubmitStoreReturn]= useState({})
     const submitStore =()=>{
       if(Validation()){
         queryClient.invalidateQueries()
@@ -88,10 +111,13 @@ const Validation = () => {
         formData.append('state', storeInfo.state)
         formData.append('state_2', storeInfo.state)
         formData.append('country', storeInfo.country)
+        formData.append('country_of_reg', storeInfo.country)
+        formData.append('store_logo', storeInfo.Shop_Logo)
           axiosInstance
         .post('/api/v1/store-information', formData)
         .then((resp) => {
-          setStoreLoader(false);
+          
+          setSubmitStoreReturn(resp)
         toast({
             title: 'Store Information',
             description:'Store information created successfully.',
@@ -113,10 +139,12 @@ const Validation = () => {
     country:'',
     postalCode:'',
     bussinessType:'',
-    bussiness_id:''
+    bussiness_id:'',
+    signed_document:""
     })
      setFormPage(2)
           console.log(resp)
+          setStoreLoader(false);
         })
         .catch((error) => {
           queryClient.invalidateQueries()
@@ -206,8 +234,8 @@ const Validation = () => {
          </Box>
                 </Box> */}
                 <Box>
-                {Object?.keys(dropData).length>0 && <CountryDropDown
-                 values={storeInfo.bussiness_id}
+                {ToArray.length > 0 && <CountryDropDown
+                 values={storeInfo?.repIdType || ''}
                 onChangeFunc={handleInputChange}
                  names={'bussiness_id'}
                  label={'Bussiness Name'}
@@ -225,6 +253,7 @@ const Validation = () => {
   <p className="text-red-600 text-[12px] pt-[5px]">Please include Business type</p>
 )}
                 </Box>
+                <DashboardFileUpload attachFile={setStoreInfo} names={'Shop_Logo'} label={'Upload Shop Logo'} />
                 <Box>
                   
                <DashBoardInput placing={'Floor/house, apartment, block'}  names={'addressOne'} values={storeInfo.addressOne} handleChange={handleInputChange} label={'Address line 1'} /> 
@@ -306,7 +335,9 @@ const Validation = () => {
 
     </a>
                  
-                     <Button border="1px" borderColor="gray.400" borderRadius="lg">
+                     <Button
+                     onClick={handleBoxClick}
+                     border="1px" borderColor="gray.400" borderRadius="lg">
                         <Box className=' flex items-center p-[2px] gap-x-[20px]'>
                             <Box>
 <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -321,6 +352,21 @@ const Validation = () => {
                     </Button>
   
                 </Box>
+                <Box className="flex items-center gap-2 overflow-hidden">
+                            <input
+                              type="file"
+                              className="hidden"
+                              ref={inputRef}
+                              onChange={handleFileChange}
+                              name={'signed_document'}
+                            />
+                           { <Text className="text-[#666]" noOfLines={1}>
+                              {fileName || ''}
+                            </Text>}
+                          </Box>
+                            {err?.signed_document && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please download and upload signed document</p>
+)}   
                 <Box className=' mt-[30px] pb-[20px]'>
                     <Text className=' text-[#007AFF] text-[12px]'>Bringo policies and guidelines | Privacy policy | Cookie</Text>
                 </Box>
