@@ -83,7 +83,7 @@ console.log(storeInfo?.data?.data?.data?.data)
          />
        }
         {
-          formPage ===0 && <StoreInformation dropData={businessData} setFormPage={setFormPage} 
+          formPage ===0 && <StoreInformation dropData={businessData || []} setFormPage={setFormPage} 
           // setPaymentTracker={setStoreTracker}
            />
         }

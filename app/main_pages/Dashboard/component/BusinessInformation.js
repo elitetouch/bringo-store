@@ -175,6 +175,8 @@ const [err, setErr]= useState({})
       }
     }
     const [editLoader, setEditLoader]= useState(false)
+
+    //Edit Function
 const EditBusiness =(id)=>{
   setEditLoader(true)
     const changedFields = getChangedFields();
@@ -188,7 +190,7 @@ const EditBusiness =(id)=>{
         changedFields?.fullName &&formData.append('rep_fullname',changedFields?.fullName)
         changedFields?.idNumber &&formData.append('rep_id_number',changedFields?.idNumber)
         changedFields?.idType &&formData.append('rep_id_type',changedFields?.idType)
-        axiosInstance.put(`/api/v1/business-information/${id}`, formData,{
+        axiosInstance.post(`/api/v1/edit-business-information`, formData,{
   headers: {
     'Content-Type': 'multipart/form-data', // Let Axios set the boundary
   },

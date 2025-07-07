@@ -90,30 +90,30 @@ function ProductTable({setDisplayBtn, data}) {
   const column=[
     {
         name:'Products',selector:row =>(<div className=' flex items-center gap-x-[5px] gap-y-[5px] pt-[5px] pb-[5px]'>
-          <Box borderRadius={5} className='grid h-[42px] w-[42px] justify-center items-center bg-[#F6F6F6]'>           
-              <Image src={row.images[0]} alt='' className='h-[42px] w-[42px]' />          
-          </Box>
+          {/* <Box borderRadius={5} className='grid h-[42px] w-[42px] justify-center items-center bg-[#F6F6F6]'>           
+              <Image src={`https://store.bringofresh.net/${row.images[0]}`} width={42} height={42} alt='' className='h-[42px] w-[42px]' />          
+          </Box> */}
           <Box>
             <Text className=' text-[#007460]'>{row.orderID}</Text>
-            <Text className='text-[12px]'>{row.productTitle}</Text>
+            <Text className='text-[12px]'>{row.product_title}</Text>
           </Box>
           </div> )
       },
       {
-        name:'Price',selector:row =><Text className='text-[12px]'>{row.salesPrice}</Text>
+        name:'Price',selector:row =><Text className='text-[12px]'>{row.sales_price}</Text>
       },
       {
-        name:'WGT',selector:row =><Text className='text-[12px]'>{row.weight}</Text>
+        name:'Brand',selector:row =><Text className='text-[12px]'>{row.brand_name}</Text>
       },
       {
         name:'QTY',selector:row =><Text className='text-[12px]'>{row.quantity}</Text>
       },
       {
-        name:'Date',selector:row =><Text className='text-[12px]'>{row.createdAt}</Text>
+        name:'Date',selector:row =><Text className='text-[12px]'>{row.updated_at}</Text>
       },
       {
         name:'Status',wrap:true,selector:row =><Box>
-          <Text className={`${row.status==='Out of Stock'&&'text-[#FF392B]'||row.status==='instock'&&'text-[#279F51]'||row.status==='shipping'&&'text-black'||row.status==='Refund'&&'text-[#FFA000]'}`}>{row.stockStatus}</Text>
+          <Text className={`${row.status==='Out of Stock'&&'text-[#FF392B]'||row.status==='instock'&&'text-[#279F51]'||row.status==='shipping'&&'text-black'||row.status==='Refund'&&'text-[#FFA000]'}`}>{row.stock_status}</Text>
         </Box>
       },
       {

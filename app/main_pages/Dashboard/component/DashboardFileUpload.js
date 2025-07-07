@@ -46,9 +46,11 @@ const handleFileChange = (e) => {
               onChange={handleFileChange}
               name={names}
             />
-            <Text className="text-[#666]" noOfLines={1}>
-              {fileName || 'Upload file jpg, png max 500kb'}
-            </Text>
+         <Text
+  className="text-[#666] text-[14px] truncate max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis"
+>
+  {fileName || 'Upload file jpg, png max 500kb'}
+</Text>
           </Box>
 
           {/* Icon */}

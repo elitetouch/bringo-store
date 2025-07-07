@@ -10,7 +10,7 @@ import { SubscriptionPlan } from '@/app/api/reactQuery'
 function Page() {
     const toast = useToast()
       const [value, setValue] = React.useState('yearly')
-       const [paymentPlan, setPaymentPlan] = React.useState('')
+       const [paymentPlan, setPaymentPlan] = React.useState('Pesapal')
       const searchParams = useSearchParams(); 
         const plan = searchParams.get('plan');
 
@@ -28,6 +28,7 @@ function Page() {
             value ==='monthly' && plan==='pro' && formData.append('package', `pro_month`)
              value ==='monthly' && plan==='lite' && formData.append('package', `lite_month`)
                 value ==='yearly' && plan==='lite' && formData.append('package', `lite_year`)
+                formData.append('payment_type', paymentPlan)
                    axiosInstance.post('/api/v1/payment/initiate',formData).then((resp)=>{
                        console.log(resp)
                         setPaymentLoader(false)
@@ -45,6 +46,25 @@ function Page() {
                    }).catch((error)=>{
                        setPaymentLoader(false)
                            console.log(error)
+                          const errors = error.response?.data?.errors;
+
+    let description = "Something went wrong. Please try again.";
+
+    if (errors && typeof errors === "object") {
+      // Flatten all field error arrays into a single array of messages
+      description = Object.values(errors)
+        .flat()
+        .join("\n");
+    }
+
+    toast({
+      title: "Error",
+      description,
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
                    })
             }else{
                 toast({

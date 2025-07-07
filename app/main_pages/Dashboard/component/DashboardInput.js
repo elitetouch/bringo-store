@@ -24,6 +24,7 @@ function DashBoardInput({ placing, icon, names, values, handleChange, password,l
           border='none'
           className={`text-[#7C7C7C] text-[14px] ${icon&&'mr-[10px]'} `}
           placeholder={placing}
+          textOverflow="ellipsis"
           
         />
 

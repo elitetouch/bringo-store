@@ -85,7 +85,40 @@ export const SwitchStoreDropDown=({stores})=>{
                              onClick={()=>{SwitchStoreFunc(item?.id)}}
                             borderBottom="1px" borderColor="gray.300"  key={index} className=' flex items-center gap-x-[10px] pb-[10px]'>
                 <Box zIndex={0}>
-                    <Image   src={marketicon} alt='' height={44} width={44} />
+                    {/* <Image   src={marketicon} alt='' height={44} width={44} /> */}
+                           <svg
+  width="44"
+  height="44"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  
+  <circle cx="24" cy="24" r="24" fill="#F3F4F6" /> 
+
+  
+  <path
+    d="M15 19L17 13H31L33 19"
+    stroke="#4B5563"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+  <path
+    d="M15 19H33V35C33 35.5523 32.5523 36 32 36H16C15.4477 36 15 35.5523 15 35V19Z"
+    stroke="#4B5563"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+  <path
+    d="M20 36V27H28V36"
+    stroke="#4B5563"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+</svg>
                 </Box>
                 <Box>
                     <Text className=' font-semibold'>{item?.storeName}</Text>
@@ -114,6 +147,39 @@ export const MarketCard=({item})=>{
         <Box>
             <Box className=' grid items-center justify-center w-full h-[170px] rounded-lg bg-[#F6F6F6]'>
                 <Image alt='' src={item.images} />
+                       {/* <svg
+  width="48"
+  height="48"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  
+  <circle cx="24" cy="24" r="24" fill="#F3F4F6" /> 
+
+  
+  <path
+    d="M15 19L17 13H31L33 19"
+    stroke="#4B5563"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+  <path
+    d="M15 19H33V35C33 35.5523 32.5523 36 32 36H16C15.4477 36 15 35.5523 15 35V19Z"
+    stroke="#4B5563"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+  <path
+    d="M20 36V27H28V36"
+    stroke="#4B5563"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+</svg> */}
             </Box>
             <Box className=' pt-[10px] w-11/12 m-auto'>
                 <Box className=' flex items-center justify-between mt-[10px]'>
@@ -171,7 +237,40 @@ console.log(storeData)
                 <Box borderBottom="1px" borderColor="gray.300" className=' lg:flex mt-[20px] lg:justify-between grid gap-y-[10px]  pb-[20px] '>
                     <Box className=' flex items-center gap-x-[10px]'>
                         <Box className=''>
-                            <Image alt='' src={marketicon} />
+                            {/* <Image alt='' src={marketicon} /> */}
+                                   <svg
+  width="60"
+  height="60"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  
+  <circle cx="24" cy="24" r="24" fill="#F3F4F6" /> 
+
+  
+  <path
+    d="M15 19L17 13H31L33 19"
+    stroke="#4B5563"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+  <path
+    d="M15 19H33V35C33 35.5523 32.5523 36 32 36H16C15.4477 36 15 35.5523 15 35V19Z"
+    stroke="#4B5563"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+  <path
+    d="M20 36V27H28V36"
+    stroke="#4B5563"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+</svg>
                             <Box className=' absolute bottom-0 right-0'>
                             </Box>
                         </Box>

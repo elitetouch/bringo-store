@@ -116,7 +116,7 @@ const [submitStoreReturn, setSubmitStoreReturn]= useState({})
           axiosInstance
         .post('/api/v1/store-information', formData)
         .then((resp) => {
-          
+            queryClient.invalidateQueries()
           setSubmitStoreReturn(resp)
         toast({
             title: 'Store Information',
@@ -147,7 +147,7 @@ const [submitStoreReturn, setSubmitStoreReturn]= useState({})
           setStoreLoader(false);
         })
         .catch((error) => {
-          queryClient.invalidateQueries()
+        
           console.log(error)
           setStoreLoader(false);
           toast({
@@ -234,7 +234,7 @@ const [submitStoreReturn, setSubmitStoreReturn]= useState({})
          </Box>
                 </Box> */}
                 <Box>
-                {ToArray.length > 0 && <CountryDropDown
+                {dropData && <CountryDropDown
                  values={storeInfo?.repIdType || ''}
                 onChangeFunc={handleInputChange}
                  names={'bussiness_id'}

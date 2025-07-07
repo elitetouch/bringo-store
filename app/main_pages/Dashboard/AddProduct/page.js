@@ -13,13 +13,15 @@ import { useSearchParams } from "next/navigation";
 import { useEffect } from 'react'
 import axiosInstance from '@/app/api/Api_Instance'
 import { useQueryClient } from '@tanstack/react-query'
-// import imp from '../../../../public/grape.svg'
+import { useToast } from '@chakra-ui/react'
+import { useRouter } from 'next/navigation'
+ //import imp from '../../../main_pages/Dashboard/Product'
 export const CompatibilityData=['Fruit','Produce','Bakery','Vegetables','sea food','Meat',
   'laundry','Foods','Dairy','Beverages','Snacks',
   'Baking','Wine','others'
 ]
 
-export const PriceInput=({names, values, changes, title})=>{
+export const PriceInput=({names, values, changes, title, placing})=>{
   return (
     <Box>
        <Box className=' flex items-center lg:gap-x-[10px] gap-x-[3px]'>
@@ -40,7 +42,7 @@ export const PriceInput=({names, values, changes, title})=>{
                </Box>
                    <Input 
                     _focus={{ border: 'none', boxShadow: 'none' }}
-                   name={names} value={values} onChange={changes} border={'none'} placeholder='0' className=' flex-1 text-[15px]' />
+                   name={names} value={values} onChange={changes} border={'none'} placeholder={placing?placing:'0' }className=' flex-1 text-[15px]' />
            </Box>
        </Box>
       </Box>
@@ -50,6 +52,8 @@ export const PriceInput=({names, values, changes, title})=>{
 }
 
 function Page() {
+  const router = useRouter()
+  const toast = useToast()
    const queryClient = useQueryClient();
    const searchParams = useSearchParams(); 
    const ProductId = searchParams.get('ProductId');
@@ -59,8 +63,8 @@ function Page() {
     setSingleProductLoader(true)
     console.log(ProductId)
     ProductId && axiosInstance.get(`/api/v1/products/${ProductId}`).then((resp)=>{
-      console.log(resp?.data)
-      setSingleProductData(resp?.data)
+      console.log(resp?.data?.product)
+      setSingleProductData(resp?.data?.product)
     }).catch((err)=>{
       console.log(err)
     })
@@ -105,7 +109,7 @@ const initialPaymentData = {
          amount:'',
          min_amount:'',
          sug_amount:'',
-         tag:'',
+         tag:'General',
         stock_quantity:'',
         sale_price:'',
         item_code:''
@@ -115,13 +119,14 @@ const initialPaymentData = {
         setAddProduct({...addProduct,[e.target.name]: e.target.value})
         console.log(images)
     }
-     const [category_value, setCategoryValue] = useState('1')
+     const [category_value, setCategoryValue] = useState('')
     const [addProductLoader, setAddProductLoader]= useState(false)
     const [err, setErr]= useState({})
         const Validation = () =>{  
           const errors={}    
           // State parameters to be made compulsory in the form for submission to go through //
-        const objectKeys=[ 'productTitle','description','StockQuantity','amount','brandName','featureOne'
+        const objectKeys=[ 'productTitle','description','StockQuantity','amount','brandName','featureOne','featureTwo','featureThree','featureFour',
+          'Isle','Row','min_amount','sug_amount'
          ]
           objectKeys.forEach((field)=>{
            if(!addProduct[field]){
@@ -138,19 +143,20 @@ const initialPaymentData = {
     const addProductFunction=()=>{
        
         console.log(images)
-        if(Validation()){
+        if(Validation() && images?.length > 0 ){
  setAddProductLoader(true)
         const formData= new FormData()     
-formData.append("category_id", category_value);
-formData.append("category_name", addProduct.category_name);//
+//formData.append("category_id", parseInt(category_value + 1));
+formData.append("category_id", 1);
+formData.append("category_name", category_value)
 formData.append("product_title", addProduct.productTitle);
 formData.append("brand_name", addProduct.brandName);
 formData.append("description", addProduct.description);
 formData.append("compatibility", addProduct.tag);
-formData.append("quantity", addProduct.stock_quantity);
+formData.append("quantity", addProduct.StockQuantity);
 formData.append("sales_price", addProduct.amount);
 formData.append("stock_status", 'instock');
-formData.append("featured", true);
+//formData.append("featured", 'true');
 formData.append("save_status", 'draft');
 // productData.key_feature.forEach((feature, index) => {
 //   formData.append(`key_feature[${index}]`, feature);
@@ -164,8 +170,10 @@ formData.append("location[row]", addProduct.Row);
 formData.append("location[isle]", addProduct.Isle);
 
 // Append nested object (price)
-formData.append("price[usd]", addProduct.price.usd);//
-formData.append("price[ngn]", addProduct.price.ngn);//
+formData.append("price[amount]", addProduct.amount);//
+formData.append("price[minimum_amount]", addProduct.min_amount);//
+formData.append("price[suggested_amount]", addProduct.sug_amount);//
+
 
 // Append images (File objects)
 images.forEach((file, index) => {
@@ -173,11 +181,52 @@ images.forEach((file, index) => {
 });
 axiosInstance.post(`/api/v1/products`, formData).then((resp)=>{
    queryClient.invalidateQueries()
+     toast({
+      title: "Product",
+      description:'Product Added Successfully',
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
+   setAddProductLoader(false)
+   setAddProduct(initialPaymentData)
   console.log(resp)
-}).catch((err)=>{
-  console.log(err)
+  router.push(`/../../../main_pages/Dashboard/Product`)
+}).catch((error)=>{
+  console.log(error)
+  const errors = error.response?.data?.errors;
+
+    let description = "Something went wrong. Please try again.";
+
+    if (errors && typeof errors === "object") {
+      // Flatten all field error arrays into a single array of messages
+      description = Object.values(errors)
+        .flat()
+        .join("\n");
+    }
+
+    toast({
+      title: "Error",
+      description,
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
+  setAddProductLoader(false)
 })
         console.log(addProduct)
+        }
+        else{
+           toast({
+      title: "Error",
+      description:'Please input all necessary field and upload images',
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
         }
     }
 // For product updates or Edits
@@ -198,12 +247,60 @@ const [editLoader, setEditLoader]= useState(false)
          const changedFields = getChangedFields();
  console.log(changedFields)
  const formData = new FormData()
+ //   formData.append("category_id", 1);
+// formData.append("category_name", category_value)
+changedFields.productTitle && formData.append("product_title", changedFields.productTitle);
+changedFields.brandName && formData.append("brand_name", changedFields.brandName);
+changedFields.description && formData.append("description", changedFields.description);
+changedFields.tag && formData.append("compatibility", changedFields.tag);
+changedFields.StockQuantity && formData.append("quantity", changedFields.StockQuantity);
+changedFields.amount && formData.append("sales_price", changedFields.amount);
+changedFields.featureOne && formData.append('key_feature[]', changedFields.featureOne);
+changedFields.featureTwo && formData.append('key_feature[]', changedFields.featureTwo);
+changedFields.featureThree && formData.append('key_feature[]', changedFields.featureThree);
+changedFields.featureFour && formData.append('key_feature[]', changedFields.featureFour);
+// Append nested object (location)
+changedFields.Row && formData.append("location[row]", changedFields.Row);
+changedFields.Isle && formData.append("location[isle]", changedFields.Isle);
+
+// Append nested object (price)
+changedFields.amount && formData.append("price[amount]", changedFields.amount);//
+changedFields.min_amount && formData.append("price[minimum_amount]", changedFields.min_amount);//
+changedFields.sug_amount && formData.append("price[suggested_amount]", changedFields.sug_amount);//
       axiosInstance.post(`/api/v1/edit-store-product/${id}`, formData).then((resp)=>{
   console.log(resp)
    queryClient.invalidateQueries()
+    toast({
+      title: "Product Edit",
+      description:'Product Edited Successfully',
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
+  //  router.push(`/../../../main_pages/Dashboard/Product`)
 setEditLoader(false)
-}).catch((err)=>{
-  console.log(err)
+}).catch((error)=>{
+   const errors = error.response?.data?.errors;
+
+    let description = "Something went wrong. Please try again.";
+
+    if (errors && typeof errors === "object") {
+      // Flatten all field error arrays into a single array of messages
+      description = Object.values(errors)
+        .flat()
+        .join("\n");
+    }
+
+    toast({
+      title: "Error",
+      description,
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
+  console.log(error)
   setEditLoader(false)
 })
  }
@@ -217,7 +314,7 @@ setEditLoader(false)
                                             <svg width="8" height="11" viewBox="0 0 8 11" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.33464 5.56453L0.667969 0.231201V10.8979L7.33464 5.56453Z" fill="#737373"/>
             </svg>
-                                       <Box cursor={'pointer'} onClick={()=>Router.push('')}><Text className=' text-[#888888]'>All Products</Text></Box>   
+                                       <Box cursor={'pointer'} onClick={()=>router.push('')}><Text className=' text-[#888888]'>All Products</Text></Box>   
                                           <svg width="8" height="11" viewBox="0 0 8 11" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.33464 5.56453L0.667969 0.231201V10.8979L7.33464 5.56453Z" fill="#737373"/>
             </svg>
@@ -249,7 +346,7 @@ setEditLoader(false)
                                 //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
                                 //   border='none'
                                 //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
-                                   placeholder={'Input your text'}
+                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.product_title:'Input your text'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
                            {err?.productTitle && (
@@ -272,6 +369,7 @@ setEditLoader(false)
                           name={'description'}
                                    value={addProduct.description}
                                    onChange={addProductChange}
+                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.description:''}
                         className=' min-h-[112px] w-full pt-[10px] bg-[#8A8A8A]'
                         />
                          {err?.description && (
@@ -298,7 +396,7 @@ setEditLoader(false)
                                 //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
                                 //   border='none'
                                 //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
-                                   placeholder={'Value'}
+                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.key_feature[0]:'Value'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
                              {err?.featureOne && (
@@ -313,7 +411,7 @@ setEditLoader(false)
                                 //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
                                 //   border='none'
                                 //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
-                                   placeholder={'Value'}
+                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.key_feature[1]:'Value'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
                              {err?.featureTwo && (
@@ -328,7 +426,7 @@ setEditLoader(false)
                                 //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
                                 //   border='none'
                                 //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
-                                   placeholder={'Value'}
+                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.key_feature[2]:'Value'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
                                {err?.featureThree && (
@@ -343,7 +441,7 @@ setEditLoader(false)
                                 //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
                                 //   border='none'
                                 //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
-                                   placeholder={'Value'}
+                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.key_feature[3]:'Value'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
                              {err?.featureFour && (
@@ -366,7 +464,7 @@ setEditLoader(false)
                                 //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
                                 //   border='none'
                                 //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
-                                   placeholder={'Input your text'}
+                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.brand_name:'Input your text'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
                              {err?.brandName && (
@@ -385,7 +483,7 @@ setEditLoader(false)
                                 //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
                                 //   border='none'
                                 //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
-                                   placeholder={''}
+                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.location?.isle:''}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
                              {err?.Isle && (
@@ -403,7 +501,7 @@ setEditLoader(false)
                                 //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
                                 //   border='none'
                                 //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
-                                   placeholder={''}
+                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.location?.row:''}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
                          {err?.Row && (
@@ -411,7 +509,7 @@ setEditLoader(false)
 )}
                         </Box>
                   </Box>
-                    <Box className=''>
+                    {/* <Box className=''>
                      <Text className=' text-[14px] font-semibold'>Item code</Text>
                       <Box className=' w-full pt-[10px]'>
                          <Input
@@ -428,7 +526,7 @@ setEditLoader(false)
   <p className="text-red-600 text-[12px] pt-[5px]">Please input Item Code</p>
 )}
                         </Box>
-                  </Box>
+                  </Box> */}
                     <Box className=''>
                      <Text className=' text-[14px] font-semibold'>Stock quantity</Text>
                       <Box className=' w-full pt-[10px]'>
@@ -439,7 +537,7 @@ setEditLoader(false)
                                 //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
                                 //   border='none'
                                 //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
-                                   placeholder={''}
+                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.quantity:''}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
                            {err?.StockQuantity && (
@@ -455,20 +553,20 @@ setEditLoader(false)
                      <Box className=' mt-[20px]'>   
                         <Box className=' '>
                           <Box>
-                         <PriceInput names={'amount'} changes={addProductChange} values={addProduct.amount} title={'Amount'} />
+                         <PriceInput names={'amount'} changes={addProductChange} values={addProduct.amount} title={'Amount'} placing={Object.keys(singleProduct).length > 0?singleProduct?.price?.amount:'0'} />
                           {err?.amount && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please input Amount</p>
 )}
                           </Box>
                         <Box className=' grid grid-cols-2 gap-y-[20px] gap-x-[20px] mt-[20px]'>
                           <Box>
-                         <PriceInput names={'min_amount'} changes={addProductChange} values={addProduct.min_amount} title={'Minimum amount'} />
+                         <PriceInput names={'min_amount'} changes={addProductChange} values={addProduct.min_amount} title={'Minimum amount'} placing={Object.keys(singleProduct).length > 0?singleProduct?.price?.minimum_amount:''} />
                           {err?.min_amount && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include minimum amount</p>
 )}
                           </Box>
                           <Box>
-                          <PriceInput title={'Suggested amount'} names={'sug_amount'} changes={addProductChange} values={addProduct.sug_amount} />
+                          <PriceInput title={'Suggested amount'} names={'sug_amount'} changes={addProductChange} values={addProduct.sug_amount} placing={Object.keys(singleProduct).length > 0?singleProduct?.price?.suggested_amount:''}  />
                            {err?.sug_amount && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include suggested amount</p>
 )}
@@ -516,7 +614,7 @@ setEditLoader(false)
 
                         </Box>
                         {err?.bussiness_id && (
-  <p className="text-red-600 text-[12px] pt-[5px]">Please select Bussiness name</p>
+  <p className="text-red-600 text-[12px] pt-[5px]">Please select Category name</p>
 )}
                    </Box>
                    <Box>
@@ -532,7 +630,7 @@ setEditLoader(false)
 
                         </Box>
                          {err?.bussiness_id && (
-  <p className="text-red-600 text-[12px] pt-[5px]">Please select Bussiness name</p>
+  <p className="text-red-600 text-[12px] pt-[5px]">Please select compatibility</p>
 )}
                       </Box>
                         <Box className=' mt-[10px]'>
@@ -541,7 +639,7 @@ setEditLoader(false)
                               CompatibilityData.map((items, index)=>{
                                 return(
                                   <Box key={index}>
-                                       <Radio value={items}>{items}</Radio>
+                                        <Radio value={items}>{items}</Radio>
                                   </Box>
                                 )
 
@@ -552,7 +650,7 @@ setEditLoader(false)
                         </Box>
                             </Box>
                    </Box>
-                   <Box>
+                   {/* <Box>
                     <Box className=' flex items-center lg:gap-x-[10px] gap-x-[3px] mt-[20px]'>
                         <Text className=' text-[14px] font-semibold'>Tags</Text>
                         <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -591,30 +689,88 @@ setEditLoader(false)
                          {err?.tag && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include tags</p>
 )}
-                   </Box>
+                   </Box> */}
                    </Box>
                 <Box className=' pb-[30px]'>
                   <Box className=' mt-[20px]'>   
                         <Box className=' '>
-                        <Box className=' grid grid-cols-2 gap-y-[20px] gap-x-[20px]  mb-[20px]'>
+                        <Box className=' grid grid-cols-1 gap-y-[20px] gap-x-[20px]  mb-[20px]'>
                           <Box>
-                         <PriceInput names={'stock_quantity'} changes={addProductChange} values={addProduct.stock_quantity} title={'Stock quantity'} />
+                             {/* <Box className=''>
+                     <Text className=' text-[14px] font-semibold'>Stock quantity</Text>
+                      <Box className=' w-full pt-[10px]'>
+                         <Input
+                                  name={'Stock quantity'}
+                                   value={addProduct.stock_quantity}
+                                   onChange={addProductChange}
+                                //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
+                                //   border='none'
+                                //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
+                                   placeholder={''}
+                                  className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
+                                />
                           {err?.stock_quantity && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include stock quantity</p>
 )}
+                        </Box>
+                  </Box> */}
+                         {/* <Input names={'stock_quantity'} changes={addProductChange}
+                          values={addProduct.stock_quantity} 
+                          title={'Stock quantity'} />
+                          {err?.stock_quantity && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please include stock quantity</p>
+)} */}
                           </Box>
                           <Box>
-                          <PriceInput title={'Sale Price'} names={'sale_price'} changes={addProductChange} values={addProduct.sale_price} />
-                           {err?.sale_price && (
+                             <Box className=''>
+                     {/* <Text className=' text-[14px] font-semibold'>Sale Price</Text> */}
+                      <Box className=' w-full pt-[10px]'>
+                         <PriceInput
+                         title={'Sale Price'}
+                                  name={'sale_price'}
+                                   value={addProduct.sale_price}
+                                   onChange={addProductChange}
+                                //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
+                                //   border='none'
+                                //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
+                                placing={Object.keys(singleProduct).length > 0?singleProduct?.sales_price:'0'}
+                                   //placeholder={Object.keys(singleProduct).length > 0?singleProduct?.sales_price:''}
+                                  className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
+                                />
+                        {err?.sale_price && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include sales price</p>
 )}
+                        </Box>
+                  </Box>
+                          {/* <PriceInput title={'Sale Price'} names={'sale_price'} changes={addProductChange} values={addProduct.sale_price} />
+                           {err?.sale_price && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please include sales price</p>
+)} */}
                           </Box>
                         </Box>
                         <Box>
-                         <PriceInput names={'item_code'} changes={addProductChange} values={addProduct.item_code} title={'Item code'} />
+                            {/* <Box className=''>
+                     <Text className=' text-[14px] font-semibold'>Item code</Text>
+                      <Box className=' w-full pt-[10px]'>
+                         <Input
+                                  name={'item_code'}
+                                   value={addProduct.item_code}
+                                   onChange={addProductChange}
+                                //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
+                                //   border='none'
+                                //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
+                                   placeholder={''}
+                                  className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
+                                />
+                        {err?.sale_price && (
+  <p className="text-red-600 text-[12px] pt-[5px]">Please include sales price</p>
+)}
+                        </Box>
+                  </Box> */}
+                         {/* <PriceInput names={'item_code'} changes={addProductChange} values={addProduct.item_code} title={'Item code'} />
                           {err?.item_code && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include item code</p>
-)}
+)} */}
                         </Box>
                         </Box>
                       </Box>
@@ -636,30 +792,47 @@ setEditLoader(false)
                   <Text className=' font-semibold text-[20px]'>Image Product</Text>
                   <Text className=' text-[#454545] text-[14px] pt-[10px]'><span className=' font-semibold'>Note :</span> Format photos  SVG, PNG, or JPG (Max size 4mb)</Text>
                 </Box>
-              <Box className=' grid grid-cols-3 gap-x-[20px] pt-[20px] pb-[20px] '>
-              { [0, 1, 2].map((i) => ( 
-  <Box cursor={'pointer'}  key={i} onClick={() => handleImageClick(i)} className=' bg-[#F6F6F9] rounded-lg h-[100px] w-10/12 m-auto grid justify-center '>
-    <Box className=' grid w-full h-full items-center jusitify-center'>
-    <Box className=' grid justify-center'>
-      <svg width="23" height="24" viewBox="0 0 23 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M0.957031 18.6666L6.21329 13.9359C7.00395 13.2244 8.21327 13.2562 8.96544 14.0083L10.957 15.9999L16.2095 10.7475C16.9905 9.96642 18.2569 9.96642 19.0379 10.7475L22.2904 13.9999M10.2904 7.99992C10.2904 8.7363 9.69341 9.33325 8.95703 9.33325C8.22065 9.33325 7.6237 8.7363 7.6237 7.99992C7.6237 7.26354 8.22065 6.66658 8.95703 6.66658C9.69341 6.66658 10.2904 7.26354 10.2904 7.99992ZM2.95703 22.6666H20.2904C21.3949 22.6666 22.2904 21.7712 22.2904 20.6666V3.33325C22.2904 2.22868 21.3949 1.33325 20.2904 1.33325H2.95703C1.85246 1.33325 0.957031 2.22868 0.957031 3.33325V20.6666C0.957031 21.7712 1.85246 22.6666 2.95703 22.6666Z" stroke="#343538" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+             <Box className='grid grid-cols-3 gap-x-[20px] pt-[20px] pb-[20px]'>
+  {[0, 1, 2].map((i) => (
+    <Box
+      key={i}
+      cursor="pointer"
+      onClick={() => handleImageClick(i)}
+      className="bg-[#F6F6F9] rounded-lg h-[100px] w-10/12 m-auto grid justify-center items-center overflow-hidden"
+    >
+      {/* If preview exists, show image */}
+      {previewUrls[i] ? (
+        <img
+          src={previewUrls[i]}
+          alt={`Preview ${i}`}
+          className="w-full h-full object-cover rounded-lg"
+        />
+      ) : (
+        // Otherwise show the default upload icon and label
+        <Box className="grid w-full h-full items-center justify-center">
+          <Box className="grid justify-center">
+            <svg width="23" height="24" viewBox="0 0 23 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0.957031 18.6666L6.21329 13.9359C7.00395 13.2244 8.21327 13.2562 8.96544 14.0083L10.957 15.9999L16.2095 10.7475C16.9905 9.96642 18.2569 9.96642 19.0379 10.7475L22.2904 13.9999M10.2904 7.99992C10.2904 8.7363 9.69341 9.33325 8.95703 9.33325C8.22065 9.33325 7.6237 8.7363 7.6237 7.99992C7.6237 7.26354 8.22065 6.66658 8.95703 6.66658C9.69341 6.66658 10.2904 7.26354 10.2904 7.99992ZM2.95703 22.6666H20.2904C21.3949 22.6666 22.2904 21.7712 22.2904 20.6666V3.33325C22.2904 2.22868 21.3949 1.33325 20.2904 1.33325H2.95703C1.85246 1.33325 0.957031 2.22868 0.957031 3.33325V20.6666C0.957031 21.7712 1.85246 22.6666 2.95703 22.6666Z" stroke="#343538" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Box>
+          <Box>
+            <Text className="text-[#737373] text-[14px] text-center mt-[5px]">Photo {i + 1}</Text>
+          </Box>
+        </Box>
+      )}
     </Box>
-     <Box>
-      <Text className=' text-[#737373] text-[14px] text-center mt-[5px]'>Photo {i}</Text>
-     </Box>
-     </Box>
-  </Box>
-))}
-<input
-  type="file"
-  accept="image/*"
-  ref={fileInputRef}
-  onChange={handleFileChange}
-  style={{ display: 'none' }}
-/>
+  ))}
 
-              </Box>
+  {/* Hidden input for file selection */}
+  <input
+    type="file"
+    accept="image/*"
+    ref={fileInputRef}
+    onChange={handleFileChange}
+    style={{ display: 'none' }}
+  />
+</Box>
+
 
               </Box>
 
@@ -668,33 +841,33 @@ setEditLoader(false)
         <Box className=' lg:flex grid items-center lg:justify-between gap-y-[20px] mt-[40px] pb-[20px] w-11/12 m-auto'>
           <Box className=' flex items-center gap-x-[10px]'>
             <Box>
-              <svg width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* <svg width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M13.9356 1.16363C14.2871 1.5151 14.2871 2.08495 13.9356 2.43642L6.13562 10.2364C5.78414 10.5879 5.21429 10.5879 4.86282 10.2364L0.962823 6.33642C0.611351 5.98495 0.611351 5.4151 0.962823 5.06363C1.31429 4.71216 1.88414 4.71216 2.23561 5.06363L5.49922 8.32723L12.6628 1.16363C13.0143 0.812156 13.5841 0.812156 13.9356 1.16363Z" fill="#303030"/>
-</svg>
+</svg> */}
             </Box>
-            <Box>
+            {/* <Box>
               <Text className=' text-[14px]'><span className=' text-[#8A8A8A]'>Last saved</span> Oct 4, 2021 - 23:32</Text>
-            </Box>
+            </Box> */}
           </Box>
           <Box className=' flex items-center gap-x-[20px]'>
-             <Button border="1px" borderColor="gray.300" borderRadius="lg"  backgroundColor={'transparent'}>
+             {/* <Button border="1px" borderColor="gray.300" borderRadius="lg"  backgroundColor={'transparent'}>
               <Text className=' text-[14px]'>Save Draft</Text>
-            </Button>
-            {ProductId?<Button onClick={addProductFunction}
+            </Button> */}
+            {!ProductId?<Button onClick={addProductFunction}
             isLoading={addProductLoader}
             backgroundColor={'#007460'} color={'#FFFF'}>
               <Text className=' text-[14px]'>Save Product</Text>
             </Button>:<Button onClick={()=>{EditFunc(ProductId)}}
-            isLoading={addProductLoader}
+            isLoading={editLoader}
             backgroundColor={'#007460'} color={'#FFFF'}>
               <Text className=' text-[14px]'>Edit Product</Text>
             </Button>}
-            <IconButton
+            {/* <IconButton
             
             icon={<svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M5.29922 1.20005C5.29922 0.702993 4.89628 0.300049 4.39922 0.300049C3.90216 0.300049 3.49922 0.702993 3.49922 1.20005V1.68803C3.20417 1.7571 2.92475 1.85372 2.65626 1.99052C1.80953 2.42195 1.12112 3.11036 0.68969 3.95709C0.418081 4.49015 0.30485 5.06632 0.251256 5.72229C0.199203 6.35938 0.19921 7.14611 0.199219 8.12151V9.87858C0.19921 10.854 0.199203 11.6407 0.251256 12.2778C0.30485 12.9338 0.418081 13.5099 0.68969 14.043C1.12112 14.8897 1.80953 15.5781 2.65626 16.0096C3.18932 16.2812 3.76549 16.3944 4.42146 16.448C5.05854 16.5001 5.84527 16.5001 6.82067 16.5L10.8808 16.5001C11.2675 16.5001 11.5308 16.5001 11.7629 16.4761C13.8813 16.2566 15.5558 14.5822 15.7753 12.4637C15.7993 12.2317 15.7993 11.9684 15.7992 11.5817L15.7992 8.1215C15.7992 7.14611 15.7992 6.35937 15.7472 5.72229C15.6936 5.06632 15.5804 4.49015 15.3087 3.95709C14.8773 3.11036 14.1889 2.42195 13.3422 1.99052C13.0737 1.85372 12.7943 1.7571 12.4992 1.68803V1.20005C12.4992 0.702993 12.0963 0.300049 11.5992 0.300049C11.1022 0.300049 10.6992 0.702993 10.6992 1.20005V1.51035C10.251 1.50004 9.74646 1.50004 9.17774 1.50005H6.82069C6.25197 1.50004 5.74739 1.50004 5.29922 1.51035V1.20005ZM3.47344 3.59433C3.71046 3.47356 4.02338 3.39061 4.56804 3.34611C5.12319 3.30075 5.83627 3.30005 6.85922 3.30005H9.13922C10.1622 3.30005 10.8752 3.30075 11.4304 3.34611C11.9751 3.39061 12.288 3.47356 12.525 3.59433C13.033 3.85319 13.4461 4.26624 13.7049 4.77428C13.8257 5.0113 13.9087 5.32421 13.9532 5.86887C13.9709 6.08553 13.9818 6.32625 13.9885 6.60005H2.00996C2.01668 6.32625 2.02758 6.08553 2.04528 5.86887C2.08978 5.32421 2.17273 5.0113 2.2935 4.77428C2.55236 4.26624 2.96541 3.85319 3.47344 3.59433ZM1.99922 8.40005V9.84005C1.99922 10.863 1.99992 11.5761 2.04528 12.1312C2.08978 12.6759 2.17273 12.9888 2.2935 13.2258C2.55236 13.7339 2.96541 14.1469 3.47344 14.4058C3.71046 14.5265 4.02338 14.6095 4.56803 14.654C5.12319 14.6993 5.83627 14.7 6.85922 14.7H10.8261C11.288 14.7 11.4504 14.6988 11.5774 14.6857C12.8485 14.554 13.8532 13.5493 13.9848 12.2783C13.998 12.1512 13.9992 11.9888 13.9992 11.5269V8.40005H1.99922Z" fill="#303030"/>
 </svg>
-} />
+} /> */}
           </Box>
         </Box>
         </Box>

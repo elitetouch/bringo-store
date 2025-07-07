@@ -33,7 +33,25 @@ export const ProfileComponent =({toogleSideMenu, profileData})=>{
      <Box border="1px" borderColor="gray.300" borderRadius="lg" className=' border border-red-900 rounded-lg mt-[20px] mb-[20px] h-[50px] grid items-center'>
          <Box className=' flex items-center gap-x-[10px] w-11/12 m-auto  '>
           <Box >
-             <Image alt='' src={user} />
+             {/* <Image alt='' src={user} /> */}
+             <svg
+  width="40"
+  height="40"
+  viewBox="0 0 40 40"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <circle cx="20" cy="20" r="20" fill="#E5E7EB" />
+  <path
+    d="M20 20C23.3137 20 26 17.3137 26 14C26 10.6863 23.3137 8 20 8C16.6863 8 14 10.6863 14 14C14 17.3137 16.6863 20 20 20Z"
+    fill="#9CA3AF"
+  />
+  <path
+    d="M10 32C10 27.5817 13.5817 24 18 24H22C26.4183 24 30 27.5817 30 32V33H10V32Z"
+    fill="#9CA3AF"
+  />
+</svg>
+
           </Box>
           <Box
           cursor={'pointer'}
@@ -95,7 +113,15 @@ console.log(error)
   const storeData = storeInfo?.data?.data?.data
   console.log(storeData)
   const ErrorPops =()=>{
-     alert('"Please Complete your Profile and Subscribe"')
+      toast({
+      title: "Error",
+      description:'Please Complete your Profile and Subscribe',
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
+    // alert('""')
   }
   const [showModal, setShowModal]= useState(false)
   return (
@@ -157,7 +183,42 @@ console.log(error)
                 onClick={()=>{router.push(`/../../../main_pages/Dashboard/Market?marketId=${ProfileObject?.defaultStoreId}`)}} 
                 className='  flex items-center gap-x-[10px]'>
                   <Box>
-                    <Image alt='' src={supermarket} />
+                    {/* <Image alt='' src={SingleStoreDetails?.storeLogo} width={50} height={60} /> */}
+                  <svg
+  width="48"
+  height="48"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  
+  <circle cx="24" cy="24" r="24" fill="#F3F4F6" /> 
+
+  
+  <path
+    d="M15 19L17 13H31L33 19"
+    stroke="#4B5563"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+  <path
+    d="M15 19H33V35C33 35.5523 32.5523 36 32 36H16C15.4477 36 15 35.5523 15 35V19Z"
+    stroke="#4B5563"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+  <path
+    d="M20 36V27H28V36"
+    stroke="#4B5563"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+</svg>
+
+
                   </Box>
                   {(!toogleSideMenu) && <Box className=' text-[14px]'>
                     <Text className=' text-[#B0B0B0]'>Company</Text>
