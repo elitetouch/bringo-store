@@ -2,7 +2,7 @@ export const Card_data=[
     {
         id:1,
         card_title:'Total Revenue',
-        cardSum:'UGX0',
+        cardSum:'0',
         percentageIncrease:'0%',
         status:'increase'
     },
