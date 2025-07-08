@@ -15,13 +15,14 @@ import axiosInstance from '@/app/api/Api_Instance'
 import { useQueryClient } from '@tanstack/react-query'
 import { useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
+import { ProfileInfo } from '@/app/api/reactQuery'
  //import imp from '../../../main_pages/Dashboard/Product'
 export const CompatibilityData=['Fruit','Produce','Bakery','Vegetables','sea food','Meat',
   'laundry','Foods','Dairy','Beverages','Snacks',
   'Baking','Wine','others'
 ]
 
-export const PriceInput=({names, values, changes, title, placing})=>{
+export const PriceInput=({names, values, changes, title, placing, currency})=>{
   return (
     <Box>
        <Box className=' flex items-center lg:gap-x-[10px] gap-x-[3px]'>
@@ -38,7 +39,7 @@ export const PriceInput=({names, values, changes, title, placing})=>{
     <Box border="1px" borderColor="gray.300" borderRadius="lg" className=' w-full grid items-center '>
            <Box className=' border flex items-center rounded-lg'>
                <Box className=' h-[44px] w-[63px] grid items-center justify-center bg-gray-200'>
-                   <Text className=' text-[#8A8A8A]'>UGX</Text>
+                   <Text className=' text-[#8A8A8A]'>{currency==='Kenya'&&'KSH'||currency==='Nigeria'&&'NG'||currency==='Uganda'&&'UGX'||'UGX'}</Text>
                </Box>
                    <Input 
                     _focus={{ border: 'none', boxShadow: 'none' }}
@@ -54,6 +55,8 @@ export const PriceInput=({names, values, changes, title, placing})=>{
 function Page() {
   const router = useRouter()
   const toast = useToast()
+  const profile= ProfileInfo()
+  const ProfileObject= profile?.data?.data?.user
    const queryClient = useQueryClient();
    const searchParams = useSearchParams(); 
    const ProductId = searchParams.get('ProductId');
@@ -553,20 +556,26 @@ setEditLoader(false)
                      <Box className=' mt-[20px]'>   
                         <Box className=' '>
                           <Box>
-                         <PriceInput names={'amount'} changes={addProductChange} values={addProduct.amount} title={'Amount'} placing={Object.keys(singleProduct).length > 0?singleProduct?.price?.amount:'0'} />
+                         <PriceInput
+                          currency={ProfileObject?.country || ''}
+                         names={'amount'} changes={addProductChange} values={addProduct.amount} title={'Amount'} placing={Object.keys(singleProduct).length > 0?singleProduct?.price?.amount:'0'} />
                           {err?.amount && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please input Amount</p>
 )}
                           </Box>
                         <Box className=' grid grid-cols-2 gap-y-[20px] gap-x-[20px] mt-[20px]'>
                           <Box>
-                         <PriceInput names={'min_amount'} changes={addProductChange} values={addProduct.min_amount} title={'Minimum amount'} placing={Object.keys(singleProduct).length > 0?singleProduct?.price?.minimum_amount:''} />
+                         <PriceInput 
+                          currency={ProfileObject?.country || ''}
+                         names={'min_amount'} changes={addProductChange} values={addProduct.min_amount} title={'Minimum amount'} placing={Object.keys(singleProduct).length > 0?singleProduct?.price?.minimum_amount:''} />
                           {err?.min_amount && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include minimum amount</p>
 )}
                           </Box>
                           <Box>
-                          <PriceInput title={'Suggested amount'} names={'sug_amount'} changes={addProductChange} values={addProduct.sug_amount} placing={Object.keys(singleProduct).length > 0?singleProduct?.price?.suggested_amount:''}  />
+                          <PriceInput
+                           currency={ProfileObject?.country || ''}
+                          title={'Suggested amount'} names={'sug_amount'} changes={addProductChange} values={addProduct.sug_amount} placing={Object.keys(singleProduct).length > 0?singleProduct?.price?.suggested_amount:''}  />
                            {err?.sug_amount && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include suggested amount</p>
 )}
@@ -726,6 +735,7 @@ setEditLoader(false)
                      {/* <Text className=' text-[14px] font-semibold'>Sale Price</Text> */}
                       <Box className=' w-full pt-[10px]'>
                          <PriceInput
+                         currency={ProfileObject?.country || ''}
                          title={'Sale Price'}
                                   name={'sale_price'}
                                    value={addProduct.sale_price}
