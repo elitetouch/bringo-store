@@ -235,7 +235,7 @@ const [submitStoreReturn, setSubmitStoreReturn]= useState({})
                 </Box> */}
                 <Box>
                 {dropData && <CountryDropDown
-                 values={storeInfo?.repIdType || ''}
+                 values={storeInfo?.repIdType}
                 onChangeFunc={handleInputChange}
                  names={'bussiness_id'}
                  label={'Bussiness Name'}

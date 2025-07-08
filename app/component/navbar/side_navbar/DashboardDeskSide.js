@@ -115,7 +115,7 @@ console.log(error)
   const ErrorPops =()=>{
       toast({
       title: "Error",
-      description:'Please Complete your Bussiness and Subscribe',
+      description:'Please Complete your Bussiness Information and Subscribe',
       status: "error",
       duration: 5000,
       isClosable: true,
