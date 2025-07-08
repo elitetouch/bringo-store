@@ -6,6 +6,8 @@ import productOne from '../../../public/productOne.svg'
 import productTwo from '../../../public/productTwo.svg'
 import productThree from '../../../public/productThree.svg'
 import Image from 'next/image'
+import { useToast } from '@chakra-ui/react'
+import { useRouter } from 'next/navigation'
   const Data=[{
     id:1,
     orderID:'#WM020231',
@@ -57,11 +59,40 @@ import Image from 'next/image'
 
   ]
 
-export const TableCard=({item})=>{
+export const TableCard=({item, data})=>{
+  const router = useRouter()
       const [handleDropDown, setHandleDropDown]= useState(false)
     const handleDropDownFunc=()=>{
         setHandleDropDown(!handleDropDown)
     }
+     const toast = useToast()
+  const [deleteLoader, setDeleteLoader] = useState(false)
+  const deleteFunc=(id)=>{
+     setDeleteLoader(true)
+     axiosInstance.delete(`/api/v1/products/${id}`).then((resp)=>{
+      setDeleteLoader(false)
+        toast({
+      title: "Delete",
+      description: 'Order Deleted successfully',
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
+    setDeleteLoader(false)
+     }).catch((resp)=>{
+      let description = "Something went wrong. Please try again.";
+        toast({
+      title: "Error",
+       description,
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
+       setDeleteLoader(false)
+     })
+  }
 return (
     <Box key={item.id} className=''>
             <Box key={item.id} className=' grid h-[62px] items-center bg-white rounded-lg '>
@@ -84,9 +115,10 @@ return (
                                   <Image src={item.productThree} alt='' />
                                 </Box> */}
                                 <Box className=' grid items-center justify-center'>
-                                  <Text className=' text-[12px]'>{item.orderID}</Text>
+                                  <Text className=' text-[12px]'>{item.brand_name}</Text>
                                 </Box>
-                                <Box className=' text-[12px]'>{item. orderName}</Box>
+                                <Box className=' text-[12px]'>{item.product_title}</Box>
+                              {/* <Box className=' text-[12px]'>{item.item_code}</Box> */}
                               </Box>
 
                 </Box>
@@ -115,7 +147,15 @@ onClick={handleDropDownFunc}
                         <Text className=' text-right text-[14px] text-[#737373]'>Price</Text>
                     </Box>
                     <Box className=' col-span-3 text-[14px] font-semibold'>
-                        {item.price}
+                        {item.sales_price}
+                    </Box>
+                </Box>
+                  <Box className='grid grid-cols-5 gap-x-[20px]'>
+                    <Box className=' col-span-2'>
+                        <Text className=' text-right text-[14px] text-[#737373]'>Brand</Text>
+                    </Box>
+                    <Box className=' col-span-3 text-[14px] font-semibold'>
+                        {item.brand_name} items
                     </Box>
                 </Box>
                   <Box className='grid grid-cols-5 gap-x-[20px]'>
@@ -123,23 +163,7 @@ onClick={handleDropDownFunc}
                         <Text className=' text-right text-[14px] text-[#737373]'>QTY</Text>
                     </Box>
                     <Box className=' col-span-3 text-[14px] font-semibold'>
-                        {item.remainingItems} items
-                    </Box>
-                </Box>
-                  <Box className='grid grid-cols-5 gap-x-[20px]'>
-                    <Box className=' col-span-2'>
-                        <Text className=' text-right text-[14px] text-[#737373]'>Customer</Text>
-                    </Box>
-                    <Box className=' col-span-3 text-[14px] font-semibold'>
-                        {item.customer}
-                    </Box>
-                </Box>
-                  <Box className='grid grid-cols-5 gap-x-[20px]'>
-                    <Box className=' col-span-2'>
-                        <Text className=' text-right text-[14px] text-[#737373]'>Shopper</Text>
-                    </Box>
-                    <Box className=' col-span-3 text-[14px] font-semibold'>
-                        {item.shopper}
+                        {item.quantity}
                     </Box>
                 </Box>
                   <Box className='grid grid-cols-5 gap-x-[20px]'>
@@ -147,16 +171,24 @@ onClick={handleDropDownFunc}
                         <Text className=' text-right text-[14px] text-[#737373]'>Date</Text>
                     </Box>
                     <Box className=' col-span-3 text-[14px] font-semibold'>
-                        {item.date}
+                        {item.updated_at}
                     </Box>
                 </Box>
+                  {/* <Box className='grid grid-cols-5 gap-x-[20px]'>
+                    <Box className=' col-span-2'>
+                        <Text className=' text-right text-[14px] text-[#737373]'>Date</Text>
+                    </Box>
+                    <Box className=' col-span-3 text-[14px] font-semibold'>
+                        {item.date}
+                    </Box>
+                </Box> */}
                   <Box className='grid grid-cols-5 gap-x-[20px]'>
                     <Box className=' col-span-2'>
                         <Text className=' text-right text-[14px] text-[#737373]'>Status</Text>
                     </Box>
                     <Box className=' col-span-3 text-[14px] font-semibold'>
                         <Box className=' grid h-[29px] w-fit rounded-l-full rounded-r-full items-center justify-center bg-[#FFDCDC]'>
-                        <Text className=' text-[#FF0000] text-[12px] pl-[10px] pr-[10px]'>{item.status}</Text>
+                        <Text className=' text-[#FF0000] text-[12px] pl-[10px] pr-[10px]'>{item.stock_status}</Text>
 
                         </Box>
                     </Box>
@@ -168,6 +200,7 @@ onClick={handleDropDownFunc}
                     <Box className=' col-span-3 text-[14px] font-semibold'>
                          <Box className=' flex items-center gap-x-[5px]'>
                                   <IconButton
+                                  onClick={()=>router.push(`/../../main_pages/Dashboard/AddProduct?ProductId=${item.id}`)}
                                   icon={<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 13.3335H14" stroke="#C8CAD8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                         <path d="M11 2.33316C11.2652 2.06794 11.6249 1.91895 12 1.91895C12.1857 1.91895 12.3696 1.95553 12.5412 2.0266C12.7128 2.09767 12.8687 2.20184 13 2.33316C13.1313 2.46448 13.2355 2.62038 13.3066 2.79196C13.3776 2.96354 13.4142 3.14744 13.4142 3.33316C13.4142 3.51888 13.3776 3.70277 13.3066 3.87435C13.2355 4.04593 13.1313 4.20184 13 4.33316L4.66667 12.6665L2 13.3332L2.66667 10.6665L11 2.33316Z" stroke="#C8CAD8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -176,6 +209,8 @@ onClick={handleDropDownFunc}
                                   backgroundColor={'transparent'}
                                   />
                                    <IconButton
+                                   onClick={()=>{deleteFunc(item.id)}}
+                                   isLoading={deleteLoader}
                                   icon={<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M2 4H3.33333H14" stroke="#C8CAD8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                         <path d="M5.33203 4.00016V2.66683C5.33203 2.31321 5.47251 1.97407 5.72256 1.72402C5.9726 1.47397 6.31174 1.3335 6.66536 1.3335H9.33203C9.68565 1.3335 10.0248 1.47397 10.2748 1.72402C10.5249 1.97407 10.6654 2.31321 10.6654 2.66683V4.00016M12.6654 4.00016V13.3335C12.6654 13.6871 12.5249 14.0263 12.2748 14.2763C12.0248 14.5264 11.6857 14.6668 11.332 14.6668H4.66536C4.31174 14.6668 3.9726 14.5264 3.72256 14.2763C3.47251 14.0263 3.33203 13.6871 3.33203 13.3335V4.00016H12.6654Z" stroke="#C8CAD8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -185,7 +220,7 @@ onClick={handleDropDownFunc}
                         }
                                   backgroundColor={'transparent'}
                                   />
-                                   <IconButton
+                                   {/* <IconButton
                                   icon={<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M7.9987 8.66683C8.36689 8.66683 8.66536 8.36835 8.66536 8.00016C8.66536 7.63197 8.36689 7.3335 7.9987 7.3335C7.63051 7.3335 7.33203 7.63197 7.33203 8.00016C7.33203 8.36835 7.63051 8.66683 7.9987 8.66683Z" stroke="#C8CAD8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                         <path d="M12.6667 8.66683C13.0349 8.66683 13.3333 8.36835 13.3333 8.00016C13.3333 7.63197 13.0349 7.3335 12.6667 7.3335C12.2985 7.3335 12 7.63197 12 8.00016C12 8.36835 12.2985 8.66683 12.6667 8.66683Z" stroke="#C8CAD8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -193,7 +228,7 @@ onClick={handleDropDownFunc}
                         </svg>
                         }
                                   backgroundColor={'transparent'}
-                                  />
+                                  /> */}
                                 </Box>
                     </Box>
                 </Box>
@@ -205,13 +240,13 @@ onClick={handleDropDownFunc}
 }
 
 
-function MobileProductTable() {
+function MobileProductTable({data}) {
   
   return (
     <div className=' lg:hidden grid gap-y-[15px] bg-white pt-[20px] pb-[20px]'>
-      {Data.map((item)=>{
+      {data?.map((item)=>{
         return(
-            <TableCard key={item.id} item={item} />
+            <TableCard key={item.id} item={item} data={data} />
         )
       })  }
     </div>

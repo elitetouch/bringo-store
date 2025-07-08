@@ -44,7 +44,7 @@ function page() {
                     <Box></Box>
                     {ProductArray && <Box className=' mt-[20px] w-11/12 m-auto'>
                       <ProductTable data= {ProductArray} />
-                      <MobileProductTable />
+                      <MobileProductTable data= {ProductArray} />
                     </Box>}
                 </Box>
             </Box>

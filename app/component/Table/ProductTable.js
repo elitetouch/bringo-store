@@ -113,7 +113,7 @@ function ProductTable({setDisplayBtn, data}) {
       },
       {
         name:'Status',wrap:true,selector:row =><Box>
-          <Text className={`${row.status==='Out of Stock'&&'text-[#FF392B]'||row.status==='instock'&&'text-[#279F51]'||row.status==='shipping'&&'text-black'||row.status==='Refund'&&'text-[#FFA000]'}`}>{row.stock_status}</Text>
+          <Text className={`${row.stock_status==='Out of Stock'&&'text-[#FF392B]'||row.stock_status==='instock'&&'text-[#279F51]'||row.status==='shipping'&&'text-black'||row.status==='Refund'&&'text-[#FFA000]'}`}>{row.stock_status}</Text>
         </Box>
       },
       {
