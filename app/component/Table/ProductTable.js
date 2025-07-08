@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import axiosInstance from '@/app/api/Api_Instance'
 import { useToast } from '@chakra-ui/react'
+import { useQueryClient } from '@tanstack/react-query'
 // import imp from '../../main_pages/Dashboard/AddProduct'
 import {
   Menu,
@@ -21,11 +22,12 @@ import {
 
 export const TableOptions=({id})=>{
   const toast = useToast()
+   const queryClient = useQueryClient();
   const [deleteLoader, setDeleteLoader] = useState(false)
   const deleteFunc=(id)=>{
      setDeleteLoader(true)
      axiosInstance.delete(`/api/v1/products/${id}`).then((resp)=>{
-      setDeleteLoader(false)
+       queryClient.invalidateQueries()
         toast({
       title: "Delete",
       description: 'Order Deleted successfully',

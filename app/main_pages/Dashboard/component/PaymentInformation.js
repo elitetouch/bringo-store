@@ -69,7 +69,7 @@ const router = useRouter()
         axiosInstance
       .post('/api/v1/payment-information', formData)
       .then((resp) => {
-        setBusinessLoader(false);
+   
         // router.push('/');
        setBusinessData({
     beneficiaryName:'',
@@ -88,6 +88,7 @@ const router = useRouter()
             position: 'top-right',
           });
           router.push('../../main_pages/Dashboard/existing_user_dashboard')
+               setBusinessLoader(false);
       })
       .catch((error) => {
         setBusinessLoader(false);
