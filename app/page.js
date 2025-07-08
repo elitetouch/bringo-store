@@ -189,9 +189,12 @@ You’re now in the driver’s seat of your store’s operations. This app is bu
                 <Text className=" text-[20px] lg:block hidden">Welcome</Text>
                 <Text className=" text-[20px] mt-[10px] lg:block hidden">let's get started!</Text>
                 <Box className=" mt-[20px]">
-                  <Text className=" text-[15px] ">
-                    Please use your credentials to login. If you are not a member, please register <span onClick={()=>router.push('/./main_pages/sign_up')} className=" text-[#85CB14]">here.</span> 
+                  <Box className=" flex items-center gap-x-[5px]">
+                  <Text  className=" text-[15px] ">
+                    Please use your credentials to login. If you are not a member, please register 
                   </Text>
+                  <Text cursor={'pointer'}><span onClick={()=>router.push('/./main_pages/sign_up')} className=" text-[#85CB14]">here.</span> </Text>
+                  </Box>
                 </Box>
               </Box>
               <Box className=" grid gap-y-[15px] mt-[40px] w-11/12">

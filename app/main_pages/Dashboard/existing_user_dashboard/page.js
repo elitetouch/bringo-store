@@ -95,7 +95,7 @@ function Page() {
                               </Box>
                           </Box>
                           <Box className=' grid gap-y-[20px] w-11/12 m-auto pt-[20px]'>
-                          {SellingProduct.map((item)=>{
+                          {SellingProduct.length>0?SellingProduct.map((item)=>{
                             return(
                                 <Box key={item.id} className=' flex items-center gap-x-[20px] w-full'>
                         <Box>
@@ -121,7 +121,11 @@ function Page() {
                         </Box>
                      </Box>
                             )
-                          })}
+                          }):<Box>
+                            <Box className=' mt-[20px] text-center'>
+                              <Text>No Available Product</Text>
+                            </Box>
+                            </Box>}
 
                           </Box>
                     
