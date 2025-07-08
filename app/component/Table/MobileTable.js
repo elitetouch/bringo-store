@@ -6,54 +6,54 @@ import productOne from '../../../public/productOne.svg'
 import productTwo from '../../../public/productTwo.svg'
 import productThree from '../../../public/productThree.svg'
 import Image from 'next/image'
-const Data=[{
-    id:1,
-    orderID:'#53200002',
-    date:'Jan 10, 2020',
-    customer:'Ronald Jones',
-    shopper:'Muyango',
-    price:'UGX910.71',
-    status:'Pending',
-    // actions:'KES 450,000',
-    // balance:'KES 0.00'
-    productOne:productOne,
-    productTwo:productTwo,
-    productThree:productThree,
-    remainingItems:8
-  },
-{
-    id:2,
-    orderID:'#53200003',
-    date:'Sep 4, 2020',
-    customer:'Jacob Mckinney',
-    shopper:'Kene pope',
-    price:'UGX675.51',
-    status:'Completed',
-    // actions:'KES 450,000',
-    // balance:'KES 0.00'
-    productOne:productTwo,
-    productTwo:productThree,
-    productThree:productOne,
-    remainingItems:5
-  },
-  {
-    id:3,
-    orderID:'#53200003',
-    date:'Sep 4, 2020',
-    customer:'Jacob Mckinney',
-    shopper:'Kene pope',
-    price:'UGX675.51',
-    status:'Completed',
-    // actions:'KES 450,000',
-    // balance:'KES 0.00'
-    productOne:productTwo,
-    productTwo:productThree,
-    productThree:productOne,
-    remainingItems:2
-  }
+// const Data=[{
+//     id:1,
+//     orderID:'#53200002',
+//     date:'Jan 10, 2020',
+//     customer:'Ronald Jones',
+//     shopper:'Muyango',
+//     price:'UGX910.71',
+//     status:'Pending',
+//     // actions:'KES 450,000',
+//     // balance:'KES 0.00'
+//     productOne:productOne,
+//     productTwo:productTwo,
+//     productThree:productThree,
+//     remainingItems:8
+//   },
+// {
+//     id:2,
+//     orderID:'#53200003',
+//     date:'Sep 4, 2020',
+//     customer:'Jacob Mckinney',
+//     shopper:'Kene pope',
+//     price:'UGX675.51',
+//     status:'Completed',
+//     // actions:'KES 450,000',
+//     // balance:'KES 0.00'
+//     productOne:productTwo,
+//     productTwo:productThree,
+//     productThree:productOne,
+//     remainingItems:5
+//   },
+//   {
+//     id:3,
+//     orderID:'#53200003',
+//     date:'Sep 4, 2020',
+//     customer:'Jacob Mckinney',
+//     shopper:'Kene pope',
+//     price:'UGX675.51',
+//     status:'Completed',
+//     // actions:'KES 450,000',
+//     // balance:'KES 0.00'
+//     productOne:productTwo,
+//     productTwo:productThree,
+//     productThree:productOne,
+//     remainingItems:2
+//   }
 
-  ]
-
+//   ]
+const Data = []
 export const TableCard=({item})=>{
       const [handleDropDown, setHandleDropDown]= useState(false)
     const handleDropDownFunc=()=>{

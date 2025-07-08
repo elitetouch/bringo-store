@@ -13,9 +13,12 @@ import { ProfileInfo } from '@/app/api/reactQuery'
 import { StoreInfo } from '@/app/api/reactQuery'
 import { useSearchParams } from "next/navigation";
 import { useRouter } from 'next/navigation'
+import { useQueryClient } from '@tanstack/react-query'
 //import imp from '../../../main_pages/Dashboard/Subscription'
 function Page() {
   const router = useRouter()
+  const queryClient = useQueryClient();
+ 
   const searchParams = useSearchParams(); 
   const newSupermarket = searchParams.get('newSupermarket');
 //To get profile information
@@ -69,7 +72,9 @@ console.log(storeInfo?.data?.data?.data?.data)
           {businessData &&<Box className=' grid w-full'>
             <DashboardCard storeTracker={Object?.keys(businessData).length > 0 && newSupermarket === null?100:0} routeFunc={()=>setFormPage(1)} formPage={formPage} title={'Business Information'} />
           </Box>}
-          {businessData &&<Box className=' grid  w-full'>
+          {businessData &&<Box cursor={'pointer'}
+          onClick={()=> queryClient.invalidateQueries()}
+          className=' grid  w-full'>
             <DashboardCard storeTracker={storeData?.length > 0&& newSupermarket === null?100:0} routeFunc={()=>{Object?.keys(businessData).length > 0?setFormPage(0):alert('Please Fill in Business Information and Subscribe')}} formPage={formPage} title={'Store Information'} />
           </Box>}
           <Box className=' grid w-full'>
