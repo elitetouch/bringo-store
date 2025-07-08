@@ -18,6 +18,7 @@ import Subscrption from '../component/Subscrption'
 import { ProfileInfo } from '@/app/api/reactQuery'
 import { useQueryClient } from '@tanstack/react-query'
 import axiosInstance from '@/app/api/Api_Instance'
+import { useToast } from '@chakra-ui/react'
 //import imp from '../../../main_pages/Dashboard/new_user_dashboard'
 export const SocialMedia =()=>{
   return(
@@ -193,6 +194,7 @@ export const CreditCardInfo=({value,changes})=>{
 
 function Page() {
     const queryClient = useQueryClient();
+    const toast = useToast()
    const profile= ProfileInfo()
      const ProfileObject= profile?.data?.data?.user || ''
      console.log(ProfileObject)
@@ -245,8 +247,16 @@ const [editLoader, setEditLoader]= useState(false)
   },
 }).then((resp)=>{
   console.log(resp)
+  queryClient.invalidateQueries()
   setEditLoader(false)
-   queryClient.invalidateQueries()
+    toast({
+      title: "Profile",
+      description:'Profile Edit successfull',
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
 }).catch((error)=>{
   setEditLoader(false)
   console.log(error)})
