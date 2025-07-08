@@ -77,7 +77,7 @@ const Validation = () => {
   const errors = {};
   const requiredFields = [
     'storeName', 'email', 'country',
-    'bussinessType', 'addressOne', 'addressTwo',
+    'bussinessType', 'addressOne',
     'city', 'postalCode', 'state', 'bussiness_id','signed_document'
   ];
 
@@ -103,16 +103,16 @@ const [submitStoreReturn, setSubmitStoreReturn]= useState({})
         formData.append('business_id', storeInfo.bussiness_id)
         formData.append('business_type', storeInfo.bussinessType)
         formData.append('address', storeInfo.addressOne)
-        formData.append('address_2', storeInfo.addressTwo)
+       storeInfo.addressTwo && formData.append('address_2', storeInfo.addressTwo)
         formData.append('city', storeInfo.city)
         formData.append('city_2', storeInfo.city)
-        formData.append('postal_code',storeInfo.postalCode)
-        formData.append('postal_code_2', storeInfo.postalCode)
+        storeInfo.postalCode&&formData.append('postal_code',storeInfo.postalCode)
+        storeInfo.postalCode&&formData.append('postal_code_2', storeInfo.postalCode)
         formData.append('state', storeInfo.state)
         formData.append('state_2', storeInfo.state)
         formData.append('country', storeInfo.country)
         formData.append('country_of_reg', storeInfo.country)
-        formData.append('store_logo', storeInfo.Shop_Logo)
+       storeInfo.Shop_Logo && formData.append('store_logo', storeInfo.Shop_Logo)
           axiosInstance
         .post('/api/v1/store-information', formData)
         .then((resp) => {

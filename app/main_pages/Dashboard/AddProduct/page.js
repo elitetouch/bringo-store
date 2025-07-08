@@ -180,7 +180,9 @@ formData.append("price[suggested_amount]", addProduct.sug_amount);//
 
 // Append images (File objects)
 images.forEach((file, index) => {
-  formData.append(`images[${index}]`, file);
+  if (file) {
+    formData.append(`images[${index}]`, file);
+  }
 });
 axiosInstance.post(`/api/v1/products`, formData).then((resp)=>{
    queryClient.invalidateQueries()

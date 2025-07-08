@@ -77,7 +77,7 @@ const [err, setErr]= useState({})
     const Validation = () =>{  
       const errors={}    
       // State parameters to be made compulsory in the form for submission to go through //
-      const objectKeys=[ 'companyName','taxNumber','cao','certificate','logo','fullName','idNumber','idType'
+      const objectKeys=[ 'companyName','taxNumber','cao','certificate','fullName','idNumber','idType'
          ]
       objectKeys.forEach((field)=>{
        if(!paymentData[field]){
@@ -361,7 +361,16 @@ values={paymentData.fullName}
                  dropDownOpt={[{
                   title:'ID',
                   value:'id'
-                 }]}
+                 },
+                {
+                  title:'NIN',
+                  value:'NIN'
+                 },
+                   {
+                  title:'Driver License',
+                  value:'License'
+                 },
+                ]}
                 placing={Object?.keys(SingleBussinessData).length > 0?SingleBussinessData.repIdType:'Select ID type'}
                 />
    {err?.idType && (
@@ -378,7 +387,7 @@ values={paymentData.idNumber}
   <p className="text-red-600 text-[12px] pt-[5px]">Please input your ID number</p>
 )}
                           </Box>
-  <DashboardFileUpload attachFile={setPaymentData} names={'cerfification'} label={'*Certificate of Registration'} />
+ { paymentData.idType != '' && <DashboardFileUpload attachFile={setPaymentData} names={'cerfification'} label={`Upload ${paymentData.idType}`||'*Certificate of Registration'} />}
                         </Box>
       </Box>
 

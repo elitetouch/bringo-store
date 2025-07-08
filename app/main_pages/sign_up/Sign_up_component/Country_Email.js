@@ -18,7 +18,7 @@ function Country_Email({signUpDetails,handleSignUpChange, setSignUpDetails}) {
                   </Text>
                 </Box>
               </Box>
-              <Box className=" grid gap-y-[15px] mt-[40px] w-11/12 mx-auto lg:mx-0">
+              <Box className=" grid gap-y-[20px] mt-[40px] w-11/12 mx-auto lg:mx-0">
               <Box>
                 <DropDown onChangeFunc={handleSignUpChange} currentValue={signUpDetails} />
                 <p className=' italic text-[12px] text-white pt-[8px]'>Only for sellers registered & selling in their own country</p>

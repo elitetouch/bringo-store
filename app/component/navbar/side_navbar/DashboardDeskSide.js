@@ -26,11 +26,13 @@ import { SingletoreInfo } from '@/app/api/reactQuery'
 import { ProfileInfo } from '@/app/api/reactQuery'
 import axiosInstance from '@/app/api/Api_Instance'
 import { QueryClient } from '@tanstack/react-query'
+import { BusinessInfo } from '@/app/api/reactQuery'
+//import imp from '../../../main_pages/Dashboard/new_user_dashboard'
 export const ProfileComponent =({toogleSideMenu, profileData})=>{
   const router = useRouter()
   
   return (
-     <Box border="1px" borderColor="gray.300" borderRadius="lg" className=' border border-red-900 rounded-lg mt-[20px] mb-[20px] h-[50px] grid items-center'>
+     <Box border="1px" borderColor="gray.300" borderRadius="lg" className=' border border-red-900 rounded-lg mt-[20px] mb-[20px] min-h-[50px] grid items-center'>
          <Box className=' flex items-center gap-x-[10px] w-11/12 m-auto  '>
           <Box >
              {/* <Image alt='' src={user} /> */}
@@ -109,13 +111,16 @@ console.log(error)
   // const message = encodeURIComponent('Hello! I’d like to chat with you via WhatsApp.');
 
   // const url = `https://wa.me/${phoneNumber}?text=${message}`;
+  const data= BusinessInfo()
+  const businessData = data?.data?.data?.data
+  console.log(businessData)
   const storeInfo = StoreInfo()
   const storeData = storeInfo?.data?.data?.data
   console.log(storeData)
   const ErrorPops =()=>{
       toast({
       title: "Error",
-      description:'Please Complete your Store set up and Subscribe',
+      description:Object.keys(businessData).length < 1&&'Please Complete your Businness information and Subscribe'||ProfileObject?.subStatus&&'Please Set Up Your store and payment information',
       status: "error",
       duration: 5000,
       isClosable: true,
@@ -174,17 +179,17 @@ console.log(error)
          </Box>
       </Box>
       </Box>
-           { ProfileObject?.defaultStoreId !=null?<Box  cursor={'pointer'} 
+           { ProfileObject?<Box  cursor={'pointer'} 
             //onClick={()=>{router.push('/../../../main_pages/Dashboard/Market')}} 
             border="1px" borderColor="gray.300" borderRadius="lg"  className=' rounded-lg grid items-center w-full border border-gray-700 h-[70px] mt-[20px] lg:mt-[30px] lg:mb-[20px] mb-[10px]'>
               <Box className='  flex items-center justify-between w-11/12 m-auto '>
                 <Box 
                 cursor={'pointer'}
-                onClick={()=>{router.push(`/../../../main_pages/Dashboard/Market?marketId=${ProfileObject?.defaultStoreId}`)}} 
+                onClick={()=>{ProfileObject?.defaultStoreId && router.push(`/../../../main_pages/Dashboard/Market?marketId=${ProfileObject?.defaultStoreId}`)}} 
                 className='  flex items-center gap-x-[10px]'>
                   <Box>
                     {/* <Image alt='' src={SingleStoreDetails?.storeLogo} width={50} height={60} /> */}
-                  <svg
+                { ProfileObject?.defaultStoreId? <svg
   width="48"
   height="48"
   viewBox="0 0 48 48"
@@ -216,14 +221,14 @@ console.log(error)
     strokeLinecap="round"
     strokeLinejoin="round"
   />
-</svg>
+</svg>:<Image alt='' src={supermarket} width={50} height={60} />}
 
 
                   </Box>
                   {(!toogleSideMenu) && <Box className=' text-[14px]'>
                     <Text className=' text-[#B0B0B0]'>Company</Text>
-                    <Text className=' font-bold mt-[10px] text-[#535961]'>
-                      {SingleStoreDetails?.storeName} market</Text>
+                    {SingleStoreDetails?.storeName?<Text className=' font-bold mt-[10px] text-[#535961]'>
+                      {SingleStoreDetails?.storeName} market</Text>:<Box cursor={'pointer'} onClick={()=>router.push(`/../../../main_pages/Dashboard/new_user_dashboard`)}><Text className=' font-semibold'>Add Market</Text></Box>}
                   </Box>}
                 </Box>
                {!toogleSideMenu && <Box zIndex={0}  className=' z-90 bg-white'>
@@ -255,9 +260,7 @@ console.log(error)
                 </Menu>
                 </Box>}
               </Box>
-            </Box>:<ProfileComponent
-            profileData={ProfileObject}
-            toogleSideMenu={toogleSideMenu}/>}
+            </Box>:''}
             {/* <Box className=' lg:mb-[20px] mb-[10px]' >
               <ProfileComponent
               toogleSideMenu={toogleSideMenu}
@@ -324,6 +327,25 @@ console.log(error)
                           )
                         })
                       }
+                       <Box 
+                             // onClick={()=>ProfileObject?.defaultStoreId === null && ErrorPops()}
+                            >
+                           <Box  cursor={'pointer'}
+                          onClick={()=>{
+                         router.push(`/../../../main_pages/Dashboard/new_user_dashboard`)
+                          }}
+                            className=' text-[15px] hover:bg-[#E6F1EF] hover:font-semibold duration-500 h-[50px] grid items-center rounded-lg'>
+                              <Box className=' flex items-center justify-between w-11/12 m-auto'>
+                                  <Box className=' flex items-center gap-x-[10px] '>
+                           <Box><svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M3.22476 0C1.44378 0 0 1.44377 0 3.22476V14C0 16.2091 1.79086 18 4 18H16C18.2091 18 20 16.2091 20 14V7.55556C20 5.34684 18.2105 3.55556 16.001 3.55556H12.8897C12.8498 3.49686 12.8038 3.42219 12.7518 3.32912C12.6109 3.07715 12.4738 2.78111 12.3166 2.44151C12.2793 2.36093 12.2409 2.27786 12.201 2.19239C12.0098 1.7827 11.7781 1.30151 11.5099 0.919752C11.2873 0.602865 10.8009 0 10.0138 0H3.22476ZM10.4876 3.25176C10.5332 3.35036 10.5804 3.45243 10.6288 3.55556H2V3.22476C2 2.54834 2.54834 2 3.22476 2H9.82195C9.83679 2.01884 9.85396 2.04178 9.87344 2.0695C10.026 2.28671 10.1903 2.61316 10.3886 3.0382C10.4206 3.10678 10.4537 3.17835 10.4876 3.25176ZM4 16C2.89543 16 2 15.1046 2 14V5.55556H12.4782C12.4808 5.55561 12.4834 5.55566 12.4861 5.55569C12.4975 5.55584 12.5089 5.5558 12.5203 5.55556H16.001C17.1051 5.55556 18 6.45056 18 7.55556V8H16C14.3431 8 13 9.34315 13 11C13 12.6569 14.3431 14 16 14H18C18 15.1046 17.1046 16 16 16H4ZM15 11C15 10.4477 15.4477 10 16 10H18V12H16C15.4477 12 15 11.5523 15 11ZM9.75138 1.92323C9.7514 1.92272 9.75553 1.92566 9.76374 1.93356C9.75548 1.92769 9.75137 1.92374 9.75138 1.92323Z" fill="#535961"/>
+</svg>
+</Box>
+                            <Box>Store Setup</Box>
+                                 </Box>
+                              </Box>
+                            </Box>
+                            </Box>
                     </Box>
                     </Box>
 
@@ -362,7 +384,7 @@ console.log(error)
                     </Box>
                   </Box>
       </Box>
-     { ProfileObject?.defaultStoreId != null && <Box className=' pt-[30px]'>
+     { ProfileObject && <Box className=' pt-[30px]'>
       <ProfileComponent
       profileData={ProfileObject}
       toogleSideMenu={toogleSideMenu}

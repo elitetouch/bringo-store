@@ -21,9 +21,12 @@ import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
+import { Products } from '@/app/api/reactQuery'
+//import imp from '../../../main_pages/Dashboard/AddProduct'
 export const SwitchStoreDropDown=({stores})=>{
      const searchParams = useSearchParams(); 
       const marketId = searchParams.get('marketId');
+      
     const queryClient = useQueryClient();
     const toast = useToast()
     const [switchLoader, setSwitchLoader]= useState(false)
@@ -146,7 +149,41 @@ export const MarketCard=({item})=>{
     return(
         <Box>
             <Box className=' grid items-center justify-center w-full h-[170px] rounded-lg bg-[#F6F6F6]'>
-                <Image alt='' src={item.images} />
+                <svg
+  width="60"
+  height="60"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <circle cx="24" cy="24" r="24" fill="#F3F4F6" />
+
+
+  <path
+    d="M12 16L24 8L36 16V32L24 40L12 32V16Z"
+    stroke="#4B5563"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+  <path
+    d="M12 16L24 24L36 16"
+    stroke="#4B5563"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+  <path
+    d="M24 24V40"
+    stroke="#4B5563"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  />
+</svg>
+
+                
+                {/* <Image alt='' src={item.images} /> */}
                        {/* <svg
   width="48"
   height="48"
@@ -183,18 +220,18 @@ export const MarketCard=({item})=>{
             </Box>
             <Box className=' pt-[10px] w-11/12 m-auto'>
                 <Box className=' flex items-center justify-between mt-[10px]'>
-                    <Text className=' text-[13px]'>{item.name || ''}</Text>
-                    <Text className=' text-[13px]'>{item.price|| ''}</Text>
+                    <Text className=' text-[13px] font-semibold'>{item?.product_title || ''}</Text>
+                    <Text className=' text-[13px]'>{item?.price?.amount|| ''}</Text>
                 </Box>
                 <Box className=' flex items-center justify-between mt-[10px]'>
                     <Box className=' flex items-center items-center gap-x-[5px]'>
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M7.90104 1.83301L9.96104 6.00634L14.5677 6.67968L11.2344 9.92634L12.021 14.513L7.90104 12.3463L3.78104 14.513L4.56771 9.92634L1.23438 6.67968L5.84104 6.00634L7.90104 1.83301Z" fill="#FFD500" stroke="#FFD500" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
-                        <Text className=' text-[13px]'>{item.rating || ''}({item.quantity || ''})</Text>
+                        <Text className=' text-[13px]'>{item?.rating || ''}({item?.quantity || ''})</Text>
                     </Box>
                     <Box>
-                        <Text className=' text-[13px]'>{item.weight || ''}</Text>
+                        <Text className=' text-[13px]'>{item?.stock_status || ''}</Text>
                     </Box>
                 </Box>
             </Box>
@@ -202,8 +239,12 @@ export const MarketCard=({item})=>{
     )
 }
 function Page() {
+  const router = useRouter()
      const searchParams = useSearchParams(); 
       const marketId = searchParams.get('marketId');
+       const product = Products()
+        console.log(product?.data?.data?.products)
+        const ProductArray= product?.data?.data?.products || []
         const[SingleStoreDetails, setSingleStoreDetails]= useState('')
    useEffect(()=>{
 axiosInstance.get(`/api/v1/store-information/${marketId}`).then((resp)=>{
@@ -346,9 +387,10 @@ onChange={handleChange}
 </Select>
                     </Box>
                 </Box>
-                {/* <Box className=' grid lg:grid-cols-5 mt-[20px] gap-x-[20px] gap-y-[30px] pb-[20px]'>
+                <Box>
+                {ProductArray?.length > 0?<Box className=' grid lg:grid-cols-5 mt-[20px] gap-x-[20px] gap-y-[30px] pb-[20px]'>
                     {
-                        MarketData.map((item)=>{
+                        ProductArray?.map((item)=>{
                             return(
                                 <Box key={item.id}>
                                     <MarketCard
@@ -358,14 +400,18 @@ onChange={handleChange}
                             )
                         })
                     }
-                </Box> */}
+                </Box>:
                 <Box>
                     <Text className=' text-center mt-[20px] mb-[20px] pt-[20px]'>No Product Available</Text>
+                </Box>
+}
                 </Box>
             </Box>
             <Box className=' grid justify-center mt-[15px] pb-[20px]'>
                 <Box>
-                    <Button backgroundColor={'transparent'} className=' h-[44px]'
+                    <Button
+                    onClick={()=>router.push(`/../../../main_pages/Dashboard/AddProduct`)}
+                    backgroundColor={'transparent'} className=' h-[44px]'
                     border="1px" borderColor="gray.300" borderRadius="lg"
                     >
                         <Box className=' flex items-center gap-x-[10px]'>
@@ -381,7 +427,7 @@ onChange={handleChange}
 </svg>
 
                             <Text className=' text-[15px]'>
-                                Load more
+                                Add Product
                             </Text>
                         </Box>
                     </Button>

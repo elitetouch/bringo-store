@@ -16,6 +16,8 @@ import {
 import { useRouter } from 'next/navigation'
 import Subscrption from '../component/Subscrption'
 import { ProfileInfo } from '@/app/api/reactQuery'
+import { useQueryClient } from '@tanstack/react-query'
+import axiosInstance from '@/app/api/Api_Instance'
 //import imp from '../../../main_pages/Dashboard/new_user_dashboard'
 export const SocialMedia =()=>{
   return(
@@ -190,15 +192,16 @@ export const CreditCardInfo=({value,changes})=>{
 }
 
 function Page() {
+    const queryClient = useQueryClient();
    const profile= ProfileInfo()
      const ProfileObject= profile?.data?.data?.user || ''
      console.log(ProfileObject)
   const router = useRouter()
   const [subscription, setSuscription]= useState(false)
     const [pages, setPages] = useState(0)
-    const [editProfile, setEditProfile] = useState({
-      firstName:'',
-      lastName:'',
+    const formdata = {
+      fullName:'',
+     // lastName:'',
        password:'',
                   phoneNumber:'',
                   date:'',
@@ -208,14 +211,46 @@ function Page() {
       expiryDate:'',
       creditNumber:'',
       creditFullName:''
-    })
+    }
+    const [editProfile, setEditProfile] = useState(formdata)
     const editFuncChange=(e)=>{
       setEditProfile({...editProfile,[e.target.name]:e.target.value})
     }
-    
+       const getChangedFields = () => {
+  const changed = {};
+
+  for (const key in editProfile) {
+    if (editProfile[key] !== formdata[key]) {
+      changed[key] = editProfile[key];
+    }
+  }
+
+  return changed;
+};
+const [editLoader, setEditLoader]= useState(false)
    const SubmitEditFuncChange=()=>{
     console.log(editProfile)
+    setEditLoader(true)
+    const changedFields = getChangedFields();
     const formData= new FormData()
+    
+    changedFields?.fullname && formData.append('fullname',changedFields?.fullname)
+    changedFields?.password && formData.append('password',changedFields?.password)
+    changedFields?.password && formData.append('password_confirmation',changedFields?.password)
+     changedFields?.email && formData.append('email',changedFields?.email)
+     changedFields?.phoneNumber && formData.append('phone',changedFields?.phoneNumber)
+    axiosInstance.post(`/api/v1/edit-profile`, formData,{
+  headers: {
+    'Content-Type': 'multipart/form-data', // Let Axios set the boundary
+  },
+}).then((resp)=>{
+  console.log(resp)
+  setEditLoader(false)
+   queryClient.invalidateQueries()
+}).catch((error)=>{
+  setEditLoader(false)
+  console.log(error)})
+  // alert('Error')
    }
     const [changePassword, setChangePassword] = useState({
       currentPassword:'',
@@ -307,7 +342,7 @@ console.log(billingInfo)
                             </Box>
         </Box>
         
-        <Box className=' grid lg:grid-cols-6 lg:w-11/12 m-auto'>
+        <Box className=' grid lg:grid-cols-6 lg:pl-[10px] lg:pr-[10px] m-auto'>
           <Box className=' lg:col-span-2 mt-[20px]'>
             <Box className=' bg-white rounded-lg w-11/12 m-auto mb-[20px]'>
             <Box className=' w-11/12 m-auto'>
@@ -357,7 +392,7 @@ console.log(billingInfo)
 
                   </Box>
                   <Text className=' mt-[10px] font-semibold text-center'>{ProfileObject?.fullname || ''}</Text>
-                  <Box className=' flex items-center gap-x-[5px] justify-center '>
+                  <Box className=' flex items-center gap-x-[5px] justify-center pb-[20px] '>
                     <Text className=' text-[14px]'>{ProfileObject?.email || ''}</Text>
                     <IconButton 
                     icon={<svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -366,11 +401,11 @@ console.log(billingInfo)
 }
                     backgroundColor={'transparent'} />
                   </Box>
-                  <Box className=' mt-[10px]'>
+                  {/* <Box className=' mt-[10px]'>
                     <Text className=' text-[15px] text-center text-[#4B5563] font-semibold'>Linked with Social media</Text>
-                  </Box>
+                  </Box> */}
               </Box>
-             <Box>
+             {/* <Box>
               <SocialMedia />
              </Box>
               <Box className=' grid  mt-[10px] pb-[20px] justify-center'>
@@ -387,7 +422,7 @@ console.log(billingInfo)
  <Text color={'#454545'} className=' text-[14px]'>Social media</Text>  
                     </Box>
                   </Button>
-              </Box>
+              </Box> */}
 
             </Box>
             </Box>
@@ -511,22 +546,30 @@ values={changePassword.confirmPassword}
                 </Box>
               </Box>
               <Box className=' pt-[20px]'>
-                <Box className=' grid lg:grid-cols-2 gap-x-[20px] gap-y-[20px]'>
-                  <Box>
+                 <Box className=''>
+                    <DashBoardInput 
+placing={ProfileObject?.fullname || 'Naruto Uzumaki'} 
+names={'fullname'} 
+values={editProfile.firstName}
+ handleChange={editFuncChange}
+  label={'Full Name'}/> 
+                  </Box>
+                <Box className=' grid lg:grid-cols-2 gap-x-[20px] gap-y-[20px] mt-[20px]'>
+                  {/* <Box>
                     <DashBoardInput placing={'Naruto'} 
 names={'firstName'} 
 values={editProfile.firstName}
  handleChange={editFuncChange}
   label={'First Name'} /> 
   
-                  </Box>
-                  <Box>
+                  </Box> */}
+                  {/* <Box>
                     <DashBoardInput placing={'Uzumaki'} 
 names={'lastName'} 
 values={editProfile.lastName}
  handleChange={editFuncChange}
   label={'Last Name'} /> 
-                  </Box>
+                  </Box> */}
                   <Box>
                     <DashBoardInput placing={'2345267'} 
 names={'password'} 
@@ -542,12 +585,12 @@ values={editProfile.password}
                     values={editProfile.phoneNumber}
                      names={'phoneNumber'} 
                      label={'Phone Number'}
-                     placing={'+256- 89070943'}
+                     placing={ProfileObject?.phone ||'+256- 89070943'}
                      changes={editFuncChange}
                      />
                   </Box>
                   <Box>
-                    <DashBoardInput placing={'Narutouzumaki@gmail.com'} 
+                    <DashBoardInput placing={ProfileObject?.email ||'Narutouzumaki@gmail.com'} 
 names={'email'} 
 values={editProfile.email}
  handleChange={editFuncChange}
@@ -564,14 +607,16 @@ values={editProfile.date}
                 </Box>
                 <Box>
                    <Box className=' mt-[20px]'>
-                    <DashBoardInput placing={'Plot 2, Parliament Avenue, Kampala, Uganda.'} 
+                    <DashBoardInput placing={ProfileObject?.country ||'Plot 2, Parliament Avenue, Kampala, Uganda.'} 
 names={'location'} 
 values={editProfile.location}
  handleChange={editFuncChange}
   label={'Location'} /> 
                   </Box>
                       <Box className=' w-11/12 m-auto grid justify-end mt-[20px]'>
-      <Button onClick={SubmitEditFuncChange} height={42} backgroundColor={'#007460'}>
+      <Button
+      isLoading={editLoader}
+      onClick={SubmitEditFuncChange} height={42} backgroundColor={'#007460'}>
                     <Text color={'white'} className=' text-[14px]'>Submit</Text>
                   </Button>
     </Box>
@@ -585,7 +630,7 @@ values={editProfile.location}
               <Box></Box>
             </Box>
             <Box className=' mt-[20px] w-11/12 m-auto'>
-              <Text className=' text-[18px] font-bold'>Shops</Text>
+              <Text className=' text-[18px] font-bold'>Shop</Text>
               <Box  border="1px" borderColor="gray.300" borderRadius="lg" className='  h-[68px] grid items-center mt-[10px]'>
               <Box className=' flex justify-between w-11/12 m-auto items-center'>
               <Text className=' lg:text-[18px] text-[14px]'>Nakasero market</Text>

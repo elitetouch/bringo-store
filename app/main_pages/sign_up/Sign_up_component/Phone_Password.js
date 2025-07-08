@@ -10,7 +10,7 @@ function Phone_Password({signUpDetails, handleSignUpChange}) {
         <Text className=' text-[20px] font-bold'>Create your account</Text>
         <Text className=' text-[15px] pt-[20px]'>Please, enter your phone number and password to create an account.</Text>
       </Box>
-       <Box className=' grid gap-y-[16px] mt-[40px]'>
+       <Box className=' grid gap-y-[20px] mt-[40px]'>
          <Box className=' flex items-center gap-x-[10px]'>
            <Box>
              <Number_country countryDetails={signUpDetails} />

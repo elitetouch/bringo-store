@@ -44,6 +44,10 @@ export default function Home() {
     setSignUpPage(signUpPage + 1)
     console.log(signUpPage)
   }
+  const reduce_pagination_function =()=>{
+    setSignUpPage(signUpPage - 1)
+    console.log(signUpPage)
+  }
   const router = useRouter()
   const toast = useToast()
   const formdata={
@@ -203,7 +207,7 @@ You’re now in the driver’s seat of your store’s operations. This app is bu
           </Box>
             <Box className="  col-span-4 min-h-screen hidden  lg:grid items-center bg-[#0E4940]">
               <Box>
-              <Box className=" w-9/12 m-auto ">
+              <Box className=" w-10/12 m-auto ">
               <Box className=" flex items-center gap-x-[10px]">
                 <Box>
                  <Image alt="" src={bringologo} />
@@ -218,9 +222,10 @@ You’re now in the driver’s seat of your store’s operations. This app is bu
                   {signUpPage===2 && <OTP profile={profile||''} setSignUpPage={setSignUpPage} />}
                    {/* {signUpPage===3 && <Shop_Setup signUpDetails={signUpDetails} handleSignUpChange={handleSignUpChange} />} */}
              </div>
-              {signUpPage!= 2 && <Box className=" mt-[15px]">
-                <Unboarding_submit button_text={signUpPage===1?'Submit':'Next'} submit_loader={signUpLoader} submit_func={signUpPage === 1?handleFormSubmission:pagination_function} />
-               </Box>}
+              <Box className=" mt-[15px] flex item-center gap-x-[10px]">
+                {signUpPage!= 0 &&<Unboarding_submit button_text={'Prev'}  submit_func={reduce_pagination_function} />}
+                {signUpPage!= 2 && <Unboarding_submit button_text={signUpPage===1?'Submit':'Next'} submit_loader={signUpLoader} submit_func={signUpPage === 1?handleFormSubmission:pagination_function} />}
+               </Box>
               </Box>
             <Box className=" mt-[70px]">
             <Box className=" grid justify-center w-full">

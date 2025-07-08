@@ -189,7 +189,7 @@ You’re now in the driver’s seat of your store’s operations. This app is bu
                 <Text className=" text-[20px] lg:block hidden">Welcome</Text>
                 <Text className=" text-[20px] mt-[10px] lg:block hidden">let's get started!</Text>
                 <Box className=" mt-[20px]">
-                  <Box className=" flex items-center gap-x-[5px]">
+                  <Box className=" flex gap-x-[5px]">
                   <Text  className=" text-[15px] ">
                     Please use your credentials to login. If you are not a member, please register 
                   </Text>
