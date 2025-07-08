@@ -21,6 +21,8 @@ function Page() {
  
   const searchParams = useSearchParams(); 
   const newSupermarket = searchParams.get('newSupermarket');
+  const reference = searchParams.get('reference');
+   reference && queryClient.invalidateQueries()
 //To get profile information
 const profile= ProfileInfo()
 const ProfileObject= profile?.data?.data?.user
