@@ -112,6 +112,7 @@ const [submitStoreReturn, setSubmitStoreReturn]= useState({})
         formData.append('state_2', storeInfo.state)
         formData.append('country', storeInfo.country)
         formData.append('country_of_reg', storeInfo.country)
+        storeInfo.signed_document&&formData.append('signed_document', storeInfo.signed_document)
        storeInfo.Shop_Logo && formData.append('store_logo', storeInfo.Shop_Logo)
           axiosInstance
         .post('/api/v1/store-information', formData)
