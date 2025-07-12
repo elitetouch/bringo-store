@@ -6,56 +6,57 @@ import productOne from '../../../public/productOne.svg'
 import productTwo from '../../../public/productTwo.svg'
 import productThree from '../../../public/productThree.svg'
 import Image from 'next/image'
-  const Data=[{
-     id:1,
-     orderID:'#WM020231',
-     price:'UGX20.00',
-     orderName:'Watermelon',
-     weight:'0.5kg',
-     quantity:'56',
-     date:'04/17/23 at 8:25 PM',
-     status:'Pending',
-     productOne:productOne,
-     customer:'Ronald Jones',
-     shopper:'Muyango',
-     // actions:'KES 450,000',
-     // balance:'KES 0.00'
-     productTwo:productTwo,
-     productThree:productThree,
-     remainingItems:8,
-   },
- {
-     id:2,
-     orderID:'#53200003',
-     price:'UGX20.00',
-     orderName:'Watermelon',
-     weight:'0.5kg',
-     quantity:'56',
-     date:'04/17/23 at 8:25 PM',
-     status:'Pending',
-     productOne:productOne,
-     customer:'Ronald Jones',
-    shopper:'Kene pope',
-     productOne:productTwo,
-     productTwo:productThree,
-     productThree:productOne,
-     remainingItems:5,
-   },
-   {
-     id:3,
-     orderID:'#53200003',
-     date:'Sep 4, 2020',
-     customer:'Jacob Mckinney',
-     shopper:'Kene pope',
-     price:'UGX675.51',
-     status:'Completed',
-     // actions:'KES 450,000',
-     // balance:'KES 0.00'
-     productOne:productTwo,
-     productTwo:productThree,
-     productThree:productOne,
-     remainingItems:2
-   }
+  const Data=[
+//     {
+//      id:1,
+//      orderID:'#WM020231',
+//      price:'UGX20.00',
+//      orderName:'Watermelon',
+//      weight:'0.5kg',
+//      quantity:'56',
+//      date:'04/17/23 at 8:25 PM',
+//      status:'Pending',
+//      productOne:productOne,
+//      customer:'Ronald Jones',
+//      shopper:'Muyango',
+//      // actions:'KES 450,000',
+//      // balance:'KES 0.00'
+//      productTwo:productTwo,
+//      productThree:productThree,
+//      remainingItems:8,
+//    },
+//  {
+//      id:2,
+//      orderID:'#53200003',
+//      price:'UGX20.00',
+//      orderName:'Watermelon',
+//      weight:'0.5kg',
+//      quantity:'56',
+//      date:'04/17/23 at 8:25 PM',
+//      status:'Pending',
+//      productOne:productOne,
+//      customer:'Ronald Jones',
+//     shopper:'Kene pope',
+//      productOne:productTwo,
+//      productTwo:productThree,
+//      productThree:productOne,
+//      remainingItems:5,
+//    },
+//    {
+//      id:3,
+//      orderID:'#53200003',
+//      date:'Sep 4, 2020',
+//      customer:'Jacob Mckinney',
+//      shopper:'Kene pope',
+//      price:'UGX675.51',
+//      status:'Completed',
+//      // actions:'KES 450,000',
+//      // balance:'KES 0.00'
+//      productOne:productTwo,
+//      productTwo:productThree,
+//      productThree:productOne,
+//      remainingItems:2
+//    }
  
    ]
 
@@ -214,11 +215,13 @@ function MobileOrderTable() {
   
   return (
     <div className=' lg:hidden grid gap-y-[15px] bg-white pt-[20px] pb-[20px]'>
-      {Data.map((item)=>{
+      {Data.length>0?Data.map((item)=>{
         return(
             <TableCard key={item.id} item={item} />
         )
-      })  }
+      }):<Box>
+        <Text className=' mt-[20px] text-center'>No Available Data</Text>
+      </Box>  }
     </div>
   )
 }

@@ -1,5 +1,5 @@
 'use client'
-import { Text, Box } from "@chakra-ui/react";
+import { Text, Box, Button } from "@chakra-ui/react";
 import Learn_More from "./component/Buttons/Learn_More";
 import Image from "next/image";
 import bringologo from '../public/bringologo.svg'
@@ -37,6 +37,7 @@ export const Login_mobile=({signInDetails,handleSignInChange,signInLoader,handle
   />
 </svg>
 } />
+<Box>
  <Unboarding_input password values={signInDetails.password} handleChange={handleSignInChange} names={'password'} placing={'Password'} icon={<svg
   width="20"
   height="20"
@@ -59,6 +60,14 @@ export const Login_mobile=({signInDetails,handleSignInChange,signInLoader,handle
 </svg>
 
 } />
+<Box className=" w-full grid justify-end mt-[2px]">
+  <Button 
+    onClick={()=>router.push(`/./main_pages/ForgetPassword`)}
+  backgroundColor={'transparent'} height={'fit-content'}>
+  <Text className=" text-[14px] text-right text-white pt-[5px] pb-[5px]">Forgot Password</Text>
+  </Button>
+</Box>
+</Box>
               </Box>   
                <Box className=" mt-[20px] w-10/12 m-auto pb-[20px] ">
                 <Unboarding_submit button_text={'Login'} submit_loader={signInLoader} submit_func={handleFormSubmission} />
@@ -198,7 +207,7 @@ You’re now in the driver’s seat of your store’s operations. This app is bu
                 </Box>
               </Box>
               <Box className=" grid gap-y-[15px] mt-[40px] w-11/12">
-                 <Unboarding_input values={signInDetails.email} handleChange={handleSignInChange} names={'email'} placing={'Email'} icon={<svg
+                 <Unboarding_input rememberMe  values={signInDetails.email} handleChange={handleSignInChange} names={'email'} placing={'Email'} icon={<svg
   width="20"
   height="20"
   viewBox="0 0 20 20"
@@ -213,7 +222,8 @@ You’re now in the driver’s seat of your store’s operations. This app is bu
   />
 </svg>
 } />
- <Unboarding_input password values={signInDetails.password} handleChange={handleSignInChange} names={'password'} placing={'Password'} icon={<svg
+<Box>
+ <Unboarding_input rememberMe password values={signInDetails.password} handleChange={handleSignInChange} names={'password'} placing={'Password'} icon={<svg
   width="20"
   height="20"
   viewBox="0 0 20 20"
@@ -235,6 +245,14 @@ You’re now in the driver’s seat of your store’s operations. This app is bu
 </svg>
 
 } />
+<Box className=" w-full grid justify-end mt-[12px]">
+  <Button
+   onClick={()=>router.push(`/./main_pages/ForgetPassword`)}
+  backgroundColor={'transparent'} height={'fit-content'}>
+  <Text className=" text-[14px] text-right text-white pt-[5px] pb-[5px]">Forgot Password</Text>
+  </Button>
+</Box>
+</Box>
               </Box>
                <Box className=" mt-[15px]">
                 <Unboarding_submit button_text={'Login'} submit_loader={signInLoader} submit_func={handleFormSubmission} />

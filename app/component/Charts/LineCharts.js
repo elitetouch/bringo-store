@@ -26,85 +26,70 @@ Chart.register(
 
 function LineCharts() {
   const chartRef = useRef(null);
+const [isEmptyData, setIsEmptyData] = React.useState(false);
 
-  useEffect(() => {
-    let chartInstance = null;
+useEffect(() => {
+  if (!chartRef.current) return;
 
-    if (chartRef.current) {
-      const context = chartRef.current.getContext('2d');
+  const context = chartRef.current.getContext('2d');
 
-      // Full dataset and labels
-      const dataPoints = [0, 0, 0, 25, 25, 25, 25, 25, 70, 80, 70, 90, 350];
-      const labels = [
-        '0', 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
-        'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC',
-      ];
+  const dataPoints = [0, 0, 0, 0, 0];
+  const labels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY'];
 
-      // Get the last 5 data points and corresponding labels
-      const visibleData = dataPoints.slice(-5);
-      const visibleLabels = labels.slice(-5);
+  const allZero = dataPoints.every(val => val === 0);
+  const emptyData = dataPoints.length === 0;
 
-      const maxValue = Math.max(...visibleData);
-      const suggestedMax = Math.ceil(maxValue + maxValue * 0.1); // Add 10% padding
+  if (emptyData || allZero) {
+    setIsEmptyData(true);
+    return;
+  }
 
-      chartInstance = new Chart(context, {
-        type: 'line',
-        data: {
-          labels: visibleLabels,
-          datasets: [
-            {
-              label: 'Monthly Data',
-              data: visibleData,
-              borderColor: 'green',
-              borderWidth: 2,
-              fill: false,
-              tension: 0.4,
-              pointRadius: 4,
-              pointHoverRadius: 6,
-            },
-          ],
+  setIsEmptyData(false); // there's valid data
+
+  // your existing chart setup
+  const chartInstance = new Chart(context, {
+    type: 'line',
+    data: {
+      labels: labels.slice(-5),
+      datasets: [
+        {
+          label: 'Monthly Data',
+          data: dataPoints.slice(-5),
+          borderColor: 'green',
+          borderWidth: 2,
+          fill: false,
+          tension: 0.4,
+          pointRadius: 4,
+          pointHoverRadius: 6,
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false,
-            },
-            tooltip: {
-              mode: 'index',
-              intersect: false,
-            },
-          },
-         scales: {
-  x: {
-    grid: {
-      display: false,
+      ],
     },
-  },
-  y: {
-    beginAtZero: true,
-    suggestedMax: suggestedMax,
-    suggestedMin: 0,
-    grid: {
-      display: true,
-    },
-    ticks: {
-      stepSize: 100, // <- fixed Y axis interval
-    },
-  },
-},
-
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { mode: 'index', intersect: false },
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: {
+          beginAtZero: true,
+          suggestedMax: 100,
+          suggestedMin: 0,
+          grid: { display: true },
+          ticks: { stepSize: 100 },
         },
-      });
+      },
+    },
+  });
 
-      return () => {
-        if (chartInstance) {
-          chartInstance.destroy();
-        }
-      };
-    }
-  }, []);
+  return () => {
+    chartInstance.destroy();
+  };
+}, []);
+
+
 
   return (
     <Box className=' bg-white rounded-lg pt-[20px] w-full'>
@@ -127,9 +112,14 @@ function LineCharts() {
                 </Box>
             </Box>
         </Box>
-    <div className="w-11/12 m-auto pb-[20px] mt-[30px]" style={{ height: '300px' }}>
-      <canvas ref={chartRef} />
-    </div>
+   <div className="w-11/12 m-auto pb-[20px] mt-[30px]" style={{ height: '300px' }}>
+  {isEmptyData ? (
+    <Text textAlign="center" color="gray.500">No data available</Text>
+  ) : (
+    <canvas ref={chartRef} />
+  )}
+</div>
+
 
         </Box>
     </Box>

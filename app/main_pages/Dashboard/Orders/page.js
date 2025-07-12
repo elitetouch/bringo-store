@@ -44,18 +44,18 @@ function Page() {
            <Box className='flex  items-center gap-x-[20px] bg-white w-11/12 m-auto mt-[15px] pb-[15px] '>
            <Box className=' w-[108px] lg:grid hidden'>
             <Text className=' text-[#1570EF]'>Total Orders</Text>
-            <Text className=' text-[14px]  mt-[15px]'>2280</Text>
+            <Text className=' text-[14px]  mt-[15px]'>0</Text>
             <Text className=' text-[#858D9D] mt-[15px]'>Last 7 days</Text>
            </Box>
            <Box className=' grid lg:grid-cols-3 w-full grid-cols-2 gap-y-[20px] gap-x-[10px]'>
             <Box className=' w-11/12 m-auto lg:hidden grid'>
             <Text className=' text-[#1570EF]'>Total Orders</Text>
-            <Text className=' text-[14px]  mt-[15px]'>2280</Text>
+            <Text className=' text-[14px]  mt-[15px]'>0</Text>
             <Text className=' text-[#858D9D] text-[14px] mt-[15px]'>Last 7 days</Text>
            </Box>
-        <OrderBreakDown title={'Total Received'} last_title={'Revenue'} sum={'32'} price={'UGX 25000'} />
-        <OrderBreakDown title={'Total Returned'} last_title={'Cost'} sum={'5'} price={'UGX 2500'}/>
-        <OrderBreakDown title={'On the way'} last_title={'Cost'} sum={'12'} price={'UGX 2356'}/>
+        <OrderBreakDown title={'Total Received'} last_title={'Revenue'} sum={'0'} price={'0'} />
+        <OrderBreakDown title={'Total Returned'} last_title={'Cost'} sum={'0'} price={'0'}/>
+        <OrderBreakDown title={'On the way'} last_title={'Cost'} sum={'0'} price={'0'}/>
            </Box>
            </Box>
 
@@ -92,16 +92,16 @@ function Page() {
           <Box className=' grid lg:grid-cols-4 grid-cols-2 items-center lg:gap-x-[20px] lg:w-10/12 m-auto '>
             
               <Button _hover={{backgroundColor:'#E6F1EF', color:'#007460'}} backgroundColor={'transparent'} color={'#737373'} height={30} width={''}>
-                <Text className=' text-[14px] font-semiBold'>All Orders (144)</Text>
+                <Text className=' text-[14px] font-semiBold'>All Orders (0)</Text>
               </Button>
               <Button _hover={{backgroundColor:'#E6F1EF', color:'#007460'}} backgroundColor={'transparent'} color={'#737373'} height={30} width={''}>
-                <Text className=' text-[14px] font-semiBold'>Shipping (100)</Text>
+                <Text className=' text-[14px] font-semiBold'>Shipping (0)</Text>
               </Button>
               <Button _hover={{backgroundColor:'#E6F1EF', color:'#007460'}} backgroundColor={'transparent'} color={'#737373'} height={30} width={''}>
-                <Text className=' text-[14px] font-semiBold'>Completed (300)</Text>
+                <Text className=' text-[14px] font-semiBold'>Completed (0)</Text>
               </Button>
               <Button _hover={{backgroundColor:'#E6F1EF', color:'#007460'}} backgroundColor={'transparent'} color={'#737373'} height={30} width={''}>
-                <Text className=' text-[14px] font-semiBold'>Cancel (41)</Text>
+                <Text className=' text-[14px] font-semiBold'>Cancel (0)</Text>
               </Button>
             
           </Box>

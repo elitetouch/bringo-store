@@ -51,3 +51,10 @@ export const Orders =()=>{
             axiosInstance.get('')})
         return {isPending, error, data }
 }
+export const LogOutFunction =()=>{
+    const { isPending, error, data } = useQuery({
+        queryKey: ['LogOut'],
+        queryFn: () =>
+            axiosInstance.get('/api/v1/logout')})
+        return {isPending, error, data }
+}

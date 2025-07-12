@@ -27,6 +27,7 @@ import { ProfileInfo } from '@/app/api/reactQuery'
 import axiosInstance from '@/app/api/Api_Instance'
 import { QueryClient } from '@tanstack/react-query'
 import { BusinessInfo } from '@/app/api/reactQuery'
+import { LogOutFunction } from '@/app/api/reactQuery'
 //import imp from '../../../main_pages/Dashboard/new_user_dashboard'
 export const ProfileComponent =({toogleSideMenu, profileData})=>{
   const router = useRouter()
@@ -129,6 +130,44 @@ console.log(error)
     // alert('""')
   }
   const [showModal, setShowModal]= useState(false)
+  const [logOutLoader, setLogOutLoader]= useState(false)
+  const LogOutFunc=()=>{
+    setLogOutLoader(true)
+   axiosInstance.get('/api/v1/logout').then((resp)=>{
+    console.log(resp)
+    setLogOutLoader(false)
+      toast({
+      title: "Success",
+      description:'Log Out Sucessfull',
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
+    router.push('/')
+   }).catch((error)=>{
+    setLogOutLoader(false)
+      toast({
+      title: "Error",
+      description:'Error in Loging Out',
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
+   })
+
+  }
+  const SetUpStoreQuery=()=>{
+     toast({
+      title: "Error",
+      description:'Please Fill in store information before you proceed',
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
+  }
   return (
     <div className={`  ${(!toogleSideMenu)?'lg:w-[280px] w-full':'w-[110px]'} custom-scrollbar lg:overflow-y-auto h-screen`}>
       <Box className=' w-11/12 lg:flex flex-col  justify-between m-auto lg:pt-[20px] pt-[15px] pb-[32px] '>
@@ -179,13 +218,14 @@ console.log(error)
          </Box>
       </Box>
       </Box>
-           { ProfileObject?<Box  cursor={'pointer'} 
-            //onClick={()=>{router.push('/../../../main_pages/Dashboard/Market')}} 
+           { ProfileObject?
+           <Box  cursor={'pointer'} 
+         
             border="1px" borderColor="gray.300" borderRadius="lg"  className=' rounded-lg grid items-center w-full border border-gray-700 h-[70px] mt-[20px] lg:mt-[30px] lg:mb-[20px] mb-[10px]'>
               <Box className='  flex items-center justify-between w-11/12 m-auto '>
                 <Box 
                 cursor={'pointer'}
-                onClick={()=>{ProfileObject?.defaultStoreId && router.push(`/../../../main_pages/Dashboard/Market?marketId=${ProfileObject?.defaultStoreId}`)}} 
+                   onClick={()=>{ProfileObject?.defaultStoreId? router.push(`/../../../main_pages/Dashboard/Market?marketId=${ProfileObject?.defaultStoreId}`):SetUpStoreQuery()}} 
                 className='  flex items-center gap-x-[10px]'>
                   <Box>
                     {/* <Image alt='' src={SingleStoreDetails?.storeLogo} width={50} height={60} /> */}
@@ -232,10 +272,8 @@ console.log(error)
                   </Box>}
                 </Box>
                {!toogleSideMenu && <Box zIndex={0}  className=' z-90 bg-white'>
-                <Menu >
-                  <MenuButton  as={'button'}>
-                    {/* <Button backgroundColor={'#007460'} color={'white'}> */}
-                   <svg
+                <IconButton backgroundColor={'transparent'}
+                icon={<svg
   width="20"
   height="10"
   viewBox="0 0 20 10"
@@ -249,15 +287,10 @@ console.log(error)
        C0.393286 0.716812 0.412465 1.34969 0.814637 1.7282Z"
     fill="#535961"
   />
-</svg>
-                                        {/* </Button> */}
-                  </MenuButton>
-                  {storeData?.length > 0 && <MenuList zIndex={90}  >
-                   {/* <SwitchStoreDropDown
-                   stores={storeData}
-                   /> */}
-                  </MenuList>}
-                </Menu>
+</svg>}
+                   onClick={()=>{ProfileObject?.defaultStoreId? router.push(`/../../../main_pages/Dashboard/Market?marketId=${ProfileObject?.defaultStoreId}`):SetUpStoreQuery()}} 
+                />
+               
                 </Box>}
               </Box>
             </Box>:''}
@@ -337,11 +370,26 @@ console.log(error)
                             className=' text-[15px] hover:bg-[#E6F1EF] hover:font-semibold duration-500 h-[50px] grid items-center rounded-lg'>
                               <Box className=' flex items-center justify-between w-11/12 m-auto'>
                                   <Box className=' flex items-center gap-x-[10px] '>
-                           <Box><svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M3.22476 0C1.44378 0 0 1.44377 0 3.22476V14C0 16.2091 1.79086 18 4 18H16C18.2091 18 20 16.2091 20 14V7.55556C20 5.34684 18.2105 3.55556 16.001 3.55556H12.8897C12.8498 3.49686 12.8038 3.42219 12.7518 3.32912C12.6109 3.07715 12.4738 2.78111 12.3166 2.44151C12.2793 2.36093 12.2409 2.27786 12.201 2.19239C12.0098 1.7827 11.7781 1.30151 11.5099 0.919752C11.2873 0.602865 10.8009 0 10.0138 0H3.22476ZM10.4876 3.25176C10.5332 3.35036 10.5804 3.45243 10.6288 3.55556H2V3.22476C2 2.54834 2.54834 2 3.22476 2H9.82195C9.83679 2.01884 9.85396 2.04178 9.87344 2.0695C10.026 2.28671 10.1903 2.61316 10.3886 3.0382C10.4206 3.10678 10.4537 3.17835 10.4876 3.25176ZM4 16C2.89543 16 2 15.1046 2 14V5.55556H12.4782C12.4808 5.55561 12.4834 5.55566 12.4861 5.55569C12.4975 5.55584 12.5089 5.5558 12.5203 5.55556H16.001C17.1051 5.55556 18 6.45056 18 7.55556V8H16C14.3431 8 13 9.34315 13 11C13 12.6569 14.3431 14 16 14H18C18 15.1046 17.1046 16 16 16H4ZM15 11C15 10.4477 15.4477 10 16 10H18V12H16C15.4477 12 15 11.5523 15 11ZM9.75138 1.92323C9.7514 1.92272 9.75553 1.92566 9.76374 1.93356C9.75548 1.92769 9.75137 1.92374 9.75138 1.92323Z" fill="#535961"/>
+                           <Box><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M4 7L5.5 4H18.5L20 7" stroke="#C8CAD8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="3" y="7" width="18" height="4" rx="1" stroke="#C8CAD8" stroke-width="2"/>
+  <path d="M5 11V19H10V14H14V19H19V11" stroke="#C8CAD8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(15, 15)">
+    <circle cx="3" cy="3" r="2.5" stroke="#C8CAD8" stroke-width="1.5"/>
+    <path d="M3 0V1" stroke="#C8CAD8" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M3 5V6" stroke="#C8CAD8" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M0 3H1" stroke="#C8CAD8" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M5 3H6" stroke="#C8CAD8" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M1.2 1.2L1.9 1.9" stroke="#C8CAD8" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M4.1 4.1L4.8 4.8" stroke="#C8CAD8" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M1.2 4.8L1.9 4.1" stroke="#C8CAD8" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M4.1 1.9L4.8 1.2" stroke="#C8CAD8" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
 </svg>
+
+
 </Box>
-                            <Box>Store Setup</Box>
+                             {(!toogleSideMenu) && <Box>Store Setup</Box>}
                                  </Box>
                               </Box>
                             </Box>
@@ -380,6 +428,21 @@ console.log(error)
                           )
                         })
                       }
+                         <Box  cursor={'pointer'}
+                          onClick={()=>{
+                         LogOutFunc()
+                          }}
+                            className=' text-[15px] hover:bg-[#E6F1EF] hover:font-semibold duration-500 h-[50px] grid items-center rounded-lg'>
+                              <Box className=' flex items-center justify-between w-11/12 m-auto'>
+                                  <Box className=' flex items-center gap-x-[10px] '>
+                           <Box><svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fillRule="evenodd" clipRule="evenodd" d="M3.22476 0C1.44378 0 0 1.44377 0 3.22476V14C0 16.2091 1.79086 18 4 18H16C18.2091 18 20 16.2091 20 14V7.55556C20 5.34684 18.2105 3.55556 16.001 3.55556H12.8897C12.8498 3.49686 12.8038 3.42219 12.7518 3.32912C12.6109 3.07715 12.4738 2.78111 12.3166 2.44151C12.2793 2.36093 12.2409 2.27786 12.201 2.19239C12.0098 1.7827 11.7781 1.30151 11.5099 0.919752C11.2873 0.602865 10.8009 0 10.0138 0H3.22476ZM10.4876 3.25176C10.5332 3.35036 10.5804 3.45243 10.6288 3.55556H2V3.22476C2 2.54834 2.54834 2 3.22476 2H9.82195C9.83679 2.01884 9.85396 2.04178 9.87344 2.0695C10.026 2.28671 10.1903 2.61316 10.3886 3.0382C10.4206 3.10678 10.4537 3.17835 10.4876 3.25176ZM4 16C2.89543 16 2 15.1046 2 14V5.55556H12.4782C12.4808 5.55561 12.4834 5.55566 12.4861 5.55569C12.4975 5.55584 12.5089 5.5558 12.5203 5.55556H16.001C17.1051 5.55556 18 6.45056 18 7.55556V8H16C14.3431 8 13 9.34315 13 11C13 12.6569 14.3431 14 16 14H18C18 15.1046 17.1046 16 16 16H4ZM15 11C15 10.4477 15.4477 10 16 10H18V12H16C15.4477 12 15 11.5523 15 11ZM9.75138 1.92323C9.7514 1.92272 9.75553 1.92566 9.76374 1.93356C9.75548 1.92769 9.75137 1.92374 9.75138 1.92323Z" fill="#535961"/>
+</svg>
+</Box>
+                              {(!toogleSideMenu) &&<Box>Log Out</Box>}
+                                 </Box>
+                              </Box>
+                            </Box>
                     </Box>
                     </Box>
                   </Box>

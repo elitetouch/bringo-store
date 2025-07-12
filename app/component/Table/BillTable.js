@@ -23,24 +23,25 @@ function BillTable({setDisplayBtn}) {
       },
     
   ]
-  const Data=[{
-    id:1,
-    invoice:'Service fee - 01.04.2025 - 31.05.2025',
-    billed:'50,000',
-    date:'01.05.2025'
-  },
-{
-    id:2,
-   invoice:'Service fee - 01.04.2025 - 31.05.2025',
-    billed:'50,000',
-    date:'01.05.2025'
-  },
-  {
-    id:3,
-     invoice:'Service fee - 01.04.2025 - 31.05.2025',
-    billed:'50,000',
-    date:'01.05.2025'
-  }
+  const Data=[
+//     {
+//     id:1,
+//     invoice:'Service fee - 01.04.2025 - 31.05.2025',
+//     billed:'50,000',
+//     date:'01.05.2025'
+//   },
+// {
+//     id:2,
+//    invoice:'Service fee - 01.04.2025 - 31.05.2025',
+//     billed:'50,000',
+//     date:'01.05.2025'
+//   },
+//   {
+//     id:3,
+//      invoice:'Service fee - 01.04.2025 - 31.05.2025',
+//     billed:'50,000',
+//     date:'01.05.2025'
+//   }
 
   ]
   const customStyles = {

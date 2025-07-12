@@ -96,7 +96,7 @@ function DashboardNav() {
           borderLeft="1px" borderColor="gray.300" >
               <Box className=' flex items-center gap-x-[10px] m-auto w-fit pl-[10px] '>
                       <Box className=' relative'>
-                         {/* <Image alt='' src={user} /> */}
+                       {/* {ProfileObject?.userImage?  <Image alt='' src={ProfileObject?.userImage} width={20} height={20} />: */}
                          <svg
   width="40"
   height="40"
@@ -114,6 +114,7 @@ function DashboardNav() {
     fill="#9CA3AF"
   />
 </svg>
+{/* //} */}
                           <Box className=' h-[12px] w-[12px] rounded-full bg-[#23A149] absolute bottom-0 right-0'></Box>
                       </Box>
                       <Box className=' flex justify-between w-full text-[15px]'>

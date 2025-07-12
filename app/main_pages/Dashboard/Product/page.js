@@ -25,10 +25,10 @@ function page() {
 <path d="M7.33464 5.56453L0.667969 0.231201V10.8979L7.33464 5.56453Z" fill="#737373"/>
 </svg>
                               <Text className=' text-[#888888]'>Product</Text>
-                              <svg width="8" height="11" viewBox="0 0 8 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              {/* <svg width="8" height="11" viewBox="0 0 8 11" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M7.33464 5.56453L0.667969 0.231201V10.8979L7.33464 5.56453Z" fill="#737373"/>
 </svg>
-                               <Text className=' text-[#007460] font-semibold'>Fruits</Text>
+                               <Text className=' text-[#007460] font-semibold'>Fruits</Text> */}
                         </Box>
                     </Box>
                     <Box className=' lg:flex grid gap-y-[20px] items-center lg:justify-between w-11/12 m-auto mt-[32px]'>

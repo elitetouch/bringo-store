@@ -19,6 +19,7 @@ import { ProfileInfo } from '@/app/api/reactQuery'
 import { useQueryClient } from '@tanstack/react-query'
 import axiosInstance from '@/app/api/Api_Instance'
 import { useToast } from '@chakra-ui/react'
+import { useRef } from 'react'
 //import imp from '../../../main_pages/Dashboard/new_user_dashboard'
 export const SocialMedia =()=>{
   return(
@@ -201,6 +202,7 @@ function Page() {
   const router = useRouter()
   const [subscription, setSuscription]= useState(false)
     const [pages, setPages] = useState(0)
+   
     const formdata = {
       fullName:'',
      // lastName:'',
@@ -212,9 +214,28 @@ function Page() {
                    cvv:'',
       expiryDate:'',
       creditNumber:'',
-      creditFullName:''
+      creditFullName:'',
+      user_image:''
     }
     const [editProfile, setEditProfile] = useState(formdata)
+      const [fileName, setFileName] = useState('');
+    const inputRef = useRef(null);
+    const handleFileChange = (e) => {
+      const file = e.target.files[0];
+      const name = e.target.name;
+      if (file) {
+        setFileName(file.name);
+        if (setFileName && typeof setFileName === 'function') {
+          setEditProfile((prev) => ({
+            ...prev,
+            [name]: file
+          }));
+        }
+      }
+    };
+      const handleBoxClick = () => {
+        inputRef.current.click();
+      };
     const editFuncChange=(e)=>{
       setEditProfile({...editProfile,[e.target.name]:e.target.value})
     }
@@ -241,7 +262,8 @@ const [editLoader, setEditLoader]= useState(false)
     changedFields?.password && formData.append('password_confirmation',changedFields?.password)
      changedFields?.email && formData.append('email',changedFields?.email)
      changedFields?.phoneNumber && formData.append('phone',changedFields?.phoneNumber)
-    axiosInstance.post(`/api/v1/edit-profile`, formData,{
+     changedFields?.user_image && formData.append('user_image',changedFields?.user_image)
+     axiosInstance.post(`/api/v1/edit-profile`, formData,{
   headers: {
     'Content-Type': 'multipart/form-data', // Let Axios set the boundary
   },
@@ -257,6 +279,7 @@ const [editLoader, setEditLoader]= useState(false)
       isClosable: true,
       position: "top-right",
     });
+    setFileName('')
 }).catch((error)=>{
   setEditLoader(false)
   console.log(error)})
@@ -533,7 +556,9 @@ values={changePassword.confirmPassword}
                   </Box>
                   <Box className=' flex items-center gap-x-[10px]'>
                     <Box>
-                       <Button backgroundColor={'transparent'} border="1px" borderColor="gray.300" borderRadius="lg">
+                       <Button
+                        onClick={handleBoxClick}
+                       backgroundColor={'transparent'} border="1px" borderColor="gray.300" borderRadius="lg">
                     <Box className=' flex items-center gap-x-[5px]'>
                        <Text color={'#454545'} className=' text-[14px] lg:grid hidden'>Change Pictures</Text>
                       <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -541,6 +566,18 @@ values={changePassword.confirmPassword}
 </svg>                
                     </Box>
                   </Button>
+                     <Box className="flex items-center gap-2 overflow-hidden">
+                                              <input
+                                                type="file"
+                                                className="hidden"
+                                                ref={inputRef}
+                                                onChange={handleFileChange}
+                                                name={'user_image'}
+                                              />
+                                             { <Text className="text-[#666]" noOfLines={1}>
+                                                {fileName || ''}
+                                              </Text>}
+                                            </Box>
                     </Box>
                     <Box>
                       <Button border="1px" borderColor="gray.300" borderRadius="lg" height={42} backgroundColor={'transparent'}>

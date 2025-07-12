@@ -187,8 +187,8 @@ onClick={handleDropDownFunc}
                         <Text className=' text-right text-[14px] text-[#737373]'>Status</Text>
                     </Box>
                     <Box className=' col-span-3 text-[14px] font-semibold'>
-                        <Box className=' grid h-[29px] w-fit rounded-l-full rounded-r-full items-center justify-center bg-[#FFDCDC]'>
-                        <Text className=' text-[#FF0000] text-[12px] pl-[10px] pr-[10px]'>{item.stock_status}</Text>
+                        <Box className=' grid h-[29px] w-fit rounded-l-full rounded-r-full items-center justify-center bg-green-100'>
+                        <Text className=' text-green-600 text-[12px] pl-[10px] pr-[10px]'>{item.stock_status}</Text>
 
                         </Box>
                     </Box>

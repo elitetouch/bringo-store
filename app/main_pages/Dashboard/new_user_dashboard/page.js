@@ -63,7 +63,7 @@ console.log(storeInfo?.data?.data?.data?.data)
 
             </Box> */}
             <Box>
-              <Text className=' text-[15px] text-white font-semibold'>Suscribe</Text>
+              <Text className=' text-[15px] text-white font-semibold'>Subscribe</Text>
             </Box>
           </Box>
         </Button>
