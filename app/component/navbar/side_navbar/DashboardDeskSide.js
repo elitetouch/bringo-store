@@ -121,7 +121,7 @@ console.log(error)
   const ErrorPops =()=>{
       toast({
       title: "Error",
-      description:Object.keys(businessData).length < 1&&'Please Complete your Businness information and Subscribe'||ProfileObject?.subStatus&&'Please Set Up Your store and payment information',
+      description:Object.keys(businessData).length < 1&&'Please Complete your Business information and Subscribe'||ProfileObject?.subStatus&&'Please Set Up Your store and payment information',
       status: "error",
       duration: 5000,
       isClosable: true,
@@ -138,7 +138,7 @@ console.log(error)
     setLogOutLoader(false)
       toast({
       title: "Success",
-      description:'Logged Out Sucessfully',
+      description:'Logged Out Successfully',
       status: "success",
       duration: 5000,
       isClosable: true,

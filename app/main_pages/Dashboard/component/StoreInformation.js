@@ -192,7 +192,7 @@ const [submitStoreReturn, setSubmitStoreReturn]= useState({})
 } names={'storeName'} values={storeInfo.storeName} handleChange={handleInputChange} label={'Store Name'} />   
  {err?.storeName ? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please input Store name</p>
-):<p className="text-red-600 text-[12px] pt-[5px]">required</p>}
+):<p className="text-red-600 text-[12px] pt-[5px]"></p>}
                   </Box>
 {/* <Box>
 <DashBoardInput placing={'Uganda'}  names={'countryReg'} values={storeInfo.countryReg} handleChange={handleInputChange} label={'Country of registration'} /> 
@@ -219,7 +219,7 @@ const [submitStoreReturn, setSubmitStoreReturn]= useState({})
 } names={'email'} values={storeInfo.email} handleChange={handleInputChange} label={'Email'} />   
  {err?.email? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include email</p>
-):<p className="text-red-600 text-[12px] pt-[5px]">required</p>}
+):<p className="text-red-600 text-[12px] pt-[5px]"></p>}
 </Box>
             {/* <Box>
                 <Text className=' text-[15px] font-semibold'>
@@ -245,25 +245,25 @@ const [submitStoreReturn, setSubmitStoreReturn]= useState({})
                 />}
                    {err?.bussiness_id ? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please select Bussiness name</p>
-):<p className="text-red-600 text-[12px] pt-[5px]">required</p>}
+):<p className="text-red-600 text-[12px] pt-[5px]"></p>}
 {/* <p className="text-gray-600 text-[12px] pt-[5px]">Create a new bussiness information on bussiness information tab </p> */}
                 </Box>
                 <Box>
               <DashBoardInput placing={'Limited'}  names={'bussinessType'} values={storeInfo.bussinessType} handleChange={handleInputChange} label={'Business type'} /> 
                  {err?.bussinessType? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include Business type</p>
-):<p className="text-red-600 text-[12px] pt-[5px]">required</p>}
+):<p className="text-red-600 text-[12px] pt-[5px]"></p>}
                 </Box>
                 <Box>
                 <DashboardFileUpload attachFile={setStoreInfo} names={'Shop_Logo'} label={'Upload Shop Logo'} />
-                <p className="text-red-600 text-[12px] pt-[5px]">required</p>
+                <p className="text-red-600 text-[12px] pt-[5px]"></p>
                 </Box>
                 <Box>
                   
                <DashBoardInput placing={'Floor/house, apartment, block'}  names={'addressOne'} values={storeInfo.addressOne} handleChange={handleInputChange} label={'Address line 1'} /> 
                  {err?.addressOne ? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include First address</p>
-):<p className="text-red-600 text-[12px] pt-[5px]">required</p>} 
+):<p className="text-red-600 text-[12px] pt-[5px]"></p>} 
                 </Box>
                 <Box>
                <DashBoardInput placing={'Floor/house, apartment, No, building..'}  names={'addressTwo'} values={storeInfo.addressTwo} handleChange={handleInputChange} label={'Address line 2'} /> 
@@ -276,7 +276,7 @@ const [submitStoreReturn, setSubmitStoreReturn]= useState({})
               <DashBoardInput placing={'District/province'}  names={'city'} values={storeInfo.city} handleChange={handleInputChange} label={'City/Town'} /> 
                 {err?.city? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include City name</p>
-):<p className="text-red-600 text-[12px] pt-[5px]">required</p>}   
+):<p className="text-red-600 text-[12px] pt-[5px]"></p>}   
                 </Box>
                 <Box>
               <DashBoardInput placing={'State/region'}  names={'state'} values={storeInfo.state}
@@ -284,13 +284,13 @@ const [submitStoreReturn, setSubmitStoreReturn]= useState({})
                {/* <LocationInput updateStates={setStoreInfo} state names={'state'} values={storeInfo.state} label={'State/Region'} /> */}
                   {err?.state?(
   <p className="text-red-600 text-[12px] pt-[5px]">Please include State</p>
-):<p className="text-red-600 text-[12px] pt-[5px]">required</p>}   
+):<p className="text-red-600 text-[12px] pt-[5px]"></p>}   
                 </Box>
                 <Box>
               <DashBoardInput placing={'Postal code'}  names={'postalCode'} values={storeInfo.postalCode} handleChange={handleInputChange} label={'Postal code'} />
                  {err?.postalCode? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include Postal code</p>
-):<p className="text-red-600 text-[12px] pt-[5px]">required</p>}   
+):<p className="text-red-600 text-[12px] pt-[5px]"></p>}   
                 </Box>
 
                 <Box>
@@ -302,7 +302,7 @@ const [submitStoreReturn, setSubmitStoreReturn]= useState({})
                 />
                                    {err?.country? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include Country name</p>
-):<p className="text-red-600 text-[12px] pt-[5px]">required</p>}   
+):<p className="text-red-600 text-[12px] pt-[5px]"></p>}   
                 </Box>
               
               </Box>

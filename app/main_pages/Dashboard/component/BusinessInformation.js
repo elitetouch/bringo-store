@@ -265,7 +265,9 @@ const EditBusiness =(id)=>{
 } names={'companyName'} values={paymentData.companyName} handleChange={handlePaymentChange} label={'Company Name'} /> 
  {err?.companyName? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please input companys name</p>
-):<p className="text-red-600 text-[12px] pt-[5px]">required</p>}
+):
+<p className="text-red-600 text-[12px] pt-[5px]"></p>
+}
 
                         </Box>
 <DashBoardInput placing={''} 
@@ -280,7 +282,7 @@ values={paymentData.regNumber}
                        {/* <p className="text-red-600 text-[12px] pt-[5px]">required</p> */}
                           {err?.cao ? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please upload your CAC</p>
-):<p className="text-red-600 text-[12px] pt-[5px]">required</p>}
+):<p className="text-red-600 text-[12px] pt-[5px]"></p>}
 
                       </Box>
                       <Box>
@@ -289,13 +291,13 @@ values={paymentData.regNumber}
                        attachFile={setPaymentData} names={'certificate'} label={'*Certificate of Registration'} />  
                           {err?.certificate ? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please upload your Certificate of registration</p>
-):<p className="text-red-600 text-[12px] pt-[5px]">required</p>}
+):<p className="text-red-600 text-[12px] pt-[5px]"></p>}
                       </Box>
                       <Box>
                           <DashBoardInput placing={Object?.keys(SingleBussinessData).length > 0 ?SingleBussinessData.tin:''} names={'taxNumber'} values={paymentData.taxNumber} handleChange={handlePaymentChange} label={'Tax Identification Number (TIN)'} />               
  {err?.taxNumber? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please input Tax identification number</p>
-):<p className="text-red-600 text-[12px] pt-[5px]">required</p>}
+):<p className="text-red-600 text-[12px] pt-[5px]"></p>}
                       </Box>
                         <Box>
                         <DashboardFileUpload attachFile={setPaymentData} names={'taxIdentity'} label={'Upload Tax Identification Number (TIN)'} />
@@ -306,7 +308,7 @@ values={paymentData.regNumber}
                            {err?.logo && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please upload your company's logo</p>
 )}
-<p className="text-red-600 text-[12px] pt-[5px]">required</p>
+<p className="text-red-600 text-[12px] pt-[5px]"></p>
                         </Box>
                       </Box>
       </Box>
@@ -354,7 +356,7 @@ values={paymentData.fullName}
   label={'Full Name'} /> 
                      {err?.fullName? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please input your full name</p>
-):<p className="text-red-600 text-[12px] pt-[5px]">required</p>}
+):<p className="text-red-600 text-[12px] pt-[5px]"></p>}
                           </Box>
                           <Box>
    <CountryDropDown
@@ -379,7 +381,7 @@ values={paymentData.fullName}
                 />
    {err?.idType? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please select an appropriate ID type</p>
-):<p className="text-red-600 text-[12px] pt-[5px]">required</p>}
+):<p className="text-red-600 text-[12px] pt-[5px]"></p>}
                           </Box>
                           <Box>
                  <DashBoardInput placing={Object?.keys(SingleBussinessData).length > 0?SingleBussinessData.repIdNumber:'Enter ID number'} 
@@ -389,7 +391,7 @@ values={paymentData.idNumber}
   label={'*ID number'} /> 
  {err?.idNumber? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please input your ID number</p>
-):<p className="text-red-600 text-[12px] pt-[5px]">required</p>}
+):<p className="text-red-600 text-[12px] pt-[5px]"></p>}
                           </Box>
  { paymentData.idType != '' && <DashboardFileUpload attachFile={setPaymentData} names={'cerfification'} label={`Upload ${paymentData.idType}`||'*Certificate of Registration'} />}
                         </Box>

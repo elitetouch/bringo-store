@@ -72,7 +72,7 @@ console.log(storeInfo?.data?.data?.data?.data)
       <Box>
       <Box className=' lg:mt-[40px] mt-[20px] grid lg:grid-cols-3 justify-center grid-cols-2 gap-y-[15px] gap-x-[10px] lg:gap-x-[20px] w-11/12 m-auto'>
           {businessData &&<Box className=' grid w-full'>
-            <DashboardCard storeTracker={Object?.keys(businessData).length > 0 && newSupermarket === null?100:0} routeFunc={()=>setFormPage(1)} formPage={formPage} title={'Business Information'} />
+            <DashboardCard storeTracker={Object?.keys(businessData).length > 0 && newSupermarket === null?100:0} routeFunc={()=>setFormPage(1)} formPage={formPage} title={'Bussiness Information'} />
           </Box>}
           {businessData &&<Box cursor={'pointer'}
           onClick={()=> queryClient.invalidateQueries()}
