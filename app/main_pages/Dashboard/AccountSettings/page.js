@@ -567,7 +567,10 @@ values={changePassword.confirmPassword}
               </Box>
               <Box className=' mt-[10px] flex items-center justify-between '>
                 <Box className=' flex items-center gap-x-[20px]'>
-                  <Box>
+                  <Box
+                  cursor={'pointer'}
+                  onClick={handleBoxClick}
+                  >
                     <svg
   width="64"
   height="64"
@@ -604,7 +607,7 @@ values={changePassword.confirmPassword}
                         onClick={SubmitEditFuncChange}
                        backgroundColor={'transparent'} border="1px" borderColor="gray.300" borderRadius="lg">
                     <Box className=' flex items-center gap-x-[5px]'>
-                       <Text color={'#454545'} className=' text-[14px] lg:grid hidden'>Submit</Text>
+                       <Text color={'#454545'} className=' text-[14px] '>Submit</Text>
                           
                     </Box>
                   </Button>
