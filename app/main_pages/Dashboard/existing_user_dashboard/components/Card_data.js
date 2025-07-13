@@ -8,7 +8,7 @@ export const Card_data=[
     },
     {
         id:2,
-        card_title:'Total Customer',
+        card_title:'Total Customers',
         cardSum:'0',
         percentageIncrease:'0%',
          status:'increase'
@@ -22,7 +22,7 @@ export const Card_data=[
     },
     {
         id:4,
-        card_title:'Total Product',
+        card_title:'Total Products',
         cardSum:'0',
         percentageIncrease:'0%',
          status:'decrease'

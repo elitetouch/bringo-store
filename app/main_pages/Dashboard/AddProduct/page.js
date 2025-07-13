@@ -36,7 +36,9 @@ export const PriceInput=({names, values, changes, title, placing, currency})=>{
                         </Box>
       <Box className=' w-full pt-[10px]'>
 
-    <Box border="1px" borderColor="gray.300" borderRadius="lg" className=' w-full grid items-center '>
+    <Box 
+     border="1px" borderColor="gray.100"
+     borderRadius="lg" className=' w-full grid items-center rounded-lg '>
            <Box className=' border flex items-center rounded-lg'>
                <Box className=' h-[44px] w-[63px] grid items-center justify-center bg-gray-200'>
                    <Text className=' text-[#8A8A8A]'>{currency==='Kenya'&&'KSH'||currency==='Nigeria'&&'NG'||currency==='Uganda'&&'UGX'||'UGX'}</Text>

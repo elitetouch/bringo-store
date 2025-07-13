@@ -97,7 +97,7 @@ useEffect(() => {
         <Box>
             <Box borderBottom="1px" borderColor="gray.600" className=' flex items-center justify-between pb-[10px] w-11/12 m-auto'>
                 <Box>
-                    <Text className=' lg:text-[18px] font-semibold text-[12px]'>Sale Graph</Text>
+                    <Text className=' lg:text-[18px] font-semibold text-[12px]'>Sales Graph</Text>
                 </Box>
                 <Box className=' flex items-center gap-x-[10px]'>
                     <Button  position={'unset'} border="1px" borderColor="gray.300" borderRadius="lg" backgroundColor={'white'}>

@@ -20,7 +20,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import axiosInstance from '@/app/api/Api_Instance'
 import { useToast } from '@chakra-ui/react'
 import { useRef } from 'react'
-//import imp from '../../../main_pages/Dashboard/new_user_dashboard'
+//import imp from '../../../main_pages/ForgetPassword'
 export const SocialMedia =()=>{
   return(
      <Box className=' flex items-center gap-x-[10px] mt-[10px] justify-center'>
@@ -285,11 +285,12 @@ const [editLoader, setEditLoader]= useState(false)
   console.log(error)})
   // alert('Error')
    }
-    const [changePassword, setChangePassword] = useState({
+   const passReff={
       currentPassword:'',
       newPassword:'',
       confirmPassword:''
-    })
+    }
+    const [changePassword, setChangePassword] = useState(passReff)
     const passwordChange=(e)=>{
       setChangePassword({...changePassword,[e.target.name]:e.target.value})
         
@@ -300,7 +301,7 @@ const [editLoader, setEditLoader]= useState(false)
       const objectKeys=[ 'currentPassword','newPassword','confirmPassword'
          ]
       objectKeys.forEach((field)=>{
-       if(!signInDetails[field]){
+       if(!changePassword[field]){
          errors[field]= `Input ${field.replace(/_/g, " ")}`
      }
        errors[field]
@@ -309,9 +310,35 @@ const [editLoader, setEditLoader]= useState(false)
       //note:This function returns boolean which can be either true or false... Object.keys get an array of Keys //
       return Object.keys(errors).length === 0
      }
+     const [changePasswordLoader, setChangePasswordLoader] = useState(false)
      const submitPasswordFunc=()=>{
       if(Validation()){
         console.log(changePassword)
+        setChangePasswordLoader(true)
+        const formData= new FormData()
+        //formData.append('password',changePassword?.currentPassword)
+        formData.append('password_confirmation',changePassword?.confirmPassword)
+        formData.append('password',changePassword?.newPassword)
+         axiosInstance.post(`/api/v1/edit-profile`, formData,{
+      headers: {
+        'Content-Type': 'multipart/form-data', // Let Axios set the boundary
+      },
+    }).then((resp)=>{
+      console.log(resp)
+      queryClient.invalidateQueries()
+              setChangePasswordLoader(false)
+        toast({
+          title: "Password",
+          description:'Password changed successfull',
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "top-right",
+        });
+        setChangePassword(passReff)
+    }).catch((error)=>{
+              setChangePasswordLoader(false)
+      console.log(error)})
       }
      }
 //For billing validation//
@@ -482,7 +509,12 @@ values={changePassword.currentPassword}
   password
   types={'password'}
   />
-  <Text className=' text-[12px] text-[#007AFF] pt-[10px]'>Forgot Current Password? Click here</Text>
+  <Box
+  onClick={()=>router.push(`/../../../main_pages/ForgetPassword`)}
+  cursor={'pointer'}>
+  <Text  className=' text-[12px] text-[#007AFF] pt-[10px]'>Forgot Current Password? Click here</Text>
+
+  </Box>
               </Box>
               <Box>
                  <DashBoardInput placing={'Enter password'} 
@@ -505,7 +537,9 @@ values={changePassword.confirmPassword}
   />
               </Box>
               <Box className=' mt-[20px] w-7/12 m-auto pb-[20px]'>
-                <Button onClick={submitPasswordFunc} height={42} backgroundColor={'#007460'} className=' w-full'>
+                <Button
+                isLoading={changePasswordLoader}
+                onClick={submitPasswordFunc} height={42} backgroundColor={'#007460'} className=' w-full'>
                     <Text color={'white'} className=' text-[14px]'>Save Change</Text>
                   </Button>
               </Box>
@@ -556,7 +590,7 @@ values={changePassword.confirmPassword}
                   </Box>
                   <Box className=' flex items-center gap-x-[10px]'>
                     <Box>
-                       <Button
+                      { fileName===''?<Button
                         onClick={handleBoxClick}
                        backgroundColor={'transparent'} border="1px" borderColor="gray.300" borderRadius="lg">
                     <Box className=' flex items-center gap-x-[5px]'>
@@ -565,7 +599,16 @@ values={changePassword.confirmPassword}
 <path d="M9 2H3C1.89543 2 1 2.89543 1 4V16C1 17.1046 1.89543 18 3 18H15C16.1046 18 17 17.1046 17 16V10M6 13V10.5L14.75 1.75C15.4404 1.05964 16.5596 1.05964 17.25 1.75V1.75C17.9404 2.44036 17.9404 3.55964 17.25 4.25L12.5 9L8.5 13H6Z" stroke="#454545" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>                
                     </Box>
+                  </Button>:<Button
+                  isLoading={editLoader}
+                        onClick={SubmitEditFuncChange}
+                       backgroundColor={'transparent'} border="1px" borderColor="gray.300" borderRadius="lg">
+                    <Box className=' flex items-center gap-x-[5px]'>
+                       <Text color={'#454545'} className=' text-[14px] lg:grid hidden'>Submit</Text>
+                          
+                    </Box>
                   </Button>
+                  }
                      <Box className="flex items-center gap-2 overflow-hidden">
                                               <input
                                                 type="file"
@@ -580,9 +623,9 @@ values={changePassword.confirmPassword}
                                             </Box>
                     </Box>
                     <Box>
-                      <Button border="1px" borderColor="gray.300" borderRadius="lg" height={42} backgroundColor={'transparent'}>
+                      {/* <Button border="1px" borderColor="gray.300" borderRadius="lg" height={42} backgroundColor={'transparent'}>
                     <Text color={'#4B5563'} className=' text-[14px]'>Delete</Text>
-                  </Button>
+                  </Button> */}
                     </Box>
                   </Box>
                 </Box>

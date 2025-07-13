@@ -138,7 +138,7 @@ console.log(error)
     setLogOutLoader(false)
       toast({
       title: "Success",
-      description:'Log Out Sucessfull',
+      description:'Logged Out Sucessfully',
       status: "success",
       duration: 5000,
       isClosable: true,
