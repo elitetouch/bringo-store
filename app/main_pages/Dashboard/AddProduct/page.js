@@ -795,10 +795,12 @@ setEditLoader(false)
             <Box className=' lg:col-span-2 '>
               <Box className=' lg:w-8/12 w-11/12 m-auto pt-[20px]'>
               {activeIndex !== null && previewUrls[activeIndex]? (
+                <Box className=' grid justify-center items-center overflow-hidden'>
   <Image src={previewUrls[activeIndex]} alt='' unoptimized
   width={250}
   height={250}
   style={{ height: 'auto', width: '250px', borderRadius: '8px' }} />
+  </Box>
 ):<Box className=' bg-gray-400 h-[250px] w-full m-auto rounded-lg'></Box>}
               </Box>
               <Box border="1px" borderColor="gray.300" borderRadius="lg" className=' lg:w-10/12 w-11/12 m-auto mt-[20px]'>

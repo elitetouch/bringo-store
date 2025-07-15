@@ -36,7 +36,7 @@ export const ProfileComponent =({toogleSideMenu, profileData})=>{
      <Box border="1px" borderColor="gray.300" borderRadius="lg" className=' border border-red-900 rounded-lg mt-[20px] mb-[20px] min-h-[50px] grid items-center'>
          <Box className=' flex items-center gap-x-[10px] w-11/12 m-auto  '>
           <Box >
-             {/* <Image alt='' src={user} /> */}
+             {/* <Image alt='' src={profileData?.userImage} height={20} width={20} /> */}
              <svg
   width="40"
   height="40"
@@ -229,7 +229,8 @@ console.log(error)
                 className='  flex items-center gap-x-[10px]'>
                   <Box>
                     {/* <Image alt='' src={SingleStoreDetails?.storeLogo} width={50} height={60} /> */}
-                { ProfileObject?.defaultStoreId? <svg
+                { ProfileObject?.defaultStoreId? 
+                <svg
   width="48"
   height="48"
   viewBox="0 0 48 48"
@@ -261,7 +262,9 @@ console.log(error)
     strokeLinecap="round"
     strokeLinejoin="round"
   />
-</svg>:<Image alt='' src={supermarket} width={50} height={60} />}
+</svg>
+//<Image alt='' src={SingleStoreDetails?.storeLogo} width={50} height={60} />
+:<Image alt='' src={supermarket} width={50} height={60} />}
 
 
                   </Box>
