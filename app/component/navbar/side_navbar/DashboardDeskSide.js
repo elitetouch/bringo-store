@@ -36,7 +36,18 @@ export const ProfileComponent =({toogleSideMenu, profileData})=>{
      <Box border="1px" borderColor="gray.300" borderRadius="lg" className=' border border-red-900 rounded-lg mt-[20px] mb-[20px] min-h-[50px] grid items-center'>
          <Box className=' flex items-center gap-x-[10px] w-11/12 m-auto  '>
           <Box >
-             {/* <Image alt='' src={profileData?.userImage} height={20} width={20} /> */}
+            { profileData?.userImage?<Box className=" bg-gray-100 w-[40px] grid items-center justify-center h-[40px] overflow-hidden rounded-full" cursor={'pointer'}>
+                                       <Image
+                      src={profileData?.userImage}
+                      alt="Profile"
+                      width={500}
+                      height={500}
+                      unoptimized
+                      className=' h-[500px] w-[500px]'
+                    />
+                    
+                                         
+                                      </Box>:
              <svg
   width="40"
   height="40"
@@ -53,7 +64,7 @@ export const ProfileComponent =({toogleSideMenu, profileData})=>{
     d="M10 32C10 27.5817 13.5817 24 18 24H22C26.4183 24 30 27.5817 30 32V33H10V32Z"
     fill="#9CA3AF"
   />
-</svg>
+</svg>}
 
           </Box>
           <Box
@@ -228,41 +239,55 @@ console.log(error)
                    onClick={()=>{ProfileObject?.defaultStoreId? router.push(`/../../../main_pages/Dashboard/Market?marketId=${ProfileObject?.defaultStoreId}`):SetUpStoreQuery()}} 
                 className='  flex items-center gap-x-[10px]'>
                   <Box>
+                    
                     {/* <Image alt='' src={SingleStoreDetails?.storeLogo} width={50} height={60} /> */}
                 { ProfileObject?.defaultStoreId? 
-                <svg
-  width="48"
-  height="48"
-  viewBox="0 0 48 48"
-  fill="none"
-  xmlns="http://www.w3.org/2000/svg"
->
+                <Box className=" bg-gray-300 w-[50px] grid items-center justify-center h-[50px] overflow-hidden rounded-full" cursor={'pointer'}>
+                                       <Image
+                      src={SingleStoreDetails?.storeLogo}
+                      alt="Profile"
+                      width={500}
+                      height={500}
+                      unoptimized
+                      className=' h-[500px] w-[500px]'
+                    />
+                    
+                                         
+                                      </Box>
+//                 <svg
+//   width="48"
+//   height="48"
+//   viewBox="0 0 48 48"
+//   fill="none"
+//   xmlns="http://www.w3.org/2000/svg"
+// >
   
-  <circle cx="24" cy="24" r="24" fill="#F3F4F6" /> 
+//   <circle cx="24" cy="24" r="24" fill="#F3F4F6" /> 
 
   
-  <path
-    d="M15 19L17 13H31L33 19"
-    stroke="#4B5563"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  />
-  <path
-    d="M15 19H33V35C33 35.5523 32.5523 36 32 36H16C15.4477 36 15 35.5523 15 35V19Z"
-    stroke="#4B5563"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  />
-  <path
-    d="M20 36V27H28V36"
-    stroke="#4B5563"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  />
-</svg>
+//   <path
+//     d="M15 19L17 13H31L33 19"
+//     stroke="#4B5563"
+//     strokeWidth="2"
+//     strokeLinecap="round"
+//     strokeLinejoin="round"
+//   />
+//   <path
+//     d="M15 19H33V35C33 35.5523 32.5523 36 32 36H16C15.4477 36 15 35.5523 15 35V19Z"
+//     stroke="#4B5563"
+//     strokeWidth="2"
+//     strokeLinecap="round"
+//     strokeLinejoin="round"
+//   />
+//   <path
+//     d="M20 36V27H28V36"
+//     stroke="#4B5563"
+//     strokeWidth="2"
+//     strokeLinecap="round"
+//     strokeLinejoin="round"
+//   />
+// </svg>
+
 //<Image alt='' src={SingleStoreDetails?.storeLogo} width={50} height={60} />
 :<Image alt='' src={supermarket} width={50} height={60} />}
 

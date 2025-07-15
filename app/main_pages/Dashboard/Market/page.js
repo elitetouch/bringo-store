@@ -89,6 +89,15 @@ export const SwitchStoreDropDown=({stores})=>{
                             borderBottom="1px" borderColor="gray.300"  key={index} className=' flex items-center gap-x-[10px] pb-[10px]'>
                 <Box zIndex={0}>
                     {/* <Image   src={marketicon} alt='' height={44} width={44} /> */}
+                          {item?.storeLogo ? <Box className=" bg-gray-100 w-[44px] grid items-center justify-center h-[44px] overflow-hidden rounded-full" cursor={'pointer'}>
+<Image 
+alt="market"
+                      width={500}
+                      height={500}
+                      unoptimized
+                      className=' h-[500px] w-[500px]'
+ src={item?.storeLogo} />
+</Box>:
                            <svg
   width="44"
   height="44"
@@ -121,7 +130,7 @@ export const SwitchStoreDropDown=({stores})=>{
     strokeLinecap="round"
     strokeLinejoin="round"
   />
-</svg>
+</svg>}
                 </Box>
                 <Box>
                     <Text className=' font-semibold'>{item?.storeName}</Text>
@@ -278,7 +287,17 @@ console.log(storeData)
                 <Box borderBottom="1px" borderColor="gray.300" className=' lg:flex mt-[20px] lg:justify-between grid gap-y-[10px]  pb-[20px] '>
                     <Box className=' flex items-center gap-x-[10px]'>
                         <Box className=''>
-                            {/* <Image alt='' src={marketicon} /> */}
+{  SingleStoreDetails?.storeLogo ?
+<Box className=" bg-gray-300 w-[60px] grid items-center justify-center h-[60px] overflow-hidden rounded-full" cursor={'pointer'}>
+<Image 
+alt="market"
+                      width={500}
+                      height={500}
+                      unoptimized
+                      className=' h-[500px] w-[500px]'
+ src={SingleStoreDetails?.storeLogo} />
+</Box>
+:
                                    <svg
   width="60"
   height="60"
@@ -311,7 +330,7 @@ console.log(storeData)
     strokeLinecap="round"
     strokeLinejoin="round"
   />
-</svg>
+</svg>}
                             <Box className=' absolute bottom-0 right-0'>
                             </Box>
                         </Box>

@@ -432,6 +432,18 @@ console.log(billingInfo)
               <Box>
                 <Box className=' mt-[10px] grid w-full justify-center'>
                     {/* <Image alt='' src={ProfilePicture} height={96} width={96} /> */}
+                    {ProfileObject?.userImage?<Box className=" bg-gray-100 w-[96px] grid items-center justify-center h-[96px] overflow-hidden rounded-full" cursor={'pointer'}>
+                                       <Image
+                      src={ ProfileObject?.userImage}
+                      alt="Profile"
+                      width={500}
+                      height={500}
+                      unoptimized
+                      className=' h-[500px] w-[500px]'
+                    />
+                    
+                                         
+                                      </Box>:
                     <svg
   width="96"
   height="96"
@@ -448,7 +460,7 @@ console.log(billingInfo)
     d="M10 32C10 27.5817 13.5817 24 18 24H22C26.4183 24 30 27.5817 30 32V33H10V32Z"
     fill="#9CA3AF"
   />
-</svg>
+</svg>}
 
                   </Box>
                   <Text className=' mt-[10px] font-semibold text-center'>{ProfileObject?.fullname || ''}</Text>
@@ -571,6 +583,18 @@ values={changePassword.confirmPassword}
                   cursor={'pointer'}
                   onClick={handleBoxClick}
                   >
+                    {ProfileObject?.userImage?<Box className=" bg-gray-100 w-[50px] grid items-center justify-center h-[50px] overflow-hidden rounded-full" cursor={'pointer'}>
+                                       <Image
+                      src={ ProfileObject?.userImage}
+                      alt="Profile"
+                      width={500}
+                      height={500}
+                      unoptimized
+                      className=' h-[500px] w-[500px]'
+                    />
+                    
+                                         
+                                      </Box>:
                     <svg
   width="64"
   height="64"
@@ -587,7 +611,7 @@ values={changePassword.confirmPassword}
     d="M10 32C10 27.5817 13.5817 24 18 24H22C26.4183 24 30 27.5817 30 32V33H10V32Z"
     fill="#9CA3AF"
   />
-</svg>
+</svg>}
 
                     {/* <Image alt='' src={ProfilePicture} height={64} width={64} /> */}
                   </Box>

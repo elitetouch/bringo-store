@@ -21,7 +21,34 @@ function DashboardMobileNav({toogleSideNav}) {
         className=' flex items-center gap-x-[20px] pl-[10px] '>
                               <Box className=' relative'>
                                 {
-                                ProfileObject?.userImage && <Image alt='' src={ProfileObject?.userImage} height={20} width={20} />
+                                ProfileObject?.userImage ? <Box className=" bg-gray-100 w-[50px] grid items-center justify-center h-[50px] overflow-hidden rounded-full" cursor={'pointer'}>
+                   <Image
+  src={ ProfileObject?.userImage}
+  alt="Profile"
+  width={500}
+  height={500}
+  unoptimized
+  className=' h-[500px] w-[500px]'
+/>
+
+                     
+                  </Box>:<svg
+  width="40"
+  height="40"
+  viewBox="0 0 40 40"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <circle cx="20" cy="20" r="20" fill="#E5E7EB" />
+  <path
+    d="M20 20C23.3137 20 26 17.3137 26 14C26 10.6863 23.3137 8 20 8C16.6863 8 14 10.6863 14 14C14 17.3137 16.6863 20 20 20Z"
+    fill="#9CA3AF"
+  />
+  <path
+    d="M10 32C10 27.5817 13.5817 24 18 24H22C26.4183 24 30 27.5817 30 32V33H10V32Z"
+    fill="#9CA3AF"
+  />
+</svg>
                                 }
 {/* {  ProfileObject?.userImage && <svg
   width="40"
