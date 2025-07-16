@@ -94,28 +94,39 @@ function ProductTable({setDisplayBtn, data}) {
         name:'Products',selector:row =>(<div className=' flex items-center gap-x-[5px] gap-y-[5px] pt-[5px] pb-[5px]'>
           {/* <Box borderRadius={5} className='grid h-[42px] w-[42px] justify-center items-center bg-[#F6F6F6]'>           
               <Image src={`https://store.bringofresh.net/${row.images[0]}`} width={42} height={42} alt='' className='h-[42px] w-[42px]' />          
-          </Box> */}
+          </Box> */}<Box className=" bg-gray-100 w-[42px] grid items-center justify-center h-[42px] overflow-hidden rounded-full" cursor={'pointer'}>
+                             <Image
+            src={row.images[0]}
+            alt="Profile"
+            width={500}
+            height={500}
+            unoptimized
+            className=' h-[500px] w-[500px]'
+            style={{objectFit:'cover'}}
+          />                      
+                            </Box>
+
           <Box>
             <Text className=' text-[#007460]'>{row.orderID}</Text>
-            <Text className='text-[12px]'>{row.product_title}</Text>
+            <Text className='text-[12px]'>{row.productTitle}</Text>
           </Box>
           </div> )
       },
       {
-        name:'Price',selector:row =><Text className='text-[12px]'>{row.sales_price}</Text>
+        name:'Price',selector:row =><Text className='text-[12px]'>{row.salesPrice}</Text>
       },
       {
-        name:'Brand',selector:row =><Text className='text-[12px]'>{row.brand_name}</Text>
+        name:'Brand',selector:row =><Text className='text-[12px]'>{row.brandName}</Text>
       },
       {
         name:'QTY',selector:row =><Text className='text-[12px]'>{row.quantity}</Text>
       },
       {
-        name:'Date',selector:row =><Text className='text-[12px]'>{row.updated_at}</Text>
+        name:'Date',selector:row =><Text className='text-[12px]'>{row.updatedAt}</Text>
       },
       {
         name:'Status',wrap:true,selector:row =><Box>
-          <Text className={`${row.stock_status==='Out of Stock'&&'text-[#FF392B]'||row.stock_status==='instock'&&'text-[#279F51]'||row.status==='shipping'&&'text-black'||row.status==='Refund'&&'text-[#FFA000]'}`}>{row.stock_status}</Text>
+          <Text className={`${row.stockStatus==='Out of Stock'&&'text-[#FF392B]'||row.stockStatus==='instock'&&'text-[#279F51]'||row.status==='shipping'&&'text-black'||row.status==='Refund'&&'text-[#FFA000]'}`}>{row.stockStatus}</Text>
         </Box>
       },
       {

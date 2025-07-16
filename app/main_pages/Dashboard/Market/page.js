@@ -157,7 +157,18 @@ alt="market"
 export const MarketCard=({item})=>{
     return(
         <Box>
-            <Box className=' grid items-center justify-center w-full h-[170px] rounded-lg bg-[#F6F6F6]'>
+            <Box className=' grid items-center justify-center w-full h-[170px] rounded-lg bg-[#F6F6F6] overflow-hidden'>
+            {  item.images.length > 0 ?<Box className=" bg-gray-100 w-[154px] grid items-center justify-center h-[120px]  rounded-lg" cursor={'pointer'}>
+                                           <Image
+                          src={item.images[0]}
+                          alt="Profile"
+                          width={500}
+                          height={500}
+                          unoptimized
+                          className=' h-[500px] w-[500px] rounded-lg'
+                          style={{objectFit:'cover'}}
+                        />                      
+                                          </Box>:
                 <svg
   width="60"
   height="60"
@@ -190,7 +201,7 @@ export const MarketCard=({item})=>{
     strokeLinejoin="round"
   />
 </svg>
-
+}
                 
                 {/* <Image alt='' src={item.images} /> */}
                        {/* <svg
@@ -229,7 +240,7 @@ export const MarketCard=({item})=>{
             </Box>
             <Box className=' pt-[10px] w-11/12 m-auto'>
                 <Box className=' flex items-center justify-between mt-[10px]'>
-                    <Text className=' text-[13px] font-semibold'>{item?.product_title || ''}</Text>
+                    <Text className=' text-[13px] font-semibold'>{item?.productTitle || ''}</Text>
                     <Text className=' text-[13px]'>{item?.price?.amount|| ''}</Text>
                 </Box>
                 <Box className=' flex items-center justify-between mt-[10px]'>
@@ -240,7 +251,7 @@ export const MarketCard=({item})=>{
                         <Text className=' text-[13px]'>{item?.rating || ''}({item?.quantity || ''})</Text>
                     </Box>
                     <Box>
-                        <Text className=' text-[13px]'>{item?.stock_status || ''}</Text>
+                        <Text className=' text-[13px]'>{item?.stockStatus || ''}</Text>
                     </Box>
                 </Box>
             </Box>

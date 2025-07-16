@@ -10,7 +10,33 @@ import axios from "axios";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 //  import o from './main_pages/new_user_dashboard'
-export const Login_mobile=({signInDetails,handleSignInChange,signInLoader,handleFormSubmission })=>{
+
+export const RememberMe=({remember, setRemember})=>{
+ 
+
+  const handleCheckboxChange = (event) => {
+    setRemember(event.target.checked);
+  };
+  return(
+    <Box>
+      <div className="flex items-center gap-x-2 mt-[5px]">
+      <input
+        type="checkbox"
+        id="remember"
+        checked={remember}
+        onChange={handleCheckboxChange}
+        className="w-[16px] h-[16px] accent-green-600"
+      />
+      <label htmlFor="remember" className="text-sm text-white">
+        Remember me
+      </label>
+    </div>
+    </Box>
+  )
+}
+
+
+export const Login_mobile=({signInDetails,handleSignInChange,signInLoader,handleFormSubmission, remember, setRemember })=>{
   const router = useRouter()
   return(
     <div className=" w-full bg-[#0E4940] rounded-lg">
@@ -60,12 +86,17 @@ export const Login_mobile=({signInDetails,handleSignInChange,signInLoader,handle
 </svg>
 
 } />
-<Box className=" w-full grid justify-end mt-[2px]">
-  <Button 
+<Box className=" w-full flex justify-between gap-x-[5px] mt-[10px]">
+  <RememberMe remember={remember} setRemember={setRemember} />
+  <Box>
+  <Box 
+  cursor={'pointer'}
     onClick={()=>router.push(`/./main_pages/ForgetPassword`)}
   backgroundColor={'transparent'} height={'fit-content'}>
   <Text className=" text-[14px] text-right text-white pt-[5px] pb-[5px]">Forgot Password</Text>
-  </Button>
+  </Box>
+  </Box>
+
 </Box>
 </Box>
               </Box>   
@@ -77,6 +108,7 @@ export const Login_mobile=({signInDetails,handleSignInChange,signInLoader,handle
 }
 
 export default function Home() {
+    const [remember, setRemember] = useState(false);
   const router = useRouter()
   const toast = useToast()
   const formdata={
@@ -111,6 +143,7 @@ export default function Home() {
       console.log(signInDetails)
       formData.append('email',signInDetails.email)
        formData.append('password',signInDetails.password)
+       remember && formData.append('remember',true)
       console.log(formData)
       axios.post('https://www.store.api.bringofresh.net/api/v1/login ',formData).then((resp)=>{
          setSignInLoader(false)
@@ -179,7 +212,7 @@ You’re now in the driver’s seat of your store’s operations. This app is bu
           </Box>
           <Box className=" lg:hidden">
             <Box className="  w-11/12 m-auto mt-[66px] pb-[40px] ">
-             <Login_mobile signInDetails={signInDetails} signInLoader={signInLoader} handleSignInChange={handleSignInChange} handleFormSubmission={handleFormSubmission}  />
+             <Login_mobile remember={remember} setRemember={setRemember} signInDetails={signInDetails} signInLoader={signInLoader} handleSignInChange={handleSignInChange} handleFormSubmission={handleFormSubmission}  />
             </Box>
 
           </Box>
@@ -245,12 +278,18 @@ You’re now in the driver’s seat of your store’s operations. This app is bu
 </svg>
 
 } />
-<Box className=" w-full grid justify-end mt-[12px]">
-  <Button
+<Box>
+<Box className=" w-full flex justify-between gap-x-[5px] mt-[10px]">
+   <RememberMe remember={remember} setRemember={setRemember} />
+  <Box
+  cursor={'pointer'}
    onClick={()=>router.push(`/./main_pages/ForgetPassword`)}
   backgroundColor={'transparent'} height={'fit-content'}>
   <Text className=" text-[14px] text-right text-white pt-[5px] pb-[5px]">Forgot Password</Text>
-  </Button>
+  </Box>
+ 
+</Box>
+
 </Box>
 </Box>
               </Box>

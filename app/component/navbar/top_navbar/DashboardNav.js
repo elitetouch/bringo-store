@@ -105,6 +105,7 @@ function DashboardNav() {
   height={500}
   unoptimized
   className=' h-[500px] w-[500px]'
+  style={{objectFit:'cover'}}
 />
 
                      

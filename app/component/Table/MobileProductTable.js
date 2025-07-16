@@ -105,9 +105,17 @@ return (
                 </Box>
                 <Box className=' flex items-center gap-x-[5px]'>
                      <Box className=' flex items-center gap-x-[5px]'>
-                                <Box>
-                                  <Image src={item.productOne} alt='' />
-                                </Box>
+                                <Box className=" bg-gray-100 w-[42px] grid items-center justify-center h-[42px] overflow-hidden rounded-full" cursor={'pointer'}>
+                                                             <Image
+                                            src={item.images[0]}
+                                            alt="Profile"
+                                            width={500}
+                                            height={500}
+                                            unoptimized
+                                            className=' h-[500px] w-[500px]'
+                                            style={{objectFit:'cover'}}
+                                          />                      
+                                                            </Box>
                                 {/* <Box>
                                   <Image src={item.productTwo} alt='' />
                                 </Box>
@@ -115,9 +123,9 @@ return (
                                   <Image src={item.productThree} alt='' />
                                 </Box> */}
                                 <Box className=' grid items-center justify-center'>
-                                  <Text className=' text-[12px]'>{item.brand_name}</Text>
+                                  <Text className=' text-[12px]'>{item.brandName}</Text>
                                 </Box>
-                                <Box className=' text-[12px]'>{item.product_title}</Box>
+                                <Box className=' text-[12px]'>{item.productTitle}</Box>
                               {/* <Box className=' text-[12px]'>{item.item_code}</Box> */}
                               </Box>
 
@@ -147,7 +155,7 @@ onClick={handleDropDownFunc}
                         <Text className=' text-right text-[14px] text-[#737373]'>Price</Text>
                     </Box>
                     <Box className=' col-span-3 text-[14px] font-semibold'>
-                        {item.sales_price}
+                        {item.salesPrice}
                     </Box>
                 </Box>
                   <Box className='grid grid-cols-5 gap-x-[20px]'>
@@ -155,7 +163,7 @@ onClick={handleDropDownFunc}
                         <Text className=' text-right text-[14px] text-[#737373]'>Brand</Text>
                     </Box>
                     <Box className=' col-span-3 text-[14px] font-semibold'>
-                        {item.brand_name} items
+                        {item.brandName} items
                     </Box>
                 </Box>
                   <Box className='grid grid-cols-5 gap-x-[20px]'>
@@ -171,7 +179,7 @@ onClick={handleDropDownFunc}
                         <Text className=' text-right text-[14px] text-[#737373]'>Date</Text>
                     </Box>
                     <Box className=' col-span-3 text-[14px] font-semibold'>
-                        {item.updated_at}
+                        {item.updatedAt}
                     </Box>
                 </Box>
                   {/* <Box className='grid grid-cols-5 gap-x-[20px]'>
@@ -188,7 +196,7 @@ onClick={handleDropDownFunc}
                     </Box>
                     <Box className=' col-span-3 text-[14px] font-semibold'>
                         <Box className=' grid h-[29px] w-fit rounded-l-full rounded-r-full items-center justify-center bg-green-100'>
-                        <Text className=' text-green-600 text-[12px] pl-[10px] pr-[10px]'>{item.stock_status}</Text>
+                        <Text className=' text-green-600 text-[12px] pl-[10px] pr-[10px]'>{item.stockStatus}</Text>
 
                         </Box>
                     </Box>

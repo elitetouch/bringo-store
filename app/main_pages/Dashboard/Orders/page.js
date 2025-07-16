@@ -17,13 +17,13 @@ export const OrderBreakDown=({title,sum, price,last_title })=>{
             <Text className= {`text-[#1570EF] ${title==='Total Received'&&'text-[#E19133]'||title==='Total Returned'&&'#845EBC'||title==='On the way'&&'#F36960'}`}>{title}</Text>
             </Box>
             <Box className=' justify-between items-center flex'>
-            <Text className=' text-[14px]  mt-[15px]'>{sum}</Text>
-            <Text className=' text-[14px]  mt-[15px]'>{price}</Text>
+            <Text className=' lg:text-[15px] text-[14px]  mt-[15px]'>{sum}</Text>
+            <Text className=' lg:text-[15px] text-[14px]  mt-[15px]'>{price}</Text>
 
             </Box>
             <Box className=' justify-between items-center flex'>
-            <Text className=' text-[#858D9D] text-[14px] mt-[15px]'>Last 7 days</Text>
-            <Text className=' text-[#858D9D] text-[14px] mt-[15px]'>{last_title}</Text>
+            <Text className=' text-[#858D9D] lg:text-[15px] text-[14px] mt-[15px]'>Last 7 days</Text>
+            <Text className=' text-[#858D9D] lg:text-[15px] text-[14px] mt-[15px]'>{last_title}</Text>
 
             </Box>
            </Box>
@@ -44,13 +44,13 @@ function Page() {
            <Box className='flex  items-center gap-x-[20px] bg-white w-11/12 m-auto mt-[15px] pb-[15px] '>
            <Box className=' w-[108px] lg:grid hidden'>
             <Text className=' text-[#1570EF]'>Total Orders</Text>
-            <Text className=' text-[14px]  mt-[15px]'>0</Text>
+            <Text className=' text-[15px]  mt-[15px]'>0</Text>
             <Text className=' text-[#858D9D] mt-[15px]'>Last 7 days</Text>
            </Box>
            <Box className=' grid lg:grid-cols-3 w-full grid-cols-2 gap-y-[20px] gap-x-[10px]'>
             <Box className=' w-11/12 m-auto lg:hidden grid'>
             <Text className=' text-[#1570EF]'>Total Orders</Text>
-            <Text className=' text-[14px]  mt-[15px]'>0</Text>
+            <Text className=' text-[15px]  mt-[15px]'>0</Text>
             <Text className=' text-[#858D9D] text-[14px] mt-[15px]'>Last 7 days</Text>
            </Box>
         <OrderBreakDown title={'Total Received'} last_title={'Revenue'} sum={'0'} price={'0'} />

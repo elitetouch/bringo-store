@@ -41,7 +41,7 @@ export const PriceInput=({names, values, changes, title, placing, currency})=>{
      borderRadius="lg" className=' w-full grid items-center rounded-lg '>
            <Box className=' border flex items-center rounded-lg'>
                <Box className=' h-[44px] w-[63px] grid items-center justify-center bg-gray-200'>
-                   <Text className=' text-[#8A8A8A]'>{currency==='Kenya'&&'KSH'||currency==='Nigeria'&&'NG'||currency==='Uganda'&&'UGX'||'UGX'}</Text>
+                   <Text className=' text-[#8A8A8A]'>{currency==='Kenya'&&'KSH'||currency==='Nigeria'&&'NGN'||currency==='Uganda'&&'UGX'||'UGX'}</Text>
                </Box>
                    <Input 
                     _focus={{ border: 'none', boxShadow: 'none' }}
@@ -74,6 +74,15 @@ function Page() {
       console.log(err)
     })
    },[])
+
+  const [priceToogle, setPriceToogle] = useState(false)
+  const setPriceFunction =()=>{
+    setPriceToogle(!priceToogle)// update with a boolean if it is checked or not//
+    console.log(priceToogle)
+  
+  }
+
+
 //code to add and display added iamges //
 const [images, setImages] = useState([null, null, null]);
 const [previewUrls, setPreviewUrls] = useState([null, null, null]);
@@ -131,7 +140,7 @@ const initialPaymentData = {
           const errors={}    
           // State parameters to be made compulsory in the form for submission to go through //
         const objectKeys=[ 'productTitle','description','StockQuantity','amount','brandName','featureOne','featureTwo','featureThree','featureFour',
-          'Isle','Row','min_amount','sug_amount'
+          'Isle','Row'
          ]
           objectKeys.forEach((field)=>{
            if(!addProduct[field]){
@@ -176,8 +185,8 @@ formData.append("location[isle]", addProduct.Isle);
 
 // Append nested object (price)
 formData.append("price[amount]", addProduct.amount);//
-formData.append("price[minimum_amount]", addProduct.min_amount);//
-formData.append("price[suggested_amount]", addProduct.sug_amount);//
+addProduct.min_amount && formData.append("price[minimum_amount]", addProduct.min_amount);//
+addProduct.sug_amount && formData.append("price[suggested_amount]", addProduct.sug_amount);//
 
 
 // Append images (File objects)
@@ -274,6 +283,14 @@ changedFields.Isle && formData.append("location[isle]", changedFields.Isle);
 changedFields.amount && formData.append("price[amount]", changedFields.amount);//
 changedFields.min_amount && formData.append("price[minimum_amount]", changedFields.min_amount);//
 changedFields.sug_amount && formData.append("price[suggested_amount]", changedFields.sug_amount);//
+
+if (images.some(img => img !== null)) {
+  images.forEach((file, index) => {
+    if (file) {
+      formData.append(`images[${index}]`, file);
+    }
+  });
+}
       axiosInstance.post(`/api/v1/edit-store-product/${id}`, formData).then((resp)=>{
   console.log(resp)
    queryClient.invalidateQueries()
@@ -285,7 +302,7 @@ changedFields.sug_amount && formData.append("price[suggested_amount]", changedFi
       isClosable: true,
       position: "top-right",
     });
-  //  router.push(`/../../../main_pages/Dashboard/Product`)
+    router.push(`/../../../main_pages/Dashboard/Product`)
 setEditLoader(false)
 }).catch((error)=>{
    const errors = error.response?.data?.errors;
@@ -353,7 +370,7 @@ setEditLoader(false)
                                 //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
                                 //   border='none'
                                 //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
-                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.product_title:'Input your text'}
+                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.productTitle:'Input your text'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
                            {err?.productTitle && (
@@ -403,7 +420,7 @@ setEditLoader(false)
                                 //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
                                 //   border='none'
                                 //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
-                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.key_feature[0]:'Value'}
+                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.keyFeature[0]:'Value'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
                              {err?.featureOne && (
@@ -418,7 +435,7 @@ setEditLoader(false)
                                 //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
                                 //   border='none'
                                 //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
-                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.key_feature[1]:'Value'}
+                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.keyFeature[1]:'Value'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
                              {err?.featureTwo && (
@@ -433,7 +450,7 @@ setEditLoader(false)
                                 //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
                                 //   border='none'
                                 //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
-                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.key_feature[2]:'Value'}
+                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.keyFeature[2]:'Value'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
                                {err?.featureThree && (
@@ -448,7 +465,7 @@ setEditLoader(false)
                                 //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
                                 //   border='none'
                                 //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
-                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.key_feature[3]:'Value'}
+                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.keyFeature[3]:'Value'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
                              {err?.featureFour && (
@@ -471,7 +488,7 @@ setEditLoader(false)
                                 //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
                                 //   border='none'
                                 //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
-                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.brand_name:'Input your text'}
+                                   placeholder={Object.keys(singleProduct).length > 0?singleProduct?.brandName:'Input your text'}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
                              {err?.brandName && (
@@ -567,11 +584,15 @@ setEditLoader(false)
   <p className="text-red-600 text-[12px] pt-[5px]">Please input Amount</p>
 )}
                           </Box>
-                        <Box className=' grid grid-cols-2 gap-y-[20px] gap-x-[20px] mt-[20px]'>
+                          <Box>
+                          <Box>
+                            
+                          </Box>
+           {priceToogle && <Box className=' grid grid-cols-2 gap-y-[20px] gap-x-[20px] mt-[20px]'>
                           <Box>
                          <PriceInput 
                           currency={ProfileObject?.country || ''}
-                         names={'min_amount'} changes={addProductChange} values={addProduct.min_amount} title={'Minimum amount'} placing={Object.keys(singleProduct).length > 0?singleProduct?.price?.minimum_amount:''} />
+                         names={'min_amount'} changes={addProductChange} values={addProduct.min_amount} title={'Minimum amount'} placing={Object.keys(singleProduct).length > 0?singleProduct?.price?.minimumAmount:''} />
                           {err?.min_amount && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include minimum amount</p>
 )}
@@ -579,19 +600,21 @@ setEditLoader(false)
                           <Box>
                           <PriceInput
                            currency={ProfileObject?.country || ''}
-                          title={'Suggested amount'} names={'sug_amount'} changes={addProductChange} values={addProduct.sug_amount} placing={Object.keys(singleProduct).length > 0?singleProduct?.price?.suggested_amount:''}  />
+                          title={'Suggested amount'} names={'sug_amount'} changes={addProductChange} values={addProduct.sug_amount} placing={Object.keys(singleProduct).length > 0?singleProduct?.price?.suggestedAmount:''}  />
                            {err?.sug_amount && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include suggested amount</p>
 )}
                           </Box>
-                        </Box>
+                        </Box>}
+
+                          </Box>
                         </Box>
                       </Box>
                   </Box>
                 </Box>
                    <Box className=' mt-[48px]'><Text className=' text-[18px] font-semibold'>Category & attibutes</Text>
                    <Box>
-                     <Box className=' flex items-center lg:gap-x-[10px] gap-x-[3px] mt-[20px]'>
+                     {/* <Box className=' flex items-center lg:gap-x-[10px] gap-x-[3px] mt-[20px]'>
                         <Text className=' text-[14px] font-semibold'>Category</Text>
                         <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M7.49998 11C7.08577 11 6.74999 10.6642 6.75 10.25L6.75006 6.74999C6.75007 6.33577 7.08586 5.99999 7.50007 6C7.91428 6.00001 8.25006 6.3358 8.25006 6.75001L8.25 10.25C8.24999 10.6642 7.9142 11 7.49998 11Z" fill="#303030"/>
@@ -599,9 +622,9 @@ setEditLoader(false)
 <path fillRule="evenodd" clipRule="evenodd" d="M14.5 7C14.5 10.866 11.366 14 7.5 14C3.63401 14 0.5 10.866 0.5 7C0.5 3.13401 3.63401 0 7.5 0C11.366 0 14.5 3.13401 14.5 7ZM13 7C13 10.0376 10.5376 12.5 7.5 12.5C4.46243 12.5 2 10.0376 2 7C2 3.96243 4.46243 1.5 7.5 1.5C10.5376 1.5 13 3.96243 13 7Z" fill="#303030"/>
 </svg>
 
-                        </Box>
+                        </Box> */}
                         <Box>
-                        <Box border="1px" borderColor="gray.300" borderRadius="lg" className='w-full h-[40px] grid items-center mt-[10px]'>
+                        {/* <Box border="1px" borderColor="gray.300" borderRadius="lg" className='w-full h-[40px] grid items-center mt-[10px]'>
                           <Box className=' flex justify-between w-11/12 m-auto'>
                             <Box className=' flex items-center gap-x-[5px] w-full'>
                               <Box>
@@ -623,7 +646,7 @@ setEditLoader(false)
                             </Box>
                            
                           </Box>
-                        </Box>
+                        </Box> */}
 
                         </Box>
                         {err?.bussiness_id && (
@@ -747,7 +770,7 @@ setEditLoader(false)
                                 //   type={password && (showPassword ? 'text' : 'password') ||  types && types|| 'text'}
                                 //   border='none'
                                 //   className={` text-[14px] ${icon&&'mr-[10px]'} `}
-                                placing={Object.keys(singleProduct).length > 0?singleProduct?.sales_price:'0'}
+                                placing={Object.keys(singleProduct).length > 0?singleProduct?.salesPrice:'0'}
                                    //placeholder={Object.keys(singleProduct).length > 0?singleProduct?.sales_price:''}
                                   className=' flex-1 text-[#7C7C7C] text-[14px] h-[44px]'
                                 />
