@@ -6,7 +6,7 @@ function Learn_More() {
   return (
     <div>
        <a
-     href="/Sellercontract.docx" // path to your document
+     href="/ContractSeller.docx" // path to your document
       download // triggers download instead of navigation
       target="_blank"
       rel="noopener noreferrer"

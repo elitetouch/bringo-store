@@ -318,7 +318,7 @@ const [submitStoreReturn, setSubmitStoreReturn]= useState({})
                 </Box>
                 <Box className=' lg:flex grid gap-y-[20px] lg:w-full w-10/12 items-center gap-x-[20px] mt-[30px]'>
                           <a
-     href="/Sellercontract.docx" // path to your document
+     href="/ContractSeller.docx" // path to your document
       download // triggers download instead of navigation
       target="_blank"
       rel="noopener noreferrer"
