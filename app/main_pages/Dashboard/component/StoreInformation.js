@@ -11,7 +11,7 @@ import { useToast } from '@chakra-ui/react'
 import SubmitButton from './SubmitButton'
 import { LoadScript } from '@react-google-maps/api';
 import { useRef } from 'react'
-// import LocationInput from './LocationInput';
+//  import LocationInput from './LocationInput';
  import LocationInput  from './GoogleApiInput'
 import { useQueryClient } from '@tanstack/react-query'
 const libraries = ['places'];
@@ -175,10 +175,10 @@ const [submitStoreReturn, setSubmitStoreReturn]= useState({})
     }
   return (
     <Box>
-        {/* <LoadScript
+        <LoadScript
       googleMapsApiKey={'AIzaSyA24WJD5u8d-iF4FKwsZB8oOxKundbE2eY'}
       libraries={libraries}
-    > */}
+    >
     <Box className=' lg:mt-[50px] mt-[20px] w-11/12 m-auto bg-white pt-[20px] mb-[30px] rounded-lg '>
     <div className=' w-11/12 m-auto pb-[30px] '>
         <Box borderBottom="2px" borderColor="#92DF16"  className=' w-fit'>
@@ -259,29 +259,34 @@ const [submitStoreReturn, setSubmitStoreReturn]= useState({})
                 <p className="text-red-600 text-[12px] pt-[5px]"></p>
                 </Box>
                 <Box>
-                  
-               <DashBoardInput placing={'Floor/house, apartment, block'}  names={'addressOne'} values={storeInfo.addressOne} handleChange={handleInputChange} label={'Address line 1'} /> 
+                <LocationInput updateStates={setStoreInfo} names={'addressOne'} values={storeInfo.addressOne} label={'Address line 1'} />  
+               {/* <DashBoardInput placing={'Floor/house, apartment, block'}  
+               names={'addressOne'} values={storeInfo.addressOne} 
+               handleChange={handleInputChange} label={'Address line 1'} />  */}
                  {err?.addressOne ? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include First address</p>
 ):<p className="text-red-600 text-[12px] pt-[5px]"></p>} 
                 </Box>
                 <Box>
-               <DashBoardInput placing={'Floor/house, apartment, No, building..'}  names={'addressTwo'} values={storeInfo.addressTwo} handleChange={handleInputChange} label={'Address line 2'} /> 
+                  <LocationInput updateStates={setStoreInfo} names={'addressTwo'} values={storeInfo.addressTwo} label={'Address line 2'} />
+               {/* <DashBoardInput placing={'Floor/house, apartment, No, building..'}
+                 names={'addressTwo'} values={storeInfo.addressTwo} handleChange={handleInputChange} 
+               label={'Address line 2'} />  */}
                                  {err?.addressTwo && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include Second address</p>
 )} 
                 </Box>
                 <Box>
-                  {/* <LocationInput city updateStates={setStoreInfo} names={'city'} values={storeInfo.state} label={'City/Town'} /> */}
-              <DashBoardInput placing={'District/province'}  names={'city'} values={storeInfo.city} handleChange={handleInputChange} label={'City/Town'} /> 
+                  <LocationInput city updateStates={setStoreInfo} names={'city'} values={storeInfo.state} label={'City/Town'} />
+              {/* <DashBoardInput placing={'District/province'}  names={'city'} values={storeInfo.city} handleChange={handleInputChange} label={'City/Town'} />  */}
                 {err?.city? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include City name</p>
 ):<p className="text-red-600 text-[12px] pt-[5px]"></p>}   
                 </Box>
                 <Box>
-              <DashBoardInput placing={'State/region'}  names={'state'} values={storeInfo.state}
-               handleChange={handleInputChange} label={'State/Region'} /> 
-               {/* <LocationInput updateStates={setStoreInfo} state names={'state'} values={storeInfo.state} label={'State/Region'} /> */}
+              {/* <DashBoardInput placing={'State/region'}  names={'state'} values={storeInfo.state}
+               handleChange={handleInputChange} label={'State/Region'} />  */}
+               <LocationInput updateStates={setStoreInfo} state names={'state'} values={storeInfo.state} label={'State/Region'} />
                   {err?.state?(
   <p className="text-red-600 text-[12px] pt-[5px]">Please include State</p>
 ):<p className="text-red-600 text-[12px] pt-[5px]"></p>}   
@@ -304,7 +309,15 @@ const [submitStoreReturn, setSubmitStoreReturn]= useState({})
   <p className="text-red-600 text-[12px] pt-[5px]">Please include Country name</p>
 ):<p className="text-red-600 text-[12px] pt-[5px]"></p>}   
                 </Box>
-              
+              {/* <Box>
+                <LocationInput 
+                placing={'State/region'}
+                state
+                names={'state'} values={storeInfo.state}
+              // handleChange={handleInputChange} 
+               label={'State/Region'} 
+               /> 
+              </Box> */}
               </Box>
               <Box border="1px" borderColor="gray.400" borderRadius="lg" className=' mt-[32px] mb-[40px] '>
                 <Box className=' w-11/12 m-auto'>
@@ -384,7 +397,7 @@ const [submitStoreReturn, setSubmitStoreReturn]= useState({})
             <SubmitButton submitFunc={submitStore} loading={storeLoader} />
           </Box>
 
-    {/* </LoadScript> */}
+    </LoadScript>
     </Box>
   )
 }

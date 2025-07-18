@@ -1,15 +1,16 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { Autocomplete } from '@react-google-maps/api';
 import { Input, Box, Text } from '@chakra-ui/react';
 
 export default function LocationInput({ state, country, city, label, placing, names, values, updateStates }) {
-  const [location, setLocation] = useState(null);
-  const autocompleteRef = useRef(null);
+  const [autocomplete, setAutocomplete] = useState(null);
 
   const handlePlaceChanged = () => {
-    const place = autocompleteRef.current.getPlace();
+    if (!autocomplete) return;
+
+    const place = autocomplete.getPlace();
     if (!place || !place.address_components) return;
 
     const components = {
@@ -34,8 +35,6 @@ export default function LocationInput({ state, country, city, label, placing, na
         updateStates(prev => ({ ...prev, [names]: components.fullAddress }));
       }
     }
-
-    setLocation(components);
   };
 
   return (
@@ -43,7 +42,7 @@ export default function LocationInput({ state, country, city, label, placing, na
       <Text className='text-[15px] font-semibold'>{label}</Text>
       <div className="w-full rounded-lg h-[48px] grid items-center mt-[10px] bg-[#F6F6F6] text-[15px]">
         <Autocomplete
-          onLoad={ref => (autocompleteRef.current = ref)}
+          onLoad={(autocompleteInstance) => setAutocomplete(autocompleteInstance)}
           onPlaceChanged={handlePlaceChanged}
         >
           <Input
