@@ -126,37 +126,49 @@ const router = useRouter()
                             </Box>
                              <Box className=' grid lg:grid-cols-2 gap-y-[20px] lg:gap-x-[40px] mt-[20px] lg:mt-[20px]'>
                               <Box>
-                              <DashBoardInput placing={''}  names={'beneficiaryName'} values={businessData.beneficiaryName} handleChange={handleBusinessInput} label={'Beneficiary Name'} />
+                              <DashBoardInput
+                              required
+                              placing={''}  names={'beneficiaryName'} values={businessData.beneficiaryName} handleChange={handleBusinessInput} label={'Beneficiary Name'} />
                                {err?.beneficiaryName && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include beneficiary name</p>
 )}
                               </Box>
                               <Box>
-                               <DashBoardInput placing={''}  names={'bankName'} values={businessData.bankName} handleChange={handleBusinessInput} label={'*Bank Name'} />  
+                               <DashBoardInput
+                               required
+                               placing={''}  names={'bankName'} values={businessData.bankName} handleChange={handleBusinessInput} label={'Bank Name'} />  
                                 {err?.bankName && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include bank name</p>
 )}
                               </Box>
                               <Box>
-                              <DashBoardInput types={'number'}  placing={''}  names={'acctNum'} values={businessData.acctNum} handleChange={handleBusinessInput} label={'*Bank Account Number'} /> 
+                              <DashBoardInput
+                              required
+                              types={'number'}  placing={''}  names={'acctNum'} values={businessData.acctNum} handleChange={handleBusinessInput} label={'Bank Account Number'} /> 
                               {err?.acctNum && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include Account number</p>
 )}
                               </Box>
                               <Box>
-                              <DashBoardInput placing={''}  names={'iban'} values={businessData.iban} handleChange={handleBusinessInput} label={'*IBAN'} /> 
+                              <DashBoardInput
+                              required
+                              placing={''}  names={'iban'} values={businessData.iban} handleChange={handleBusinessInput} label={'IBAN'} /> 
                                {err?.iban && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please input IBAN</p>
 )}
                               </Box>
                               <Box>
-                              <DashBoardInput  placing={''}  names={'swiftCode'} values={businessData.swiftCode} handleChange={handleBusinessInput} label={'*SWIFT Code'} /> 
+                              <DashBoardInput
+                              required
+                              placing={''}  names={'swiftCode'} values={businessData.swiftCode} handleChange={handleBusinessInput} label={'SWIFT Code'} /> 
                               {err?.swiftCode && (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include SWIFT CODE</p>
 )}
                               </Box>
                               <Box>
                 {dropData?.length > 0 && <CountryDropDown
+                required
+
                  values={businessData.store_id}
                 onChangeFunc={handleBusinessInput}
                  names={'store_id'}

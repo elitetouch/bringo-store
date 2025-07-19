@@ -14,7 +14,9 @@ import { StoreInfo } from '@/app/api/reactQuery'
 import { useSearchParams } from "next/navigation";
 import { useRouter } from 'next/navigation'
 import { useQueryClient } from '@tanstack/react-query'
+import { LoadScript } from '@react-google-maps/api'
 //import imp from '../../../main_pages/Dashboard/Subscription'
+const libraries = ['places'];
 function Page() {
   const router = useRouter()
   const queryClient = useQueryClient();
@@ -45,6 +47,10 @@ console.log(storeInfo?.data?.data?.data?.data)
   //     const[businessTracker, setbusinessTracker]= useState(0)
        const[paymentTracker, setPaymentTracker]= useState(0)
   return (
+     <LoadScript
+          googleMapsApiKey={'AIzaSyA24WJD5u8d-iF4FKwsZB8oOxKundbE2eY'}
+          libraries={libraries}
+        >
     <div className=' min-h-screen lg:pb-[40px] pb-[20px]'>
       <Box className=' w-11/12 m-auto lg:flex justify-between items-center pt-[20px] lg:pt-[30px]'>
       <Box>
@@ -103,6 +109,8 @@ console.log(storeInfo?.data?.data?.data?.data)
           
       </Box>
     </div>
+
+        </LoadScript>
   )
 }
 

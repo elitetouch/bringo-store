@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Input, Box, IconButton, Text } from '@chakra-ui/react';
 
-function DashBoardInput({ placing, icon, names, values, handleChange, password,label, types, addProduct }) {
+function DashBoardInput({ placing, icon, names, values, handleChange, password,label, types, addProduct, required }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
@@ -10,7 +10,7 @@ function DashBoardInput({ placing, icon, names, values, handleChange, password,l
   return (
     <Box>
         <Text className=' text-[15px] font-semibold'>
-            {label}
+  {required &&<span style={{ color: 'red', fontSize:'18px' }}>*</span>}{label}
         </Text>
     <div className={`w-full rounded-l-lg rounded-r-lg h-[48px] grid items-center mt-[10px] ${addProduct?addProduct:'bg-[#F6F6F6]'}  text-[15px]`}>
       <Box className={`flex items-center ${icon&&'gap-x-[10px]'}  w-11/12 m-auto`}>

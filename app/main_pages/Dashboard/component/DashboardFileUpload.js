@@ -2,7 +2,7 @@
 import React, { useRef, useState, useEffect} from 'react';
 import { Box, Text } from '@chakra-ui/react';
 
-function DashboardFileUpload({ label, attachFile, names, UploadedFileName}) {
+function DashboardFileUpload({ label, attachFile, names, UploadedFileName, required}) {
   const [fileName, setFileName] = useState('');
   const inputRef = useRef(null);
  useEffect(()=>{
@@ -29,9 +29,9 @@ const handleFileChange = (e) => {
 
   return (
     <Box>
-      <Text className="text-[15px] font-semibold">
-        {label}
-      </Text>
+        <Text className=' text-[15px] font-semibold'>
+        {required &&<span style={{ color: 'red', fontSize:'18px' }}>*</span>}{label}
+              </Text>
 
       <div
         className="w-full rounded-l-lg rounded-r-lg h-[48px] grid items-center mt-[10px] bg-[#F6F6F6] text-[15px] cursor-pointer"

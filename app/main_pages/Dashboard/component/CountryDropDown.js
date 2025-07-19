@@ -1,7 +1,7 @@
 import React from 'react'
 import { Select, Box, Text } from '@chakra-ui/react'
 
-function CountryDropDown({ onChangeFunc, currentValue, dashboard, values,label, names, dropDownOpt,placing}) {
+function CountryDropDown({ onChangeFunc, currentValue, dashboard, values,label, names, dropDownOpt,placing, required}) {
   const changeFunc = (e) => {
     const { name, value } = e.target
     onChangeFunc(e)
@@ -10,11 +10,9 @@ function CountryDropDown({ onChangeFunc, currentValue, dashboard, values,label, 
   return (
     <Box>
         {
-          label && <Box>
-             <Text className=' text-[15px] font-semibold mb-[10px]'>
-                        {label}
-                    </Text>
-          </Box>
+          label && <Text className=' text-[15px] font-semibold'>
+            {required &&<span style={{ color: 'red', fontSize:'18px' }}>*</span>}{label}
+                  </Text>
         }
     <div className="w-full rounded-l-lg rounded-r-lg h-[48px] bg-[#F6F6F6] grid items-center mt-[10px]">
       <Box className="flex items-center gap-x-[10px] w-11/12 m-auto">
