@@ -154,7 +154,7 @@ alt="market"
     )
 }
 
-export const MarketCard=({item})=>{
+export const MarketCard=({item,currency })=>{
     return(
         <Box>
             <Box className=' grid items-center justify-center w-full h-[170px] rounded-lg bg-[#F6F6F6] overflow-hidden'>
@@ -241,7 +241,7 @@ export const MarketCard=({item})=>{
             <Box className=' pt-[10px] w-11/12 m-auto'>
                 <Box className=' flex items-center justify-between mt-[10px]'>
                     <Text className=' text-[13px] font-semibold'>{item?.productTitle || ''}</Text>
-                    <Text className=' text-[13px]'>{item?.price?.amount|| ''}</Text>
+                    <Text className=' text-[13px]'>{currency}{item?.price?.amount|| ''}</Text>
                 </Box>
                 <Box className=' flex items-center justify-between mt-[10px]'>
                     <Box className=' flex items-center items-center gap-x-[5px]'>
@@ -473,6 +473,7 @@ onChange={handleChange}
                                 <Box key={item.id}>
                                     <MarketCard
                                     item={item}
+                                    currency={SingleStoreDetails?.currencySymbol||''}
                                     />
                                 </Box>
                             )
