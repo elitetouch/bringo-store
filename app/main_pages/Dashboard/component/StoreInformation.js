@@ -93,6 +93,7 @@ const Validation = () => {
 
 const [submitStoreReturn, setSubmitStoreReturn]= useState({})
     const submitStore =()=>{
+      console.log(storeInfo)
       if(Validation()){
         queryClient.invalidateQueries()
         console.log(storeInfo)
@@ -273,6 +274,7 @@ required
                 <Box>
                 <LocationInput
                 required
+                changes={handleInputChange}
                 updateStates={setStoreInfo} names={'addressOne'} values={storeInfo.addressOne} label={'Address line 1'} />  
                {/* <DashBoardInput placing={'Floor/house, apartment, block'}  
                names={'addressOne'} values={storeInfo.addressOne} 
@@ -282,7 +284,9 @@ required
 ):<p className="text-red-600 text-[12px] pt-[5px]"></p>} 
                 </Box>
                 <Box>
-                  <LocationInput updateStates={setStoreInfo} names={'addressTwo'} values={storeInfo.addressTwo} label={'Address line 2'} />
+                  <LocationInput 
+                  changes={handleInputChange}
+                  updateStates={setStoreInfo} names={'addressTwo'} values={storeInfo.addressTwo} label={'Address line 2'} />
                {/* <DashBoardInput placing={'Floor/house, apartment, No, building..'}
                  names={'addressTwo'} values={storeInfo.addressTwo} handleChange={handleInputChange} 
                label={'Address line 2'} />  */}
@@ -293,7 +297,9 @@ required
                 <Box>
                   <LocationInput
                   required
-                  city updateStates={setStoreInfo} names={'city'} values={storeInfo.state} label={'City/Town'} />
+                  city updateStates={setStoreInfo}
+                 changes={handleInputChange}
+                  names={'city'} values={storeInfo.city} label={'City/Town'} />
               {/* <DashBoardInput placing={'District/province'}  names={'city'} values={storeInfo.city} handleChange={handleInputChange} label={'City/Town'} />  */}
                 {err?.city? (
   <p className="text-red-600 text-[12px] pt-[5px]">Please include City name</p>
@@ -304,6 +310,7 @@ required
                handleChange={handleInputChange} label={'State/Region'} />  */}
                <LocationInput
                required
+               changes={handleInputChange}
                updateStates={setStoreInfo} state names={'state'} values={storeInfo.state} label={'State/Region'} />
                   {err?.state?(
   <p className="text-red-600 text-[12px] pt-[5px]">Please include State</p>

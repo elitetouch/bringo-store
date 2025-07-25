@@ -260,8 +260,11 @@ export const MarketCard=({item})=>{
 }
 function Page() {
   const router = useRouter()
+  const toast= useToast()
+   const queryClient = useQueryClient();
      const searchParams = useSearchParams(); 
       const marketId = searchParams.get('marketId');
+      
        const product = Products()
         console.log(product?.data?.data?.products)
         const ProductArray= product?.data?.data?.products || []
@@ -275,6 +278,34 @@ console.log(error)
 })
 
  },[marketId])
+ const [deleteStoreLoader, setDeleteStoreLoader]= useState(false)
+ const deleteStoreFunc=(id)=>{
+    setDeleteStoreLoader(true)
+    axiosInstance.delete(`/api/v1/store-information/${id}`).then((resp)=>{
+      queryClient.invalidateQueries()      
+   toast({
+              title: "Switch Store",
+              description:'Store deleted successfully',
+              status: "success",
+              duration: 5000,
+              isClosable: true,
+              position: "top-right",
+            })
+             router.push(`../../../main_pages/Dashboard/existing_user_dashboard`)
+            setDeleteStoreLoader(false)
+    }).catch((error)=>{
+      setDeleteStoreLoader(false)
+toast({
+              title: "Error",
+              description:
+                error.response?.data?.message || "Something went wrong. Please try again.",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+              position: "top-right",
+            })
+    })
+ }
     const [selectedProduct, setSelectedProduct] = useState('All Products');
 
   const handleChange = (event) => {
@@ -350,8 +381,8 @@ alt="market"
                             <Text className=' text-[#8A8A8A] text-[14px] mt-[10px]'>Shopping made easy</Text>
                         </Box>
                     </Box>
-                    <Box className=' flex items-center lg:gap-x-[20px] gap-x-[10px]'>
-                        <IconButton 
+                    <Box className=' flex items-center lg:gap-x-[10px] gap-x-[10px]'>
+                        {/* <IconButton 
                         backgroundColor={'transparent'}
                         icon={<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M14.2833 10.1571L23.2178 0H21.1006L13.3427 8.81931L7.14656 0H0L9.36984 13.3364L0 23.9877H2.11732L10.3098 14.6742L16.8534 23.9877H24L14.2827 10.1571H14.2833ZM11.3833 13.4538L10.4339 12.1258L2.88022 1.55881H6.1323L12.2282 10.0867L13.1776 11.4147L21.1016 22.4998H17.8495L11.3833 13.4544V13.4538Z" fill="black"/>
@@ -372,7 +403,24 @@ alt="market"
 <path d="M16.5 5.5H16.51M6 1H16C18.7614 1 21 3.23858 21 6V16C21 18.7614 18.7614 21 16 21H6C3.23858 21 1 18.7614 1 16V6C1 3.23858 3.23858 1 6 1ZM15 10.37C15.1234 11.2022 14.9813 12.0522 14.5938 12.799C14.2063 13.5458 13.5931 14.1514 12.8416 14.5297C12.0901 14.9079 11.2384 15.0396 10.4078 14.9059C9.57713 14.7723 8.80976 14.3801 8.21484 13.7852C7.61992 13.1902 7.22773 12.4229 7.09407 11.5922C6.9604 10.7616 7.09207 9.90989 7.47033 9.15837C7.84859 8.40685 8.45419 7.79374 9.20098 7.40624C9.94778 7.01874 10.7978 6.87659 11.63 7C12.4789 7.12588 13.2649 7.52146 13.8717 8.12831C14.4785 8.73515 14.8741 9.52108 15 10.37Z" stroke="#1E1E1E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 }
-                        />
+                        /> */}
+                        {/* <IconButton
+                        icon={<svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M3 6H19" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M8 6V4C8 3.44772 8.44772 3 9 3H13C13.5523 3 14 3.44772 14 4V6M17 6V18C17 19.1046 16.1046 20 15 20H7C5.89543 20 5 19.1046 5 18V6" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M10 10V16" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12 10V16" stroke="#1E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+}
+//backgroundColor={'transparent'}
+                        /> */}
+                         {SingleStoreDetails?.id &&<Button
+                         isLoading={deleteStoreLoader}
+                         onClick={()=>{deleteStoreFunc(SingleStoreDetails?.id)}}
+                         fontWeight={500} backgroundColor={'red'} color={'white'} cursor={'pointer'} className=' h-[44px] w-[124px] justify-center rounded-lg grid items-center'>
+ <Text>Delete store</Text> 
+    </Button>}
                         <Box className=' pl-[20px]'>
                         </Box>
                         <Menu>

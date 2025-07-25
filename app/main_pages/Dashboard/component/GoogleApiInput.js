@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Autocomplete } from '@react-google-maps/api';
 import { Input, Box, Text } from '@chakra-ui/react';
 
-export default function LocationInput({ state, country, city, label, placing, names, values, updateStates, required }) {
+export default function LocationInput({ state, country,changes, city, label, placing, names, values, updateStates, required }) {
   const [autocomplete, setAutocomplete] = useState(null);
 
   const handlePlaceChanged = () => {
@@ -54,6 +54,8 @@ export default function LocationInput({ state, country, city, label, placing, na
             border="none"
             className="text-[#7C7C7C] text-[14px]"
             placeholder={placing}
+            onChange={changes}
+            value={values}
           />
         </Autocomplete>
       </div>
