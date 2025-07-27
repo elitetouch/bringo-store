@@ -4,32 +4,44 @@ import { IconButton } from '@chakra-ui/react'
 import { Button } from '@chakra-ui/react'
 import Kriston from '../../../public/kriston.svg'
 import Image from 'next/image'
+import { useToast } from '@chakra-ui/react'
 const Data=[
-    {
-        id:1,
-        name:'Kristin Watson alexander',
-        message:'Rate 5 stars for Nakasero market.',
-        date:'Jun 23',
-        status:'online',
-        avatarAttachment:<svg width="10" height="9" viewBox="0 0 10 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M5.67764 0.9856C5.40597 0.416259 4.59555 0.416258 4.32387 0.9856L3.49015 2.73281L1.57082 2.98581C0.94539 3.06825 0.694956 3.83901 1.15248 4.27332L2.55654 5.60616L2.20405 7.50973C2.08919 8.13003 2.74484 8.60638 3.29928 8.30546L5.00076 7.38199L6.70224 8.30546C7.25668 8.60638 7.91232 8.13003 7.79746 7.50973L7.44498 5.60616L8.84904 4.27333C9.30656 3.83901 9.05613 3.06825 8.4307 2.98581L6.51137 2.73281L5.67764 0.9856Z" fill="white"/>
-</svg>,
-        avatar:Kriston
-    },
-       {
-        id:2,
-        name:'Kristin Watson alexander',
-        message:'Rate 5 stars for Nakasero market.',
-        date:'Jun 23',
-        status:'online',
-        avatarAttachment:<svg width="10" height="9" viewBox="0 0 10 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M5.67764 0.9856C5.40597 0.416259 4.59555 0.416258 4.32387 0.9856L3.49015 2.73281L1.57082 2.98581C0.94539 3.06825 0.694956 3.83901 1.15248 4.27332L2.55654 5.60616L2.20405 7.50973C2.08919 8.13003 2.74484 8.60638 3.29928 8.30546L5.00076 7.38199L6.70224 8.30546C7.25668 8.60638 7.91232 8.13003 7.79746 7.50973L7.44498 5.60616L8.84904 4.27333C9.30656 3.83901 9.05613 3.06825 8.4307 2.98581L6.51137 2.73281L5.67764 0.9856Z" fill="white"/>
-</svg>,
-        avatar:Kriston
-    },
+//     {
+//         id:1,
+//         name:'Kristin Watson alexander',
+//         message:'Rate 5 stars for Nakasero market.',
+//         date:'Jun 23',
+//         status:'online',
+//         avatarAttachment:<svg width="10" height="9" viewBox="0 0 10 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+// <path d="M5.67764 0.9856C5.40597 0.416259 4.59555 0.416258 4.32387 0.9856L3.49015 2.73281L1.57082 2.98581C0.94539 3.06825 0.694956 3.83901 1.15248 4.27332L2.55654 5.60616L2.20405 7.50973C2.08919 8.13003 2.74484 8.60638 3.29928 8.30546L5.00076 7.38199L6.70224 8.30546C7.25668 8.60638 7.91232 8.13003 7.79746 7.50973L7.44498 5.60616L8.84904 4.27333C9.30656 3.83901 9.05613 3.06825 8.4307 2.98581L6.51137 2.73281L5.67764 0.9856Z" fill="white"/>
+// </svg>,
+//         avatar:Kriston
+//     },
+//        {
+//         id:2,
+//         name:'Kristin Watson alexander',
+//         message:'Rate 5 stars for Nakasero market.',
+//         date:'Jun 23',
+//         status:'online',
+//         avatarAttachment:<svg width="10" height="9" viewBox="0 0 10 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+// <path d="M5.67764 0.9856C5.40597 0.416259 4.59555 0.416258 4.32387 0.9856L3.49015 2.73281L1.57082 2.98581C0.94539 3.06825 0.694956 3.83901 1.15248 4.27332L2.55654 5.60616L2.20405 7.50973C2.08919 8.13003 2.74484 8.60638 3.29928 8.30546L5.00076 7.38199L6.70224 8.30546C7.25668 8.60638 7.91232 8.13003 7.79746 7.50973L7.44498 5.60616L8.84904 4.27333C9.30656 3.83901 9.05613 3.06825 8.4307 2.98581L6.51137 2.73281L5.67764 0.9856Z" fill="white"/>
+// </svg>,
+//         avatar:Kriston
+//     },
 ]
 
 function NotificationDrop() {
+    const toast = useToast()
+    const NotificationAlert=()=>{
+        toast({
+        title: "Error",
+        description:"No notification to Display",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
   return (
     <div className=' pb-[20px] w-[392px]'>
         <Box className=' flex items-center justify-between w-11/12 m-auto pt-[15pxpx]'>
@@ -47,7 +59,7 @@ function NotificationDrop() {
         </Box>
         <Box className=' mt-[20px] w-11/12 m-auto grid gap-y-[10px]'>
                 {
-                    Data.map((item)=>{
+                    Data.length>0?Data.map((item)=>{
                        return( <Box cursor={'pointer'} borderBottom="1px" borderColor="gray.200" key={item.id} className='  h-[74px] grid items-center'>
                             <Box className='flex items-center gap-x-[20px] w-full '>
                             <Box className=' relative w-fit'>
@@ -76,11 +88,15 @@ function NotificationDrop() {
 
                             </Box>
                         </Box>)
-                    })
+                    }):<Box>
+                        <Text className=' text-[14px] text-center mt-[20px] pb-[20px]'>No Notification</Text>
+                    </Box>
                 }
         </Box>
         <Box className=' mt-[20px] grid justify-center'>
-            <Button backgroundColor={'#007460'} className=' h-[41px] rounded-lg grid items-center justify-center w-full m-auto'>
+            <Button
+            onClick={()=>{Data.length>0?'':NotificationAlert()}}
+            backgroundColor={'#007460'} className=' h-[41px] rounded-lg grid items-center justify-center w-full m-auto'>
             <Text className=' text-white'>See all notifications</Text>
             </Button>
         </Box>
