@@ -28,6 +28,7 @@ import axiosInstance from '@/app/api/Api_Instance'
 import { QueryClient } from '@tanstack/react-query'
 import { BusinessInfo } from '@/app/api/reactQuery'
 import { LogOutFunction } from '@/app/api/reactQuery'
+import { useTheme } from 'next-themes'
 //import imp from '../../../main_pages/Dashboard/new_user_dashboard'
 export const ProfileComponent =({toogleSideMenu, profileData})=>{
   const router = useRouter()
@@ -94,7 +95,14 @@ export const ProfileComponent =({toogleSideMenu, profileData})=>{
 
 
 function DashboardDeskSide({toogleMobile,mobileTog,toogleSideMenu,toogleFunc}) {
-  
+  // const { theme, setTheme } = useTheme();
+  // const [mounted, setMounted] = useState(false);
+  // if (!mounted) return null;
+  // // Prevent hydration mismatch
+  // useEffect(() => setMounted(true), []);
+
+
+
  const profile= ProfileInfo()
    const ProfileObject= profile?.data?.data?.user || ''
    console.log(ProfileObject)
@@ -446,9 +454,11 @@ console.log(error)
                              {(!toogleSideMenu) && <Box>{item.title}</Box>}
                                  </Box>
                                {item.darkmode && <Box 
-                              //  onClick={()=>toggleColorMode()}
+                               onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
                                >
-                                <Switch id='email-alerts' />
+                                <Switch
+                               
+                                id='email-alerts' />
                                 </Box>}
                               </Box>
                             </Box>
