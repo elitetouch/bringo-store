@@ -16,17 +16,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { ProfileInfo } from "@/app/api/reactQuery";
-import impt from "../../../../public/banana.svg";
-import { Appliances } from "@/public/Images/Appliances";
-import { Baby } from "@/public/Images/Baby";
-import { Bakery } from "@/public/Images/Bakery";
-import { Beauty } from "@/public/Images/Beauty";
-import { BeveragesJuicesAndCordials } from "@/public/Images/BeveragesJuicesAndCordials";
-import { CampingAndOutdoor } from "@/public/Images/CampingAndOutdoor";
-import { CleaningAndHousehold } from "@/public/Images/CleaningAndHousehold";
-import { CoffeeTeaAndHotDrinks } from "@/public/Images/CoffeeTeaAndHotDrinks";
-import { FruitsVegsAndSalads } from "@/public/Images/FruitsVegsAndSalads";
-import { HomeAndKitchen } from "@/public/Images/HomeAndKitchen";
+import { AddProductData as sections } from "./component/AddProductData";
+import { getCategories } from "@/app/api/reactQuery";
 //import imp from '../../../main_pages/Dashboard/Product'
 export const CompatibilityData = [
   "Fruit",
@@ -58,162 +49,6 @@ export const SectionAndCategory = [
   },
 ];
 
-export const sections = [
-  {
-    sectionName: "Fruits, Vegs & Salads",
-    sectionImage: FruitsVegsAndSalads?.HeaderImage,
-    categories: [
-      { name: "Fruits", images: FruitsVegsAndSalads?.Fruits },
-      { name: "Vegetables", images: FruitsVegsAndSalads?.Vegetables },
-      { name: "Herbs", images: FruitsVegsAndSalads?.Herbs },
-      { name: "Salads", images: FruitsVegsAndSalads?.Salads },
-    ],
-  },
-  {
-    sectionName: "Home & Kitchen",
-    sectionImage: HomeAndKitchen?.HeaderImage,
-    categories: [
-      { name: "Bakeware", images: HomeAndKitchen?.Bakeware },
-      { name: "Bar accessories", images: HomeAndKitchen?.Bar },
-      { name: "Bed & Bath", images: HomeAndKitchen?.Bed },
-      { name: "Room Fragrances", images: HomeAndKitchen?.Candles },
-      { name: "Cookware", images: HomeAndKitchen?.Cookware },
-      { name: "Drinkware", images: HomeAndKitchen?.Drinkware },
-      { name: "Flowers and Vases", images: HomeAndKitchen?.Fresh },
-      { name: "Kitchen store", images: HomeAndKitchen?.KitchenStore },
-      { name: "Kitchen materials", images: HomeAndKitchen?.KitchenTowel },
-      { name: "Kitchen utensils", images: HomeAndKitchen?.KitchenUtensils },
-      { name: "Tableware", images: HomeAndKitchen?.TableWares },
-    ],
-  },
-  {
-    sectionName: "Household & Cleaning",
-    sectionImage: CleaningAndHousehold?.HeaderImage,
-    categories: [
-      { name: "Home Fragrances", images: CleaningAndHousehold?.AirFreshners },
-      {
-        name: "Bleach and Disinfectants",
-        images: CleaningAndHousehold?.Bleach,
-      },
-      {
-        name: "Cleaning Materials",
-        images: CleaningAndHousehold?.CleaningMaterials,
-      },
-      { name: "Dishwash", images: CleaningAndHousehold?.Dishwash },
-      { name: "Drain Cleaners", images: CleaningAndHousehold?.DrainCleaners },
-      { name: "Dustbins", images: CleaningAndHousehold?.Dustbins },
-      { name: "Dusters and Swotters", images: CleaningAndHousehold?.Dusters },
-      {
-        name: "Floor and Carpet care",
-        images: CleaningAndHousehold?.FloorAndCarpetCare,
-      },
-      {
-        name: "bags, Foils, Paper and Wraps",
-        images: CleaningAndHousehold?.FoodBags,
-      },
-      { name: "Laundry", images: CleaningAndHousehold?.Laundry },
-      { name: "Oven Cleaners", images: CleaningAndHousehold?.OvenCleaners },
-      { name: "Polishers", images: CleaningAndHousehold?.Polishers },
-      { name: "Toilet Papers", images: CleaningAndHousehold?.ToiletPapers },
-      { name: "Window Cleaners", images: CleaningAndHousehold?.WindowCleaners },
-    ],
-  },
-  {
-    sectionName: "Beverages, Juices and Cordials",
-    sectionImage: BeveragesJuicesAndCordials?.HeaderImage,
-    categories: [
-      {
-        name: "Cordials, concenterates and sqashes",
-        images: BeveragesJuicesAndCordials?.Cordials,
-      },
-      { name: "Daily Blends", images: BeveragesJuicesAndCordials?.DiaryBlends },
-      {
-        name: "Energy Drinks",
-        images: BeveragesJuicesAndCordials?.EnergyDrinks,
-      },
-      {
-        name: "Flavored Milk",
-        images: BeveragesJuicesAndCordials?.FlavouredDrink,
-      },
-      { name: "Fresh Juice", images: BeveragesJuicesAndCordials?.FreshJuice },
-      // { name: "Health Drinks", images:BeveragesJuicesAndCordials?. },
-      {
-        name: "Ice Teas and Coffees",
-        images: BeveragesJuicesAndCordials?.IceTea,
-      },
-      { name: "Juices", images: BeveragesJuicesAndCordials?.Juices },
-      { name: "Soda Mixers", images: BeveragesJuicesAndCordials?.SodaMixers },
-      { name: "Soft Drinks", images: BeveragesJuicesAndCordials?.SoftDrinks },
-      { name: "Waters", images: BeveragesJuicesAndCordials?.Water },
-    ],
-  },
-  {
-    sectionName: "Bakery",
-    sectionImage: Bakery?.HeaderImage,
-    categories: [
-      { name: "Confectionary", images: Bakery?.BakedConfectionary },
-      { name: "Bread, Rolls, Wraps and Bagets", images: Bakery?.BreadRolls },
-      { name: "Cakes, Cupcakes and Tarts", images: Bakery?.CakesCupcakes },
-      { name: "Croissants, Scones and Muffins", images: Bakery?.Croissants },
-      { name: "Pies", images: Bakery?.Pies },
-    ],
-  },
-  {
-    sectionName: "Appliances",
-    sectionImage: Appliances?.HeaderImage,
-    categories: [
-      { name: "Beauty Appliances", images: Appliances?.BeautyAppliances },
-      { name: "Coffee Machines", images: Appliances?.CoffeeMachines },
-      { name: "Cooking Appliances", images: Appliances?.CookingAppliances },
-      { name: "Heating and Cooling", images: Appliances?.HeatingAndCooling },
-      { name: "Irons", images: Appliances?.Irons },
-      { name: "Kettles", images: Appliances?.Kettles },
-      { name: "Vacuum Cleaners", images: Appliances?.VacuumCleaners },
-      {
-        name: "Speciality Appliances",
-        images: Appliances?.SpecialityAppliances,
-      },
-      { name: "Soda Machines and Coolers", images: Appliances?.SodaMachines },
-      { name: "Sandwich Makers", images: Appliances?.SandwichMakers },
-    ],
-  },
-  {
-    sectionName: "Baby",
-    sectionImage: Baby?.HeaderImage,
-    categories: [
-      { name: "Antenatal", images: Baby?.Antenatal },
-      { name: "Toys", images: Baby?.BabyAndToddler },
-      //{ name: "Essentials" , images:Baby?.},
-      { name: "Clothings and Gifts", images: Baby?.BabyClothing },
-      { name: "Food and Formula", images: Baby?.BabyFoods },
-      { name: "Baby Toiletries", images: Baby?.BabyToiletries },
-      { name: "Bath Time", images: Baby?.BabyTime },
-      { name: "Car seats", images: Baby?.BabySeats },
-      { name: "Nappies and wipes", images: Baby?.Nappies },
-      { name: "Nursery", images: Baby?.Nursery },
-      { name: "Nursing and Feeding", images: Baby?.NursingAndFeeding },
-      { name: "Prams and Strollers", images: Baby?.PramsAndStroller },
-      { name: "Scothers and Teethers", images: Baby?.SoothersAndTeethers },
-    ],
-  },
-  {
-    sectionName: "Beauty",
-    sectionImage: Beauty?.HeaderImage,
-    categories: [
-      { name: "All Fragrances", images: Beauty?.AllFragrances },
-      { name: "Makeup", images: Beauty?.Makeup },
-      { name: "Skincare", images: Beauty?.Skincare },
-    ],
-  },
-  // {
-  //   sectionName: "Camping ",
-  //   categories: [
-  //     { name: "All Fragrances" , images:CampingAndOutdoor?.},
-  //     { name: "Makeup" },
-  //     { name: "Skincare" },
-  //   ],
-  // },
-];
 export const PriceInput = ({
   names,
   values,
@@ -283,16 +118,16 @@ export const PriceInput = ({
 
 function Page() {
   const [selectedSection, setSelectedSection] = useState(
-    sections[0].sectionName
+    sections[0].sectionName,
   );
   // const [selectedSection, setSelectedSelected] =useState()
   const [selectedCategory, setSelectedCategory] = useState(
-    sections[0].categories
+    sections[0].categories,
   );
   useEffect(() => {
     console.log({ selectedSection: selectedSection });
     const selectedCategories = sections?.find(
-      (item) => item.sectionName === selectedSection
+      (item) => item.sectionName === selectedSection,
     );
     setSelectedCategory(selectedCategories?.categories);
     console.log(selectedCategories);
@@ -300,6 +135,8 @@ function Page() {
   const router = useRouter();
   const toast = useToast();
   const profile = ProfileInfo();
+  const categories = getCategories();
+  console.log({ categories_data: categories });
   const ProfileObject = profile?.data?.data?.user;
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
@@ -437,7 +274,8 @@ function Page() {
       // Append nested object (location)
       formData.append("location[row]", addProduct.Row);
       formData.append("location[isle]", addProduct.Isle);
-
+      formData.append("slug", selectedSection);
+      formData.append("name", selectedSection);
       // Append nested object (price)
       formData.append("price[amount]", addProduct.amount); //
       addProduct.min_amount &&
@@ -543,7 +381,8 @@ function Page() {
     // Append nested object (location)
     changedFields.Row && formData.append("location[row]", changedFields.Row);
     changedFields.Isle && formData.append("location[isle]", changedFields.Isle);
-
+    changedFields.slug && formData.append("slug", selectedCategory);
+    changedFields.name && formData.append("name", selectedCategory);
     // Append nested object (price)
     changedFields.amount &&
       formData.append("price[amount]", changedFields.amount); //
@@ -1116,11 +955,8 @@ function Page() {
                                 border={"none"}
                                 className="w-full"
                               >
-                                {sections.map((item) => (
-                                  <option
-                                    key={item.sectionName}
-                                    value={item.sectionName}
-                                  >
+                                {sections.map((item, index) => (
+                                  <option key={index} value={item.sectionName}>
                                     {item.sectionName}
                                   </option>
                                 ))}
