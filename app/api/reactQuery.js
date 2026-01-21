@@ -30,13 +30,16 @@ export const ProfileInfo = () => {
   });
   return { isPending, error, data };
 };
-export const getCategories = () => {
-  const { isPending, error, data } = useQuery({
-    queryKey: ["Categories"],
-    queryFn: () => axiosInstance.get("/api/v1/categories"),
+export const useCategories = () => {
+  return useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/api/v1/categories?page=1");
+      return res.data;
+    },
   });
-  return { isPending, error, data };
 };
+
 export const SubscriptionPlan = () => {
   const { isPending, error, data } = useQuery({
     queryKey: ["SubscriptionPlan"],

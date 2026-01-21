@@ -17,7 +17,7 @@ import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { ProfileInfo } from "@/app/api/reactQuery";
 import { AddProductData as sections } from "./component/AddProductData";
-import { getCategories } from "@/app/api/reactQuery";
+import { useCategories } from "@/app/api/reactQuery";
 //import imp from '../../../main_pages/Dashboard/Product'
 export const CompatibilityData = [
   "Fruit",
@@ -117,26 +117,48 @@ export const PriceInput = ({
 };
 
 function Page() {
+  const categories = useCategories();
+
+  useEffect(() => {
+    console.log({
+      status: categories.status,
+      data: categories?.data?.data?.data,
+    });
+  }, [categories]);
+
   const [selectedSection, setSelectedSection] = useState(
     sections[0].sectionName,
   );
+  const [finalSelectedCategory, setFinalSelectedCategory] = useState(null);
+  useEffect(() => {
+    const selectedcat = categories?.data?.data?.data.find(
+      (item) => Number(item.id) === Number(selectedSection),
+    );
+    console.log({
+      selected: selectedcat,
+    });
+    setFinalSelectedCategory(selectedcat);
+    const selectedCategories = sections?.find(
+      (item) => item.sectionName === selectedcat?.name,
+    );
+    setSelectedCategory(selectedCategories?.categories);
+  }, [selectedSection]);
   // const [selectedSection, setSelectedSelected] =useState()
   const [selectedCategory, setSelectedCategory] = useState(
     sections[0].categories,
   );
-  useEffect(() => {
-    console.log({ selectedSection: selectedSection });
-    const selectedCategories = sections?.find(
-      (item) => item.sectionName === selectedSection,
-    );
-    setSelectedCategory(selectedCategories?.categories);
-    console.log(selectedCategories);
-  }, [selectedSection]);
+  // useEffect(() => {
+  //   console.log({ selectedSection: selectedSection });
+  //   const selectedCategories = sections?.find(
+  //     (item) => item.sectionName === selectedSection,
+  //   );
+  //   setSelectedCategory(selectedCategories?.categories);
+  //   console.log(selectedCategories);
+  // }, [selectedSection]);
   const router = useRouter();
   const toast = useToast();
   const profile = ProfileInfo();
-  const categories = getCategories();
-  console.log({ categories_data: categories });
+
   const ProfileObject = profile?.data?.data?.user;
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
@@ -274,8 +296,8 @@ function Page() {
       // Append nested object (location)
       formData.append("location[row]", addProduct.Row);
       formData.append("location[isle]", addProduct.Isle);
-      formData.append("slug", selectedSection);
-      formData.append("name", selectedSection);
+      formData.append("category_id", finalSelectedCategory?.id);
+      formData.append("category_name", finalSelectedCategory?.name);
       // Append nested object (price)
       formData.append("price[amount]", addProduct.amount); //
       addProduct.min_amount &&
@@ -381,8 +403,10 @@ function Page() {
     // Append nested object (location)
     changedFields.Row && formData.append("location[row]", changedFields.Row);
     changedFields.Isle && formData.append("location[isle]", changedFields.Isle);
-    changedFields.slug && formData.append("slug", selectedCategory);
-    changedFields.name && formData.append("name", selectedCategory);
+    changedFields.slug &&
+      formData.append("category_id", finalSelectedCategory?.id);
+    changedFields.name &&
+      formData.append("category_name", finalSelectedCategory?.name);
     // Append nested object (price)
     changedFields.amount &&
       formData.append("price[amount]", changedFields.amount); //
@@ -955,11 +979,13 @@ function Page() {
                                 border={"none"}
                                 className="w-full"
                               >
-                                {sections.map((item, index) => (
-                                  <option key={index} value={item.sectionName}>
-                                    {item.sectionName}
-                                  </option>
-                                ))}
+                                {categories?.data?.data?.data.map(
+                                  (item, index) => (
+                                    <option key={item.id} value={item.id}>
+                                      {item.name}
+                                    </option>
+                                  ),
+                                )}
                               </Select>
                             </Box>
                           </Box>

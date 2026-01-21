@@ -1,6 +1,6 @@
 export const AddProductData = [
   {
-    sectionName: "Fruits, Vegs & Salads",
+    sectionName: "Fruits & Vegs",
     categories: [
       { name: "Fruits" },
       { name: "Vegetables" },
