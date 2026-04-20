@@ -22,6 +22,7 @@ import axiosInstance from "@/app/api/Api_Instance";
 import { QueryClient } from "@tanstack/react-query";
 import { BusinessInfo } from "@/app/api/reactQuery";
 import { LogOutFunction } from "@/app/api/reactQuery";
+import { useStore } from "../../Store/useStore";
 //import imp from '../../../main_pages/Dashboard/new_user_dashboard'
 export const ProfileComponent = ({ toogleSideMenu, profileData }) => {
   const router = useRouter();
@@ -78,7 +79,7 @@ export const ProfileComponent = ({ toogleSideMenu, profileData }) => {
         >
           {!toogleSideMenu && (
             <Box>
-              <Text className="text-[#454545]">{profileData?.fullname}</Text>
+              <Text className="text-[#454545]">{profileData?.name}</Text>
               <Text className=" mt-[10px] text-[#B0B0B0]">Admin</Text>
             </Box>
           )}
@@ -122,18 +123,16 @@ function DashboardDeskSide({
   // if (!mounted) return null;
   // // Prevent hydration mismatch
   // useEffect(() => setMounted(true), []);
-
-  const profile = ProfileInfo();
-  const ProfileObject = profile?.data?.data?.user || "";
-  console.log(ProfileObject);
-  //  const singleStore =  SingletoreInfo(ProfileObject?.defaultStoreId)
-  //  const SingleStoreDetails= singleStore?.data?.data?.data?.data
-  //  console.log(SingleStoreDetails)
+  const { profile, storeBrand, KycInfo } = useStore();
+  console.log("storeBrand", storeBrand);
+  console.log("KycInfo", KycInfo);
+  const storeLogoUrl = KycInfo?.find((item) => item.type === "store_logo");
+  console.log("storeLogoUrl", storeLogoUrl);
   const [SingleStoreDetails, setSingleStoreDetails] = useState("");
   useEffect(() => {
-    ProfileObject?.defaultStoreId &&
+    profile?.defaultStoreId &&
       axiosInstance
-        .get(`/api/v1/store-information/${ProfileObject?.defaultStoreId}`)
+        .get(`/api/v1/store-information/${profile?.defaultStoreId}`)
         .then((resp) => {
           console.log(resp?.data?.data);
           setSingleStoreDetails(resp?.data?.data);
@@ -141,7 +140,7 @@ function DashboardDeskSide({
         .catch((error) => {
           console.log(error);
         });
-  }, [ProfileObject?.defaultStoreId]);
+  }, [profile?.defaultStoreId]);
   const router = useRouter();
   const toast = useToast();
   //const { colorMode, toggleColorMode } = useColorMode();
@@ -218,7 +217,7 @@ function DashboardDeskSide({
   };
   return (
     <div
-      className={`  ${!toogleSideMenu ? "lg:w-[280px] w-full" : "w-[110px]"} custom-scrollbar lg:overflow-y-auto h-screen`}
+      className={`  ${!toogleSideMenu ? "lg:w-[250px] w-full" : "w-[110px]"} custom-scrollbar lg:overflow-y-auto h-screen`}
     >
       <Box className=" w-11/12 lg:flex flex-col  justify-between m-auto lg:pt-[20px] pt-[15px] pb-[32px] ">
         <Box>
@@ -269,7 +268,7 @@ function DashboardDeskSide({
               </Box>
             </Box>
           </Box>
-          {ProfileObject ? (
+          {profile ? (
             <Box
               cursor={"pointer"}
               border="1px"
@@ -281,9 +280,9 @@ function DashboardDeskSide({
                 <Box
                   cursor={"pointer"}
                   onClick={() => {
-                    ProfileObject?.defaultStoreId
+                    profile?.defaultStoreId
                       ? router.push(
-                          `/../../../main_pages/Dashboard/Market?marketId=${ProfileObject?.defaultStoreId}`,
+                          `/../../../main_pages/Dashboard/Market?marketId=${profile?.defaultStoreId}`,
                         )
                       : SetUpStoreQuery();
                   }}
@@ -291,13 +290,13 @@ function DashboardDeskSide({
                 >
                   <Box>
                     {/* <Image alt='' src={SingleStoreDetails?.storeLogo} width={50} height={60} /> */}
-                    {ProfileObject?.defaultStoreId ? (
+                    {storeLogoUrl?.url ? (
                       <Box
                         className=" bg-gray-300 w-[50px] grid items-center justify-center h-[50px] overflow-hidden rounded-full"
                         cursor={"pointer"}
                       >
                         <Image
-                          src={SingleStoreDetails?.storeLogo}
+                          src={storeLogoUrl?.url}
                           alt="Profile"
                           width={500}
                           height={500}
@@ -346,9 +345,9 @@ function DashboardDeskSide({
                   {!toogleSideMenu && (
                     <Box className=" text-[14px]">
                       <Text className=" text-[#B0B0B0]">Company</Text>
-                      {SingleStoreDetails?.storeName ? (
+                      {storeBrand[0]?.name ? (
                         <Text className=" font-bold mt-[10px] text-[#535961]">
-                          {SingleStoreDetails?.storeName} market
+                          {storeBrand[0]?.name} market
                         </Text>
                       ) : (
                         <Box
@@ -387,7 +386,7 @@ function DashboardDeskSide({
                         </svg>
                       }
                       onClick={() => {
-                        ProfileObject?.defaultStoreId
+                        profile?.defaultStoreId
                           ? router.push(
                               `/../../../main_pages/Dashboard/Market?marketId=${ProfileObject?.defaultStoreId}`,
                             )
@@ -419,7 +418,7 @@ function DashboardDeskSide({
                       <Box
                         cursor={"pointer"}
                         onClick={() => {
-                          ProfileObject?.defaultStoreId === null
+                          profile?.defaultStoreId === null
                             ? ErrorPops()
                             : mobileTog
                               ? (toogleMobile(), router.push(item.destination))
@@ -617,7 +616,7 @@ function DashboardDeskSide({
                       <Box
                         cursor={"pointer"}
                         onClick={() => {
-                          ProfileObject?.defaultStoreId === null
+                          profile?.defaultStoreId === null
                             ? ErrorPops()
                             : mobileTog && !item.darkmode
                               ? (toogleMobile(), router.push(item.destination))
@@ -678,10 +677,10 @@ function DashboardDeskSide({
             </Box>
           </Box>
         </Box>
-        {ProfileObject && (
+        {profile && (
           <Box className=" pt-[30px]">
             <ProfileComponent
-              profileData={ProfileObject}
+              profileData={profile}
               toogleSideMenu={toogleSideMenu}
             />
           </Box>

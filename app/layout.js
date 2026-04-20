@@ -4,7 +4,7 @@ import Chakrawrap from "./component/app_wraps/Chakrawrap";
 import "./globals.css";
 import { Suspense } from "react";
 import Loading from "./loading";
-import { ThemeProvider } from "next-themes";
+
 const raleway = Raleway({
   subsets: ["latin"],
   weight: ["400", "500", "700"],

@@ -61,6 +61,14 @@ export const Orders = () => {
   });
   return { isPending, error, data };
 };
+export const GetKycStatus = (options = {}) => {
+  const { isPending, error, data } = useQuery({
+    queryKey: ["KycStatus"],
+    queryFn: () => axiosInstance.get("/api/v1/merchant/kyc-documents"),
+    ...options,
+  });
+  return { isPending, error, data };
+};
 export const LogOutFunction = () => {
   const { isPending, error, data } = useQuery({
     queryKey: ["LogOut"],
