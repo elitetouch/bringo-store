@@ -7,11 +7,27 @@ const libraries = ["places"];
 export function GoogleMapsWrapper({ children }) {
   const { isLoaded, loadError } = useJsApiLoader({
     id: "google-maps-script",
-    googleMapsApiKey: "AIzaSyA24WJD5u8d-iF4FKwsZB8oOxKundbE2eY",
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
     libraries,
   });
 
-  if (loadError) return <p>Failed to load Google Maps</p>;
-  if (!isLoaded) return <p>Loading map…</p>;
+  if (loadError) return null;
+  if (!isLoaded)
+    return (
+      <div className="w-full animate-pulse">
+        {/* Two input rows */}
+        {[...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            className="grid lg:grid-cols-2 gap-x-[40px] mb-[32px] gap-y-[20px]"
+          >
+            <div className="h-[76px] rounded-[12px] bg-gray-200" />
+            <div className="h-[76px] rounded-[12px] bg-gray-200" />
+          </div>
+        ))}
+        {/* Submit button */}
+        <div className="h-[51px] w-[232px] rounded-[8px] bg-gray-200" />
+      </div>
+    );
   return <>{children}</>;
 }

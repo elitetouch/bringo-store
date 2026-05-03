@@ -48,7 +48,7 @@ function Page() {
   const [paymentTracker, setPaymentTracker] = useState(0);
   return (
     <LoadScript
-      googleMapsApiKey={"AIzaSyA24WJD5u8d-iF4FKwsZB8oOxKundbE2eY"}
+      googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
       libraries={libraries}
     >
       <div className=" min-h-screen lg:pb-[40px] pb-[20px]">

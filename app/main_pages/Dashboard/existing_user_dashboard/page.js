@@ -1,22 +1,20 @@
 "use client";
 import React from "react";
-import { useEffect } from "react";
 import NewDashTable from "@/app/component/Table/NewDashTable";
 import LineCharts from "@/app/component/Charts/LineCharts";
 import { Box, IconButton } from "@chakra-ui/react";
 import { Text } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
 import { Card_data } from "./components/Card_data";
 import Card from "./components/Card";
 import { SellingProduct } from "./components/SellingProductData";
 import Image from "next/image";
 import MobileTable from "@/app/component/Table/MobileTable";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ProfileInfo } from "@/app/api/reactQuery";
 import AddButton from "./components/AddButton";
 import { useStore } from "@/app/component/Store/useStore";
 import { NewOutlet } from "./components/NewOutletModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const ExistingDashboardHeader = ({ profile, setOpen }) => {
   const router = useRouter();
@@ -70,13 +68,21 @@ export const ExistingDashboardHeader = ({ profile, setOpen }) => {
 //import imp from '../../../main_pages/Dashboard/KycVerification'
 function Page() {
   const router = useRouter();
-  const { setProfile, profile, storeBrand, country } = useStore();
+  const searchParams = useSearchParams();
+  const outletId = searchParams.get("outletId");
+  const { setProfile, profile, storeBrand, country, KycInfo } = useStore();
   const storeId = storeBrand;
   console.log("storeProfile", profile);
   console.log("storeBrand", storeId?.length);
   console.log("countries", country);
+  console.log("kyc", KycInfo);
   const [open, setOpen] = useState(false);
-  // <button onClick={() => }>Open Form</button>
+
+  // Auto-open modal when navigated here with an outletId (edit flow)
+  useEffect(() => {
+    if (outletId) setOpen(true);
+  }, [outletId]);
+
   return (
     <div>
       {storeId?.length >= 1 && (
@@ -85,6 +91,7 @@ function Page() {
           setOpen={setOpen}
           storeId={storeId}
           countries={country}
+          outletId={outletId}
         />
       )}
       <ExistingDashboardHeader profile={profile} setOpen={setOpen} />

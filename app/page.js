@@ -183,7 +183,6 @@ export default function Home() {
     );
     return res.data;
   };
-
   const [remember, setRemember] = useState(false);
   const router = useRouter();
   const toast = useToast();
@@ -251,10 +250,10 @@ export default function Home() {
       setKycInfo(kycRes?.data?.documents ?? []);
 
       const user = resp?.data?.data?.user;
-
+      console.log("userzz", resp?.data?.data?.user);
       if (user?.emailVerifiedAt != null && user?.defaultStoreId === null) {
         router.push("/./main_pages/Dashboard/new_user_dashboard");
-      } else if (user?.email) {
+      } else if (user?.email_verified_at) {
         router.push("/./main_pages/Dashboard/existing_user_dashboard");
       } else if (user?.emailVerifiedAt === null) {
         router.push(`/./main_pages/sign_up?reroute=${user?.email}`);

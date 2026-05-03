@@ -219,7 +219,7 @@ function UploadPage({
         </div>
       )}
       <div
-        className="action-row"
+        className="lg:action-row mt-[20px]  lg:flex-row flex gap-[20px] flex-col lg:gap-[10px] lg:gap-[10px] "
         style={isFirst ? { justifyContent: "flex-end" } : {}}
       >
         {!isFirst && (
@@ -424,7 +424,7 @@ function StatusPage({ documents, onReset }) {
 
     const rejected = status === "rejected";
     const approved = status === "approved";
-    const inProgress = !approved && !rejected; // pending or reviewing
+    const inProgress = !approved && !rejected;
 
     const docDef = findDocDef(type);
     const groupLabel = getGroupLabel(type);
@@ -438,8 +438,6 @@ function StatusPage({ documents, onReset }) {
         })
       : null;
 
-    /* ── Row 2 circle icon: green / gray-progress / red-X ─────── */
-    /* Green filled circle + white checkmark — docs.svg #0E4940 fill, #F5ECBE inner */
     const GreenDot = () => (
       <svg
         width="20"
@@ -459,12 +457,6 @@ function StatusPage({ documents, onReset }) {
       </svg>
     );
 
-    /*
-      Gray progress circle — docs_1.svg pending state:
-        outer fill  = #F0F2F5  (full circle)
-        inner arc   = #A5A6AB  (partial arc ~75%, clockwise from top)
-      Reproduced with a filled base circle + dasharray stroke overlay.
-    */
     const PendingDot = () => (
       <svg
         width="20"
@@ -473,9 +465,7 @@ function StatusPage({ documents, onReset }) {
         fill="none"
         style={{ flexShrink: 0 }}
       >
-        {/* Base gray filled circle */}
         <circle cx="10" cy="10" r="10" fill="#F0F2F5" />
-        {/* Partial arc overlay — r=7, ~75% of circumference (33 of 44), starts at top */}
         <circle
           cx="10"
           cy="10"
@@ -490,7 +480,6 @@ function StatusPage({ documents, onReset }) {
       </svg>
     );
 
-    /* Red filled circle + X — docs.svg rejected */
     const RedDot = () => (
       <svg
         width="20"
@@ -509,17 +498,8 @@ function StatusPage({ documents, onReset }) {
       </svg>
     );
 
-    /*
-      Trash icon — docs_1.svg paths (all stroke #A5A6AB):
-        M137 107H139H155               ← horizontal handle bar
-        M153 107V121...H141...V107     ← bin body + lid handle
-        M144 112V118                   ← left inner line
-        M148 112V118                   ← right inner line
-      Translated to a normalised 18×20 viewBox.
-    */
     const TrashIcon = () => (
       <svg width="18" height="20" viewBox="0 0 18 20" fill="none">
-        {/* Handle bar at top */}
         <path
           d="M1 5H3H17"
           stroke="#A5A6AB"
@@ -527,7 +507,6 @@ function StatusPage({ documents, onReset }) {
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        {/* Bin body with rounded bottom + lid handle */}
         <path
           d="M16 5V18C16 19.105 15.105 20 14 20H4C2.895 20 2 19.105 2 18V5M5 5V3C5 1.895 5.895 1 7 1H11C12.105 1 13 1.895 13 3V5"
           stroke="#A5A6AB"
@@ -535,7 +514,6 @@ function StatusPage({ documents, onReset }) {
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        {/* Inner vertical lines */}
         <path
           d="M7 9V15"
           stroke="#A5A6AB"
@@ -553,12 +531,6 @@ function StatusPage({ documents, onReset }) {
       </svg>
     );
 
-    /*
-      Thumbnail box content — cloud icon with gray circle placeholder,
-      or actual image/PDF when url is available.
-      Circle: r=29.5, fill #F0F2F5 (from SVG: cx=57.5, cy=115.331)
-      Cloud icon: #0E4940 stroke (upload-to-cloud paths from SVG)
-    */
     const ThumbnailContent = () => {
       if (url && mimeType?.includes("pdf")) {
         return (
@@ -593,7 +565,6 @@ function StatusPage({ documents, onReset }) {
           />
         );
       }
-      /* Placeholder: gray circle (r=29.5) + cloud-upload icon */
       return (
         <div
           style={{
@@ -606,7 +577,6 @@ function StatusPage({ documents, onReset }) {
             justifyContent: "center",
           }}
         >
-          {/* Cloud upload — exact paths from SVG, stroke #0E4940 */}
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
             <path
               d="M9.333 13.417C9.333 10.424 11.757 8 14.75 8C17.332 8 19.492 9.787 20.053 12.213C20.16 12.677 20.51 13.045 20.968 13.17C22.663 13.634 23.917 15.19 23.917 17.042C23.917 19.274 22.107 21.083 19.875 21.083H9.625C7.393 21.083 5.583 19.274 5.583 17.042C5.583 15.352 6.64 13.91 8.134 13.323C8.588 13.143 8.836 12.659 8.748 12.178"
@@ -626,7 +596,6 @@ function StatusPage({ documents, onReset }) {
       );
     };
 
-    /* ── Status row: circle icon + text stack ─────────────────── */
     const Row = ({ icon, text, sub }) => (
       <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
         <div style={{ flexShrink: 0, marginTop: 1 }}>{icon}</div>
@@ -658,10 +627,6 @@ function StatusPage({ documents, onReset }) {
     );
 
     return (
-      /*
-        Outer container: white, no dashed border (SVG shows NO outer border).
-        The dashed border lives only on the 112×113 thumbnail box inside.
-      */
       <div
         style={{
           background: "#fff",
@@ -671,7 +636,6 @@ function StatusPage({ documents, onReset }) {
           flexDirection: "column",
         }}
       >
-        {/* ── Header: group label + doc name (left) / badge (right) ── */}
         <div
           style={{
             display: "flex",
@@ -706,13 +670,6 @@ function StatusPage({ documents, onReset }) {
           <StatusBadge status={status} />
         </div>
 
-        {/*
-          ── Middle section (flex row): ──────────────────────────────
-            Left  : dashed thumbnail box — 112×113, rx=13, #0E4940 stroke, dasharray "12 12"
-                    (source: both SVGs, rect x=1 y=58.8306 width=112 height=113)
-            Right : trash icon — only when not approved
-                    (source: docs_1.svg paths at x=137-155, y=103-123)
-        */}
         <div
           style={{
             display: "flex",
@@ -721,7 +678,6 @@ function StatusPage({ documents, onReset }) {
             gap: 16,
           }}
         >
-          {/* Dashed thumbnail box */}
           <div
             style={{
               width: 112,
@@ -740,7 +696,6 @@ function StatusPage({ documents, onReset }) {
             <ThumbnailContent />
           </div>
 
-          {/* Trash button — calls DELETE /api/v1/merchant/kyc-documents/{id} */}
           {!approved && (
             <button
               onClick={() => deleteDoc(id)}
@@ -759,7 +714,6 @@ function StatusPage({ documents, onReset }) {
               }}
             >
               {isDeleting && deletingId === id ? (
-                /* Mini-spinner while this specific doc is deleting */
                 <svg
                   width="18"
                   height="18"
@@ -784,12 +738,6 @@ function StatusPage({ documents, onReset }) {
           )}
         </div>
 
-        {/*
-          ── Status rows ─────────────────────────────────────────────
-          Pending  (docs_1.svg): 2 rows — green + gray-progress
-          Approved (docs.svg)  : 3 rows — green + green + green
-          Rejected             : 2 rows — green + red-X (rejection reason)
-        */}
         <div
           style={{
             display: "flex",
@@ -798,19 +746,12 @@ function StatusPage({ documents, onReset }) {
             padding: "16px 14px 14px",
           }}
         >
-          {/* Row 1 — Document uploaded (always green ✓) */}
           <Row
             icon={<GreenDot />}
             text="Document uploaded"
             sub={originalName}
           />
 
-          {/*
-            Row 2:
-              approved   → green ✓ + "Submitted for review" + date
-              rejected   → red   ✗ + rejection reason
-              in-progress → gray progress circle + "Submitted for review" + date
-          */}
           <Row
             icon={
               approved ? <GreenDot /> : rejected ? <RedDot /> : <PendingDot />
@@ -823,7 +764,6 @@ function StatusPage({ documents, onReset }) {
             sub={!rejected && dateStr ? dateStr : null}
           />
 
-          {/* Row 3 — "Document verified" shown only for approved (docs.svg has 3 rows) */}
           {approved && <Row icon={<GreenDot />} text="Document verified" />}
         </div>
       </div>
@@ -890,20 +830,6 @@ function StatusPage({ documents, onReset }) {
           notification once your documents have been verified.
         </span>
       </div>
-
-      {/* <div
-        className="action-row"
-        style={{
-          justifyContent: "center",
-          borderTop: "none",
-          paddingTop: 0,
-          marginTop: 28,
-        }}
-      >
-        <button className="btn-submit-page" onClick={onReset}>
-          Start New Application
-        </button>
-      </div> */}
     </div>
   );
 }
@@ -920,9 +846,19 @@ export default function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
-  const { isPending, data: kycStatusData } = GetKycStatus();
+  /*
+    FIX 3: Gate the query on the token so it never fires an
+    unauthenticated request if the page somehow mounts before
+    the token is available.
+  */
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+  const { isPending, data: kycStatusData } = GetKycStatus({
+    enabled: !!token,
+  });
   const documents = kycStatusData?.data?.data?.documents ?? [];
 
+  const queryClient = useQueryClient();
   const toast = useToast();
 
   const uploadAll = async ({ docType, files, needsId, idNumber }) => {
@@ -934,7 +870,6 @@ export default function Page() {
         .map((file) =>
           uploadSingleDocument({ docType, file, needsId, idNumber }),
         );
-      //Promise.all runs all the fuctions together waiting for all of them complete...
       await Promise.all(requests);
       toast({
         title: "Success",
@@ -972,7 +907,14 @@ export default function Page() {
       needsId: selectedDoc?.needsId ?? false,
       idNumber,
     });
+    /*
+      FIX 1: was invalidating BEFORE the ok check — if the upload
+      failed the cache was still busted, causing a wasted refetch.
+      Now invalidation only runs on success, so step 2 always shows
+      the freshest data that actually includes the new document.
+    */
     if (!ok) return;
+    queryClient.invalidateQueries({ queryKey: ["KycStatus"] });
     setStep(1);
   };
 
@@ -985,6 +927,12 @@ export default function Page() {
       idNumber: bizIdNumber,
     });
     if (!ok) return;
+    /*
+      FIX 2: invalidation was missing entirely from submitBiz — after
+      uploading business docs the cache was never refreshed, so the
+      status page showed stale data with no business document card.
+    */
+    queryClient.invalidateQueries({ queryKey: ["KycStatus"] });
     setStep(2);
   };
 

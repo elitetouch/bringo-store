@@ -126,8 +126,6 @@ body {
   pointer-events: auto !important;
 }
 
-/* ─── Reset ─────────────────────────────────────────────────── */
-
 /* ─── Root / card ────────────────────────────────────────────── */
 .kyc-root {
   min-height: 100vh;
@@ -135,7 +133,7 @@ body {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  /* font-family: "DM Sans", sans-serif; */
+  font-family: "DM Sans", sans-serif;
   padding: 40px 16px;
 }
 
@@ -276,7 +274,7 @@ body {
   padding: 0 52px 0 18px;
   border: 1.5px solid #a5a6ab;
   border-radius: 11.5px;
-  /* font-family: "DM Sans", sans-serif; */
+  font-family: "DM Sans", sans-serif;
   font-size: 14px;
   color: #343538;
   background: #fff;
@@ -316,7 +314,7 @@ body {
   padding: 0 18px;
   border: 1.5px solid #a5a6ab;
   border-radius: 11.5px;
-  /* font-family: "DM Sans", sans-serif; */
+  font-family: "DM Sans", sans-serif;
   font-size: 14px;
   color: #343538;
   background: #fff;
@@ -444,7 +442,7 @@ body {
   border-radius: 7px;
   background: #fff;
   color: #343538;
-  /* font-family: "DM Sans", sans-serif; */
+  font-family: "DM Sans", sans-serif;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -494,7 +492,7 @@ body {
   gap: 6px;
   color: #a5a6ab;
   font-size: 11px;
-  /* font-family: "DM Sans", sans-serif; */
+  font-family: "DM Sans", sans-serif;
 }
 
 .file-remove {
@@ -539,7 +537,7 @@ body {
   border-radius: 8px;
   background: transparent;
   color: #0e4940;
-  /* font-family: "DM Sans", sans-serif; */
+  font-family: "DM Sans", sans-serif;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -562,7 +560,7 @@ body {
   border-radius: 8px;
   background: transparent;
   color: #0e4940;
-  /* font-family: "DM Sans", sans-serif; */
+  font-family: "DM Sans", sans-serif;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -587,7 +585,7 @@ body {
   border-radius: 8px;
   background: #0e4940;
   color: #f5ecbe;
-  /* font-family: "DM Sans", sans-serif; */
+  font-family: "DM Sans", sans-serif;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -654,7 +652,7 @@ body {
   flex-shrink: 0;
   color: #a5a6ab;
   font-size: 11px;
-  /* font-family: "DM Sans", sans-serif; */
+  font-family: "DM Sans", sans-serif;
   text-align: center;
   gap: 4px;
   flex-direction: column;
@@ -729,22 +727,271 @@ body {
 /* ─── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 640px) {
   .page-body {
-    padding: 28px 20px 40px;
+    padding: 24px 16px 36px;
+  }
+
+  .page-heading {
+    font-size: 22px;
+  }
+
+  .page-sub {
+    font-size: 13px;
+    margin-bottom: 24px;
   }
 
   .step-bar {
     padding: 20px 14px 16px;
   }
 
+  /* Stack doc-type + ID number fields vertically */
   .doc-id-row {
     flex-direction: column;
+    gap: 0;
   }
 
+  /* Reduce tall input/select height on small screens */
+  .body-select,
+  .body-input {
+    height: 54px;
+    font-size: 14px;
+  }
+
+  /* Upload zones: always single column on mobile */
   .upload-zones.two-col {
     grid-template-columns: 1fr;
+  }
+
+  /* Action row — stack vertically, full-width buttons.
+     column-reverse keeps Submit at the top visually.    */
+  .action-row {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 10px;
+    padding-top: 20px;
+    margin-top: 28px;
+  }
+
+  .btn-back,
+  .btn-submit-page {
+    width: 100%;
+    min-width: unset;
+    justify-content: center;
+  }
+
+  /* Skip button — reset the auto-margin, go full-width */
+  .action-row > button[type="button"] {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
   }
 
   .status-card {
     flex-wrap: wrap;
   }
+}
+
+/* ─── API error banner ───────────────────────────────────────── */
+.submit-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #991b1b;
+  line-height: 1.5;
+  margin-top: 20px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STATUS PAGE — Card Grid  (matches SVG design Verification_1.svg)
+═══════════════════════════════════════════════════════════════ */
+
+/* Grid: auto-fill columns min 200px, matches SVG 3-col layout */
+.sc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  margin: 28px 0;
+}
+
+/* ── Card ── */
+.sc-card {
+  background: #fff;
+  border: 2px dashed #0e4940;
+  border-radius: 13px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Card header: label left, badge right ── */
+.sc-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 14px 10px;
+}
+
+.sc-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.sc-doc-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #343538;
+  line-height: 1.3;
+}
+
+.sc-doc-id {
+  font-size: 11px;
+  color: #a5a6ab;
+  font-weight: 400;
+}
+
+/* ── Status badge pills ── */
+.sc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Pending  — cream bg, yellow icon/text — SVG: #F1F1E6 / #FFC73E */
+.sc-badge--pending {
+  background: #f1f1e6;
+  color: #997000;
+}
+
+/* Approved — light green bg, green icon/text — SVG: #E6F1EF / #6CA08E */
+.sc-badge--approved {
+  background: #e6f1ef;
+  color: #0e4940;
+}
+
+/* Rejected — light red bg, red text — SVG: #FFE9E9 / #FF4F4A */
+.sc-badge--rejected {
+  background: #ffe9e9;
+  color: #ff4f4a;
+}
+
+/* Reviewing — warm amber */
+.sc-badge--reviewing {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+/* ── Thumbnail box — same visual language as upload zones ── */
+.sc-thumbbox {
+  width: 100%;
+  height: 130px;
+  background: #f0f2f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Empty state: gray circle + cloud icon */
+.sc-thumbbox.empty {
+  background: #f0f2f5;
+}
+
+.sc-thumb-circle {
+  width: 59px;
+  height: 59px;
+  border-radius: 50%;
+  background: #e4e6ea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* PDF placeholder */
+.sc-thumbbox.pdf {
+  flex-direction: column;
+  gap: 8px;
+  background: #f8f8f8;
+}
+
+.sc-pdf-label {
+  font-size: 11px;
+  color: #a5a6ab;
+  font-weight: 500;
+}
+
+/* Image preview */
+.sc-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Check items below thumbnail ── */
+.sc-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-top: 1px solid #f0f2f5;
+}
+
+.sc-check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sc-check-row svg {
+  flex-shrink: 0;
+}
+
+.sc-check-text {
+  font-size: 12px;
+  color: #343538;
+  line-height: 1.4;
+}
+
+/* ── Empty state (no doc submitted) ── */
+.sc-empty {
+  grid-column: 1 / -1;
+  color: #a5a6ab;
+  font-size: 13px;
+  padding: 16px 0;
+  text-align: center;
+}
+
+/* ── Bottom notice box ── */
+.sc-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 12.5px;
+  color: #0c4a6e;
+  line-height: 1.6;
+  margin-top: 4px;
+}
+
+.sc-notice-icon {
+  flex-shrink: 0;
+  font-size: 16px;
 }

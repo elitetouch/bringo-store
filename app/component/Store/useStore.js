@@ -24,6 +24,10 @@ export const useStore = create(
       KycInfo: null,
       setKycInfo: (kycInfo) => set({ KycInfo: kycInfo }),
 
+      // Selected outlet IDs carried from AddProduct → AssignProduct
+      selectedOutletIds: [],
+      setSelectedOutletIds: (ids) => set({ selectedOutletIds: ids }),
+
       // FIX 3: resetStore was missing country and KycInfo
       resetStore: () =>
         set({
@@ -31,6 +35,7 @@ export const useStore = create(
           profile: null,
           country: null,
           KycInfo: null,
+          selectedOutletIds: [],
         }),
     }),
     { name: "bringo-store" },

@@ -31,11 +31,11 @@ export const IDENTITY_DOCS = [
     hint: "PNG or SVG with transparent background preferred",
   },
   {
-    id: "legal_representation_id",
+    id: "legal_representative_id",
     label: "Legal Representation Id",
     sides: ["Front Side", "Back Side"],
     needsId: true,
-    idLabel: "legal_representation_id",
+    idLabel: "legal_representative_id",
   },
   //   {
   //     id: "nin_slip",
@@ -47,11 +47,11 @@ export const IDENTITY_DOCS = [
 ];
 export const BUSINESS_DOCS = [
   {
-    id: "cac_cert",
-    label: "CAC Certificate",
+    id: "certificate_of_incorporation",
+    label: "Certificate of incorporation",
     sides: ["Upload Document"],
     needsId: true,
-    idLabel: "RC Number",
+    idLabel: "certificate_of_incorporation",
   },
   {
     id: "cac02",
@@ -75,24 +75,18 @@ export const BUSINESS_DOCS = [
   //     hint: "PNG or SVG with transparent background preferred",
   //   },
   {
-    id: "biz_license",
-    label: "Business License",
+    id: "tin_document",
+    label: "TIN document",
     sides: ["Upload Document"],
     needsId: true,
-    idLabel: "License Number",
+    idLabel: "tin_document",
   },
   {
-    id: "utility_bill",
-    label: "Utility Bill",
+    id: "signed_contract",
+    label: "Signed contract",
     sides: ["Upload Document"],
     needsId: false,
+    idLabel: "signed_contract",
     hint: "Must be dated within the last 3 months",
-  },
-  {
-    id: "tax_clearance",
-    label: "Tax Clearance Certificate",
-    sides: ["Upload Document"],
-    needsId: true,
-    idLabel: "TIN",
   },
 ];

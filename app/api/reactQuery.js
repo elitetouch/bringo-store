@@ -34,12 +34,23 @@ export const useCategories = () => {
   return useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
-      const res = await axiosInstance.get("/api/v1/categories?page=1");
+      const res = await axiosInstance.get("/api/v1/product-categories");
       return res.data;
     },
   });
 };
-
+export const useSubcategory = (categoryId) => {
+  return useQuery({
+    queryKey: ["sub-categories", categoryId], // ← dynamic key so it refetches on change
+    queryFn: async () => {
+      const res = await axiosInstance.get(
+        `/api/v1/product-categories/${categoryId}/subcategories`,
+      );
+      return res.data;
+    },
+    enabled: !!categoryId, // ← only runs when categoryId is truthy
+  });
+};
 export const SubscriptionPlan = () => {
   const { isPending, error, data } = useQuery({
     queryKey: ["SubscriptionPlan"],
@@ -47,12 +58,23 @@ export const SubscriptionPlan = () => {
   });
   return { isPending, error, data };
 };
+//Get products
 export const Products = () => {
   const { isPending, error, data } = useQuery({
     queryKey: ["Products"],
-    queryFn: () => axiosInstance.get("/api/v1/products"),
+    queryFn: () => axiosInstance.get("/api/v1/merchant/products"),
   });
-  return { isPending, error, data };
+  const products = data?.data;
+  return { isPending, error, products };
+};
+//Get outlets
+export const Outlets = () => {
+  const { isPending, error, data } = useQuery({
+    queryKey: ["Outlets"],
+    queryFn: () => axiosInstance.get("/api/v1/merchant/store-outlets"),
+  });
+  const Outlets = data?.data?.data?.storeOutlets;
+  return { isPending, error, Outlets };
 };
 export const Orders = () => {
   const { isPending, error, data } = useQuery({
@@ -75,4 +97,17 @@ export const LogOutFunction = () => {
     queryFn: () => axiosInstance.get("/api/v1/logout"),
   });
   return { isPending, error, data };
+};
+export const useOutletInventory = (outletId) => {
+  return useQuery({
+    queryKey: ["outletInventory", outletId],
+    queryFn: async () => {
+      const res = await axiosInstance.get(
+        `/api/v1/merchant/outlets/${outletId}/inventory`,
+      );
+      const raw = res.data.data?.inventory ?? res?.data ?? [];
+      return Array.isArray(raw) ? raw : [];
+    },
+    enabled: !!outletId,
+  });
 };

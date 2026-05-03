@@ -2,10 +2,13 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { Text, Input, Select } from "@chakra-ui/react";
 import LocationInput from "../../component/GoogleApiInput";
 import { GoogleMapsWrapper } from "../../component/useJsApiLoader";
 import axiosInstance from "@/app/api/Api_Instance";
+import Modal from "@/app/component/Modal/ModalComponent";
 
 // ─── Validation Schema ────────────────────────────────────────────────────────
 const StoreSettingsSchema = Yup.object().shape({
@@ -24,6 +27,18 @@ const StoreSettingsSchema = Yup.object().shape({
 });
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
+
+// Converts "9.00am" → "09:00" (for repopulating time inputs)
+const parseTimeToInput = (timeStr) => {
+  const match = timeStr?.trim().match(/^(\d+)\.(\d+)(am|pm)$/i);
+  if (!match) return "";
+  let hour = parseInt(match[1], 10);
+  const minute = match[2];
+  const period = match[3].toLowerCase();
+  if (period === "pm" && hour !== 12) hour += 12;
+  if (period === "am" && hour === 12) hour = 0;
+  return `${String(hour).padStart(2, "0")}:${minute}`;
+};
 
 // Converts "14:30" → "2.30pm"
 const formatTime = (time) => {
@@ -385,10 +400,21 @@ const DAYS_OF_WEEK = [
 ];
 
 // ─── Main Component ───────────────────────────────────────────────────────────
-export default function CreateNewOutletForm({ storeId, countries, onClose }) {
+export default function CreateNewOutletForm({
+  storeId,
+  countries,
+  onClose,
+  outletId,
+  onSuccess,
+}) {
+  const isEditMode = Boolean(outletId);
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [apiError, setApiError] = useState("");
+  const [isFetching, setIsFetching] = useState(false);
 
   const [toggles, setToggles] = useState({
     mondayOrders: true,
@@ -486,15 +512,22 @@ export default function CreateNewOutletForm({ storeId, countries, onClose }) {
 
       setIsSaving(true);
       try {
-        const resp = await axiosInstance.post(
-          "/api/v1/merchant/store-outlets",
-          payload,
-        );
-        console.log("✅ Outlet created:", resp?.data);
+        if (isEditMode) {
+          await axiosInstance.patch(
+            `/api/v1/merchant/store-outlets/${outletId}`,
+            payload,
+          );
+          console.log("✅ Outlet updated");
+        } else {
+          const resp = await axiosInstance.post(
+            "/api/v1/merchant/store-outlets",
+            payload,
+          );
+          console.log("✅ Outlet created:", resp?.data);
+        }
+        queryClient.invalidateQueries({ queryKey: ["Outlets"] });
         setSaveSuccess(true);
-        setTimeout(() => setSaveSuccess(false), 3000);
-        //closes the modal after submission
-        onClose();
+        setShowSuccessModal(true);
         formik.resetForm();
         setScheduleData(
           DAYS_OF_WEEK.map((day) => ({
@@ -520,26 +553,186 @@ export default function CreateNewOutletForm({ storeId, countries, onClose }) {
   const handleToggle = (key) => (val) =>
     setToggles((prev) => ({ ...prev, [key]: val }));
 
+  // ── Fetch outlet data in edit mode and pre-populate form ──────────────────
+  useEffect(() => {
+    if (!outletId) return;
+    setIsFetching(true);
+    axiosInstance
+      .get(`/api/v1/merchant/store-outlets/${outletId}`)
+      .then((resp) => {
+        console.log("resp", resp);
+        const o =
+          resp?.data?.data?.storeOutlet ??
+          resp?.data?.data?.storeOutlet ??
+          resp?.data;
+        if (!o) return;
+
+        // Determine opening hours type
+        const hours = Array.isArray(o.opening_hours) ? o.opening_hours : [];
+        const isAlways =
+          hours.length > 0 &&
+          hours.every((h) => h.includes("12.00am - 11.59pm"));
+        const hoursType = isAlways
+          ? "always"
+          : hours.length > 0
+            ? "specific"
+            : "";
+
+        // Pre-populate formik values
+        formik.resetForm({
+          values: {
+            outletName: o.name ?? "",
+            storeId: o.store_brand_id ?? "",
+            addressOne: o.address ?? "",
+            openingHours: hoursType,
+            city: o.city ?? "",
+            state: o.state ?? "",
+            country: o.country?.name ?? "",
+            countryCode: o.country?.code ?? "",
+            lat: o.lat ?? "",
+            lng: o.lng ?? "",
+          },
+        });
+
+        // Pre-populate toggles for "always" mode
+        if (isAlways) {
+          const activeKeys = {};
+          Object.keys(toggles).forEach((k) => {
+            activeKeys[k] = false;
+          });
+          hours.forEach((h) => {
+            const day = h.split(":")[0].toLowerCase();
+            const keyMap = {
+              monday: "mondayOrders",
+              tuesday: "tuesdayOrders",
+              wednesday: "wednesdayOrders",
+              thursday: "thursdayOrders",
+              friday: "fridayOrders",
+              saturday: "saturdayOrders",
+              sunday: "sundayOrders",
+            };
+            if (keyMap[day]) activeKeys[keyMap[day]] = true;
+          });
+          setToggles((prev) => ({ ...prev, ...activeKeys }));
+        }
+
+        // Pre-populate schedule data for "specific" mode
+        if (!isAlways && hours.length > 0) {
+          setScheduleData(
+            DAYS_OF_WEEK.map((day) => {
+              const entry = hours.find((h) =>
+                h.startsWith(day.toLowerCase() + ":"),
+              );
+              if (!entry) return { day, left: "", right: "", active: false };
+              const timePart = entry.split(":").slice(1).join(":");
+              const [openStr, closeStr] = timePart.split(" - ");
+              return {
+                day,
+                left: parseTimeToInput(openStr),
+                right: parseTimeToInput(closeStr),
+                active: true,
+              };
+            }),
+          );
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to fetch outlet:", err);
+        setApiError("Failed to load outlet data.");
+      })
+      .finally(() => setIsFetching(false));
+  }, [outletId]);
+
   // ── Reset schedule when opening hours type changes ────────────────────────
   useEffect(() => {
-    setScheduleData(
-      DAYS_OF_WEEK.map((day) => ({ day, left: "", right: "", active: false })),
-    );
+    if (!outletId) {
+      setScheduleData(
+        DAYS_OF_WEEK.map((day) => ({
+          day,
+          left: "",
+          right: "",
+          active: false,
+        })),
+      );
+    }
     setApiError("");
+    console.log("outletId", outletId);
   }, [formik.values.openingHours]);
+
+  const handleSuccessClose = () => {
+    setShowSuccessModal(false);
+    setSaveSuccess(false);
+    onClose();
+    if (onSuccess) {
+      onSuccess();
+    } else {
+      router.push("/main_pages/Dashboard/Market");
+    }
+  };
 
   return (
     <GoogleMapsWrapper>
+      <Modal
+        isOpen={showSuccessModal}
+        onClose={handleSuccessClose}
+        title=""
+        size="sm"
+      >
+        <div className="flex flex-col items-center py-[24px] gap-y-[16px]">
+          <div
+            style={{
+              width: 64,
+              height: 64,
+              borderRadius: "50%",
+              backgroundColor: "#ECFDF5",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M5 13l4 4L19 7"
+                stroke="#10B981"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+          <Text className="text-[18px] font-bold text-[#343538]">
+            {isEditMode ? "Outlet Updated!" : "Outlet Created!"}
+          </Text>
+          <Text className="text-[13px] text-[#6B7280] text-center">
+            {isEditMode
+              ? "Your outlet has been successfully updated."
+              : "Your new outlet has been successfully created."}
+          </Text>
+          <button
+            type="button"
+            onClick={handleSuccessClose}
+            style={{ backgroundColor: "#0E4940", color: "white", width: "160px", height: "44px" }}
+            className="rounded-[8px] font-semibold text-[14px] mt-[8px] hover:opacity-90 active:scale-95 transition-all"
+          >
+            Done
+          </button>
+        </div>
+      </Modal>
       <div>
         <div className="mx-auto rounded-[20px] border border-[#ECECEC] overflow-hidden">
-          <div className="lg:px-[132px] pt-[10px] pb-[32px]">
-            <Text className="text-[28px] font-bold text-[#343538] tracking-tight text-center">
-              Create an Outlet
+          <div className="lg:px-[132px] lg:pt-[10px] lg:pb-[32px] pb-[20px]">
+            <Text className="lg:text-[26px] text-[20px] font-bold text-[#343538] tracking-tight text-center">
+              {isEditMode ? "Edit Outlet" : "Create an Outlet"}
             </Text>
           </div>
+          {isFetching && (
+            <div className="text-center py-[20px] text-[14px] text-[#888888]">
+              Loading outlet data...
+            </div>
+          )}
 
           <form onSubmit={formik.handleSubmit}>
-            <div className="w-10/12 m-auto">
+            <div className="lg:w-10/12 w-11/12  m-auto">
               {/* ── Row 1: Store + Outlet Name ── */}
               <div className="grid lg:grid-cols-2 gap-x-[40px] mb-[32px] gap-y-[20px]">
                 <SelectField
@@ -716,7 +909,7 @@ export default function CreateNewOutletForm({ storeId, countries, onClose }) {
                           d="M4 12a8 8 0 018-8v8H4z"
                         />
                       </svg>
-                      Creating outlet...
+                      {isEditMode ? "Saving changes..." : "Creating outlet..."}
                     </>
                   ) : saveSuccess ? (
                     <>
@@ -734,8 +927,10 @@ export default function CreateNewOutletForm({ storeId, countries, onClose }) {
                           strokeLinejoin="round"
                         />
                       </svg>
-                      Created!
+                      {isEditMode ? "Saved!" : "Created!"}
                     </>
+                  ) : isEditMode ? (
+                    "Save Changes"
                   ) : (
                     "Create Outlet"
                   )}

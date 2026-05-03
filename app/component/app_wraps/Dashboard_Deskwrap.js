@@ -5,17 +5,11 @@ import DashboardMobileSide from "../navbar/side_navbar/DashboardMobileSide";
 import DashboardNav from "../navbar/top_navbar/DashboardNav";
 import DashboardMobileNav from "../navbar/top_navbar/DashboardMobileNav";
 import { useState } from "react";
-import {
-  Box,
-  Button,
-  Drawer,
-  DrawerBody,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { LoadScript } from "@react-google-maps/api";
+import GoogleApiLoader from "../GoogleApiLoader";
+import { Box, useDisclosure } from "@chakra-ui/react";
+
+const LIBRARIES = ["places"];
 
 function Dashboard_Deskwrap({ children }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -25,6 +19,11 @@ function Dashboard_Deskwrap({ children }) {
     //  toogleMobile()
   };
   return (
+    <LoadScript
+      googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+      libraries={LIBRARIES}
+      loadingElement={<GoogleApiLoader />}
+    >
     <Box>
       <Box className="lg:flex">
         <Box>
@@ -48,6 +47,7 @@ function Dashboard_Deskwrap({ children }) {
         </Box>
       </Box>
     </Box>
+    </LoadScript>
   );
 }
 

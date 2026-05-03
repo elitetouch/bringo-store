@@ -76,26 +76,26 @@ export default function Modal({
       onClick={handleOverlayClick}
       className="
         fixed inset-0 z-[9999]
-        flex items-end sm:items-center justify-center
+        flex lg:items-center items-center justify-center
         bg-black/50 backdrop-blur-sm
         px-0 sm:px-4
-        animate-fadeIn
+        animate-fadeIn 
       "
     >
       <div
         className={`
-          relative lg:w-9/12 w-11/12 
+           lg:w-9/12 w-11/12 
           bg-white rounded-t-2xl sm:rounded-2xl
           shadow-2xl
           flex flex-col
-          max-h-[99vh] sm:max-h-[85vh]
-          animate-slideUp sm:animate-scaleIn
+          lg:max-h-[90vh] max-h-[95vh]
+          lg:animate-slideUp animate-scaleIn
           ${className}
         `}
       >
         {/* ── Header ── */}
         {(title || showCloseButton) && (
-          <div className="flex items-start justify-end w-10/12 m-auto gap-x-4  pt-6 pb-4 border-b border-gray-100 flex-shrink-0">
+          <div className="flex items-start justify-end w-10/12 m-auto gap-x-4  pt-4 lg:pt-6 pb-4 border-b border-gray-100 flex-shrink-0">
             {showCloseButton && (
               <IconButton
                 aria-label="Close"

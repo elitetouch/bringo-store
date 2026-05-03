@@ -61,6 +61,9 @@ const SignUpSchema = Yup.object().shape({
 });
 
 export default function Home() {
+  const searchParam = useSearchParams();
+
+  const addNewStore = searchParam.get("add_new_store");
   /* ── Helpers ───────────────────────────────────────────────────────────────
      FIX 1: Removed absolute URLs — axiosInstance already has a baseURL set.
      Combining it with a full URL creates a double-URL and the request fails.
@@ -96,6 +99,9 @@ export default function Home() {
 
   const pagination_function = () => setSignUpPage((prev) => prev + 1);
   const reduce_pagination_function = () => setSignUpPage((prev) => prev - 1);
+  useEffect(() => {
+    addNewStore === "true" && setSignUpPage(3);
+  }, [addNewStore]);
 
   useEffect(() => {
     reroute && setSignUpPage(2);
