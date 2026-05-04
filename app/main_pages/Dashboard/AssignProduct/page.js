@@ -221,8 +221,25 @@ function Page() {
 
   return (
     <div className="min-h-[95vh]">
+      {/* Mobile back button */}
+      <div
+        className="lg:hidden flex items-center gap-x-[6px] pt-[20px] px-[4%] cursor-pointer"
+        onClick={() => router.back()}
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M19 12H5M5 12L12 19M5 12L12 5"
+            stroke="#6B7280"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        <Text className="text-[13px] text-[#6B7280]">Back</Text>
+      </div>
+
       {/* ── Breadcrumb ── */}
-      <Box className="w-11/12 m-auto pt-[30px]">
+      <Box className="w-11/12 m-auto pt-[20px] lg:pt-[30px]">
         <Text className="text-[20px] font-semibold">
           Assign Product to Outlet
         </Text>

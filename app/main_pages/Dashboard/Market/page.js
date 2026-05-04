@@ -303,25 +303,8 @@ export const MarketCard = ({ item, currency }) => {
 };
 function Page() {
   const router = useRouter();
-  const toast = useToast();
-  const queryClient = useQueryClient();
-  const searchParams = useSearchParams();
-  const marketId = searchParams.get("marketId");
-
-  const [SingleStoreDetails, setSingleStoreDetails] = useState("");
-  useEffect(() => {
-    axiosInstance
-      .get(`/api/v1/store-information/${marketId}`)
-      .then((resp) => {
-        console.log(resp);
-        setSingleStoreDetails(resp?.data?.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [marketId]);
   const [deleteStoreLoader, setDeleteStoreLoader] = useState(false);
-  const deleteStoreFunc = (id) => {
+  const storeSettingsNavigation = (id) => {
     router.push(`../../../main_pages/Dashboard/AccountSettings`);
   };
   const { storeBrand: storeData, country } = useStore();
@@ -471,7 +454,7 @@ function Page() {
                   <Button
                     isLoading={deleteStoreLoader}
                     onClick={() => {
-                      deleteStoreFunc(SingleStoreDetails?.id);
+                      storeSettingsNavigation();
                     }}
                     fontWeight={500}
                     backgroundColor={"#007460"}
@@ -498,7 +481,9 @@ function Page() {
               </Box>
               {/* ── Outlets header + search bar ── */}
               <Box className="mt-[24px] flex items-center justify-between flex-wrap gap-y-[12px]">
-                <Text className="text-[18px] font-semibold text-[#343538]">Outlets</Text>
+                <Text className="text-[18px] font-semibold text-[#343538]">
+                  Outlets
+                </Text>
                 <Box className="lg:w-[400px] w-full">
                   <ProductSearch
                     placing="Search by name, city, state, status..."
@@ -539,7 +524,7 @@ function Page() {
                       data={paginatedOutlets}
                       onEdit={(id) => setEditOutletId(id)}
                     />
-                    <MobileOrderTable data={paginatedOutlets} />
+                    {/* <MobileOrderTable data={paginatedOutlets} /> */}
                   </>
                 )}
               </Box>
@@ -555,10 +540,10 @@ function Page() {
             <Text className="text-[#1A71F6] lg:text-[12px] text-[14px]">
               <span>{currentPage}</span> of {totalPages} page
               {totalPages !== 1 ? "s" : ""}{" "}
-              <span className="text-[#888888]">
+              {/* <span className="text-[#888888]">
                 ({filteredOutlets.length} result
                 {filteredOutlets.length !== 1 ? "s" : ""})
-              </span>
+              </span> */}
             </Text>
           </Box>
           <Box className="flex items-center lg:gap-x-[20px] gap-x-[15px]">

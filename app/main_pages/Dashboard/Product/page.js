@@ -219,10 +219,10 @@ function ProductPage() {
               <Text className="text-[#1A71F6] text-[12px]">
                 <span>{productPage}</span> of {productTotalPages} page
                 {productTotalPages !== 1 ? "s" : ""}{" "}
-                <span className="text-[#888888]">
+                {/* <span className="text-[#888888]">
                   ({filteredProducts.length} result
                   {filteredProducts.length !== 1 ? "s" : ""})
-                </span>
+                </span> */}
               </Text>
               <Box className="flex items-center gap-x-[15px]">
                 <Text className="text-[12px]">The page on</Text>
@@ -343,10 +343,10 @@ function ProductPage() {
           <Text className="text-[#1A71F6] lg:text-[12px] text-[14px]">
             <span>{outletPage}</span> of {outletTotalPages} page
             {outletTotalPages !== 1 ? "s" : ""}{" "}
-            <span className="text-[#888888]">
+            {/* <span className="text-[#888888]">
               ({filteredOutlets.length} result
               {filteredOutlets.length !== 1 ? "s" : ""})
-            </span>
+            </span> */}
           </Text>
           <Box className="flex items-center lg:gap-x-[20px] gap-x-[15px]">
             <Text className="lg:text-[12px] text-[14px]">The page on</Text>

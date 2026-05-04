@@ -9,7 +9,7 @@ import LocationInput from "../../component/GoogleApiInput";
 import { GoogleMapsWrapper } from "../../component/useJsApiLoader";
 import axiosInstance from "@/app/api/Api_Instance";
 import Modal from "@/app/component/Modal/ModalComponent";
-
+import { Button } from "@chakra-ui/react";
 // ─── Validation Schema ────────────────────────────────────────────────────────
 const StoreSettingsSchema = Yup.object().shape({
   outletName: Yup.string().required("Outlet name is required"),
@@ -189,10 +189,10 @@ function SelectField({
 function ToggleRow({ label, description, checked, onChange }) {
   return (
     <div
-      className="flex items-center px-[20px] py-[10px]"
+      className="flex items-center px-[20px] py-[10px] lg:justify-normal justify-between"
       style={{ maxWidth: "95%" }}
     >
-      <div className="flex-1 pr-6 grid grid-cols-2 items-center gap-x-[20px]">
+      <div className="flex-1 pr-6 grid grid-cols-2 items-center gap-x-[30px]">
         <p style={{ fontSize: 13, fontWeight: 600, color: "#6b7280" }}>
           {label}
         </p>
@@ -261,15 +261,7 @@ export const CustomToggle = ({ data, setData }) => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "1rem",
-        padding: "1.5rem",
-        maxWidth: "80%",
-      }}
-    >
+    <div className="flex flex-col gap-4 px-[16px] py-[20px] lg:px-[24px] lg:py-[24px] w-full">
       {data.map((item, index) => (
         <div
           key={item.day}
@@ -284,6 +276,7 @@ export const CustomToggle = ({ data, setData }) => {
               alignItems: "center",
               justifyContent: "space-between",
               gap: "0.75rem",
+              flexWrap: "wrap",
             }}
           >
             <div style={{ display: "flex", gap: "0.5rem" }}>
@@ -711,7 +704,12 @@ export default function CreateNewOutletForm({
           <button
             type="button"
             onClick={handleSuccessClose}
-            style={{ backgroundColor: "#0E4940", color: "white", width: "160px", height: "44px" }}
+            style={{
+              backgroundColor: "#0E4940",
+              color: "white",
+              width: "160px",
+              height: "44px",
+            }}
             className="rounded-[8px] font-semibold text-[14px] mt-[8px] hover:opacity-90 active:scale-95 transition-all"
           >
             Done
@@ -849,7 +847,7 @@ export default function CreateNewOutletForm({
                 </div>
               )} */}
             </div>
-            <div className=" lg:grid lg:grid-cols-2 flex flex-col-reverse items-center w-10/12 m-auto gap-y-[20px]">
+            <div className=" lg:grid lg:grid-cols-2 flex flex-col-reverse items-center lg:w-10/12 m-auto gap-y-[20px]">
               <div className=" pb-[56px]">
                 {/* ── API error ── */}
                 {apiError && (
@@ -874,17 +872,15 @@ export default function CreateNewOutletForm({
                   </div>
                 )}
 
-                <button
+                <Button
                   type="submit"
                   disabled={isSaving}
                   style={{
                     backgroundColor: "#0E4940",
-                    width: "232px",
                     height: "51px",
-
                     color: "white",
                   }}
-                  className="flex items-center justify-center gap-[10px] rounded-[8px] text-white font-semibold text-[14px] transition-all hover:opacity-90 active:scale-95 disabled:opacity-50"
+                  className=" lg:w-[232px] lg:flex items-center w-11/12 m-auto lg:justify-center gap-[10px] rounded-[8px] text-white font-semibold text-[14px] transition-all hover:opacity-90 active:scale-95 disabled:opacity-50"
                 >
                   {isSaving ? (
                     <>
@@ -934,17 +930,11 @@ export default function CreateNewOutletForm({
                   ) : (
                     "Create Outlet"
                   )}
-                </button>
+                </Button>
               </div>
-              <div>
+              <div className=" flex-1">
                 {formik.values.openingHours && (
                   <div className="mb-[32px]">
-                    {/* <FieldLabel>
-                      {formik.values.openingHours === "always"
-                        ? "Select operating days (open 24hrs)"
-                        : "Set opening & closing times per day"}
-                    </FieldLabel> */}
-
                     <div className="border border-[#ECECEC] rounded-[12px] py-[8px]">
                       {formik.values.openingHours === "always" ? (
                         TOGGLE_SETTINGS.map((s) => (

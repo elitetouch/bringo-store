@@ -51,6 +51,7 @@ function OTP({ setSignUpPage, profile, inCreasePage }) {
       })
       .catch((error) => {
         setSignUpLoader(false);
+        console.log("otpError", error);
         toast({
           title: "Error",
           description:
@@ -151,7 +152,6 @@ function OTP({ setSignUpPage, profile, inCreasePage }) {
 
       <Box className="flex items-center gap-x-[40px] mt-[20px] mb-[30px]">
         <Button
-          isDisabled={formatTime(timeLeft) < 0.2}
           minWidth={121}
           onClick={handleFormSubmission}
           backgroundColor="#85CB14"
@@ -180,7 +180,7 @@ function OTP({ setSignUpPage, profile, inCreasePage }) {
         </Button>
 
         <Button
-          isDisabled={formatTime(timeLeft) > 0.2}
+          isDisabled={timeLeft > 0}
           minWidth={121}
           onClick={resendOTP}
           backgroundColor="transparent"

@@ -39,7 +39,7 @@ export const TableOptions = ({ id }) => {
   );
 };
 
-function OutletsTable({ setDisplayBtn }) {
+function OrderTable({ setDisplayBtn }) {
   const router = useRouter();
   const column = [
     {
@@ -96,9 +96,9 @@ function OutletsTable({ setDisplayBtn }) {
         <Box>
           <DataTable
             columns={column}
-            data={Data}
+            data={[]}
             highlightOnHover
-            customStyles={customStyles}
+            // customStyles={customStyles}
           />
         </Box>
       </Box>
@@ -106,4 +106,4 @@ function OutletsTable({ setDisplayBtn }) {
   );
 }
 
-export default OutletsTable;
+export default OrderTable;

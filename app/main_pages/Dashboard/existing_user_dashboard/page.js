@@ -95,22 +95,6 @@ function Page() {
         />
       )}
       <ExistingDashboardHeader profile={profile} setOpen={setOpen} />
-
-      {/* <Box className=' lg:hidden grid justify-end pt-[20px]'>
-              <Button backgroundColor={'#0E4940'}>
-                <Box className=' flex items-center gap-x-[10px] p-[5px]'>
-                  <Box>
-                    <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M7.8794 10.8275H0.113281V8.23877H7.8794V0.472656H10.4681V8.23877H18.2342V10.8275H10.4681V18.5936H7.8794V10.8275Z" fill="#F5ECBE"/>
-      </svg>
-      
-                  </Box>
-                  <Box>
-                    <Text className=' text-[15px] text-white font-semibold'>Add product</Text>
-                  </Box>
-                </Box>
-              </Button>
-            </Box> */}
       <Box className=" w-11/12 m-auto lg:mt-[40px] mt-[20px]">
         <Box className=" grid lg:grid-cols-4 grid-cols-2 gap-y-[20px] gap-x-[20px]">
           {Card_data.map((item) => {

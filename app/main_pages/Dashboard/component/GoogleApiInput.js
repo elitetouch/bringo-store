@@ -32,12 +32,34 @@ export default function LocationInput({
 }) {
   const [autocompleteInstance, setAutocompleteInstance] = useState(null);
   const [inputValue, setInputValue] = useState(values || "");
+  const [confirmedAddress, setConfirmedAddress] = useState(values || "");
+  const [hasValidSelection, setHasValidSelection] = useState(!!values);
 
   const handleLoad = (instance) => setAutocompleteInstance(instance);
 
+  const clearDependentFields = () => {
+    setField(latName, "");
+    setField(lngName, "");
+    if (cityName) setField(cityName, "");
+    if (stateName) setField(stateName, "");
+    if (countryName) setField(countryName, "");
+    if (countryCodeName) setField(countryCodeName, "");
+    setField(names, "");
+  };
+
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
-    if (typeof changes === "function") changes(e);
+    setHasValidSelection(false);
+    clearDependentFields();
+  };
+
+  const handleBlur = () => {
+    if (!hasValidSelection) {
+      setInputValue(confirmedAddress);
+      if (confirmedAddress && typeof changes === "function") {
+        changes({ target: { name: names, id: names, value: confirmedAddress } });
+      }
+    }
   };
 
   const setField = (fieldName, fieldValue) => {
@@ -90,6 +112,8 @@ export default function LocationInput({
           : parsed.fullAddress;
 
     setInputValue(displayText);
+    setConfirmedAddress(displayText);
+    setHasValidSelection(true);
 
     if (typeof changes === "function") {
       changes({ target: { name: names, id: names, value: displayText } });
@@ -144,6 +168,7 @@ export default function LocationInput({
           <Input
             value={inputValue}
             onChange={handleInputChange}
+            onBlur={handleBlur}
             placeholder={placing}
             id={names}
             name={names}

@@ -119,7 +119,7 @@ function DashboardDeskSide({
   const [showModal, setShowModal] = useState(false);
   const isActive = (destination) => {
     if (!destination || !pathname) return false;
-    const norm = (s) => s.toLowerCase().replace(/\/\.\.\//g, "/");
+    const norm = (s) => s.toLowerCase().replace(/^(\/\.\.)+\//, "/");
     const current = norm(pathname);
     const target = norm(destination);
     return current === target || current.startsWith(target + "/");
@@ -379,7 +379,13 @@ function DashboardDeskSide({
                         >
                           <Box className="flex items-center justify-between w-11/12 m-auto">
                             <Box className="flex items-center gap-x-[10px]">
-                              <Box style={{ color: navTextColor(item.destination) }}>{item.icon}</Box>
+                              <Box
+                                style={{
+                                  color: navTextColor(item.destination),
+                                }}
+                              >
+                                {item.icon}
+                              </Box>
                               {!toogleSideMenu && (
                                 <Box
                                   style={{
@@ -477,7 +483,11 @@ function DashboardDeskSide({
                       >
                         <Box className="flex items-center justify-between w-11/12 m-auto">
                           <Box className="flex items-center gap-x-[10px]">
-                            <Box style={{ color: navTextColor(item.destination) }}>{item.icon}</Box>
+                            <Box
+                              style={{ color: navTextColor(item.destination) }}
+                            >
+                              {item.icon}
+                            </Box>
                             {!toogleSideMenu && (
                               <Box
                                 style={{

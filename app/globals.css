@@ -129,11 +129,11 @@ body {
 /* ─── Root / card ────────────────────────────────────────────── */
 .kyc-root {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f0f4f3 0%, #e8eeec 100%);
+  background: linear-gradient(135deg, EEEEEC 0%, EEEEEC 100%);
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
   padding: 40px 16px;
 }
 
@@ -169,7 +169,7 @@ body {
   position: absolute;
   top: 22px;
   left: calc(50% + 22px);
-  width: calc(100% - 44px);
+  width: calc(100% - 20px);
   height: 2px;
   background: #e8eeec;
   z-index: 0;
@@ -218,7 +218,6 @@ body {
 }
 
 .page-heading {
-  font-family: "DM Serif Display", serif;
   font-size: 26px;
   color: #343538;
   margin-bottom: 6px;
@@ -274,7 +273,7 @@ body {
   padding: 0 52px 0 18px;
   border: 1.5px solid #a5a6ab;
   border-radius: 11.5px;
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
   font-size: 14px;
   color: #343538;
   background: #fff;
@@ -314,7 +313,7 @@ body {
   padding: 0 18px;
   border: 1.5px solid #a5a6ab;
   border-radius: 11.5px;
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
   font-size: 14px;
   color: #343538;
   background: #fff;
@@ -442,7 +441,7 @@ body {
   border-radius: 7px;
   background: #fff;
   color: #343538;
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -492,7 +491,7 @@ body {
   gap: 6px;
   color: #a5a6ab;
   font-size: 11px;
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
 }
 
 .file-remove {
@@ -537,7 +536,7 @@ body {
   border-radius: 8px;
   background: transparent;
   color: #0e4940;
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -560,7 +559,7 @@ body {
   border-radius: 8px;
   background: transparent;
   color: #0e4940;
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -585,7 +584,7 @@ body {
   border-radius: 8px;
   background: #0e4940;
   color: #f5ecbe;
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -652,7 +651,7 @@ body {
   flex-shrink: 0;
   color: #a5a6ab;
   font-size: 11px;
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
   text-align: center;
   gap: 4px;
   flex-direction: column;
@@ -732,6 +731,7 @@ body {
 
   .page-heading {
     font-size: 22px;
+    font-weight: 500;
   }
 
   .page-sub {

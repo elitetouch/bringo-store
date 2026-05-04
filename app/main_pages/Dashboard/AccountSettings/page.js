@@ -1,6 +1,14 @@
 "use client";
 import React from "react";
-import { Box, Text, IconButton, Button, Input, Textarea, Select } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  IconButton,
+  Button,
+  Input,
+  Textarea,
+  Select,
+} from "@chakra-ui/react";
 import { useState } from "react";
 import ProfilePicture from "../../../../public/profilePicture.svg";
 import DashBoardInput from "../component/DashboardInput";
@@ -14,33 +22,42 @@ import { useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@/app/api/Api_Instance";
 import { useToast } from "@chakra-ui/react";
 import { useRef } from "react";
+import { useStore } from "@/app/component/Store/useStore";
 //import imp from '../../../main_pages/ForgetPassword'
 
 function Page() {
   const queryClient = useQueryClient();
   const toast = useToast();
   const profile = ProfileInfo();
-  const ProfileObject = profile?.data?.data?.user || "";
-  console.log(ProfileObject);
+  const storeBrand = useStore((state) => state.storeBrand);
+  const KycInfo = useStore((state) => state.KycInfo);
+  const storeProfile = useStore((state) => state.profile);
+  const setStoreBrand = useStore((state) => state.setStoreBrand);
+  const setKycInfo = useStore((state) => state.setKycInfo);
+  const setProfile = useStore((state) => state.setProfile);
+  const storeBrandId = storeBrand?.[0]?.id;
+  // Store profile is authoritative; react-query data is a fallback
+  const ProfileObject = storeProfile || profile?.data?.data?.user || {};
   const router = useRouter();
+
+  // ── API endpoint constants ──────────────────────────────────────────────────
+  // Update these strings when the real endpoints are confirmed
+  const PROFILE_UPDATE_ENDPOINT = "/api/v1/edit-profile"; // TODO: confirm endpoint
+  const CHANGE_PASSWORD_ENDPOINT = "/api/v1/edit-profile"; // TODO: confirm endpoint
+  // ───────────────────────────────────────────────────────────────────────────
   const [subscription, setSuscription] = useState(false);
   const [pages, setPages] = useState(0);
 
-  const formdata = {
-    fullName: "",
-    // lastName:'',
+  // Pre-populate profile form from store; password and image always start empty
+  const [editProfile, setEditProfile] = useState({
+    fullname: storeProfile?.fullname || "",
+    phoneNumber: storeProfile?.phone || "",
+    email: storeProfile?.email || "",
+    date: storeProfile?.date || "",
+    location: storeProfile?.country || storeProfile?.location || "",
     password: "",
-    phoneNumber: "",
-    date: "",
-    email: "",
-    location: "",
-    cvv: "",
-    expiryDate: "",
-    creditNumber: "",
-    creditFullName: "",
     user_image: "",
-  };
-  const [editProfile, setEditProfile] = useState(formdata);
+  });
   const [fileName, setFileName] = useState("");
   const inputRef = useRef(null);
   const handleFileChange = (e) => {
@@ -48,12 +65,7 @@ function Page() {
     const name = e.target.name;
     if (file) {
       setFileName(file.name);
-      if (setFileName && typeof setFileName === "function") {
-        setEditProfile((prev) => ({
-          ...prev,
-          [name]: file,
-        }));
-      }
+      setEditProfile((prev) => ({ ...prev, [name]: file }));
     }
   };
   const handleBoxClick = () => {
@@ -62,23 +74,38 @@ function Page() {
   const editFuncChange = (e) => {
     setEditProfile({ ...editProfile, [e.target.name]: e.target.value });
   };
+  // Compare against current store values so only genuinely changed fields are sent
   const getChangedFields = () => {
+    const baseline = {
+      fullname: storeProfile?.fullname || "",
+      phoneNumber: storeProfile?.phone || "",
+      email: storeProfile?.email || "",
+      date: storeProfile?.date || "",
+      location: storeProfile?.country || storeProfile?.location || "",
+      password: "",
+      user_image: "",
+    };
     const changed = {};
-
     for (const key in editProfile) {
-      if (editProfile[key] !== formdata[key]) {
+      if (editProfile[key] !== baseline[key]) {
         changed[key] = editProfile[key];
       }
     }
-
     return changed;
   };
   const [editLoader, setEditLoader] = useState(false);
 
-  // Store information edit state
-  const storeInfoDefaults = { name: "", category: "", description: "" };
+  // Store information edit state — pre-populated from Zustand store
+  const existingStoreLogo = KycInfo?.find((doc) => doc.type === "store_logo");
+  const storeInfoDefaults = {
+    name: storeBrand?.[0]?.name || "",
+    category: storeBrand?.[0]?.category || "",
+    description: storeBrand?.[0]?.description || "",
+  };
   const [editStoreInfo, setEditStoreInfo] = useState(storeInfoDefaults);
-  const [storeLogoPreview, setStoreLogoPreview] = useState(null);
+  const [storeLogoPreview, setStoreLogoPreview] = useState(
+    existingStoreLogo?.url || existingStoreLogo?.file_url || null,
+  );
   const [isDraggingLogo, setIsDraggingLogo] = useState(false);
   const storeLogoInputRef = useRef(null);
   const [storeEditLoader, setStoreEditLoader] = useState(false);
@@ -102,73 +129,121 @@ function Page() {
     if (storeLogoInputRef.current) storeLogoInputRef.current.value = "";
   };
 
-  const submitStoreInfoEdit = () => {
-    setStoreEditLoader(true);
-    const formData = new FormData();
-    editStoreInfo.name && formData.append("name", editStoreInfo.name);
-    editStoreInfo.category && formData.append("category", editStoreInfo.category);
-    editStoreInfo.description && formData.append("description", editStoreInfo.description);
-    editStoreInfo.storeLogo && formData.append("store_logo", editStoreInfo.storeLogo);
-    axiosInstance
-      .post("/api/v1/edit-store", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((resp) => {
-        queryClient.invalidateQueries();
-        setStoreEditLoader(false);
-        toast({
-          title: "Store Information",
-          description: "Store information updated successfully",
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-          position: "top-right",
-        });
-      })
-      .catch((error) => {
-        setStoreEditLoader(false);
-        console.log(error);
-        toast({
-          title: "Error",
-          description: error.response?.data?.message || "Something went wrong.",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-          position: "top-right",
-        });
+  const submitStoreInfoEdit = async () => {
+    if (!storeBrandId) {
+      toast({
+        title: "Error",
+        description: "Store brand not found. Please reload and try again.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
       });
+      return;
+    }
+    setStoreEditLoader(true);
+    try {
+      // Update text fields via PATCH
+      const payload = {};
+      if (editStoreInfo.name) payload.name = editStoreInfo.name;
+      if (editStoreInfo.category) payload.category = editStoreInfo.category;
+      if (editStoreInfo.description)
+        payload.description = editStoreInfo.description;
+
+      if (Object.keys(payload).length > 0) {
+        const patchResp = await axiosInstance.patch(
+          `/api/v1/merchant/store-brands/${storeBrandId}`,
+          payload,
+        );
+        const updatedBrand = patchResp?.data?.data?.storeBrand ?? {
+          ...storeBrand?.[0],
+          ...payload,
+        };
+        setStoreBrand([updatedBrand]);
+      }
+
+      // Upload logo via KYC endpoint if a new logo was selected
+      if (editStoreInfo.storeLogo) {
+        const logoFormData = new FormData();
+        logoFormData.append("type", "store_logo");
+        logoFormData.append("file", editStoreInfo.storeLogo);
+        await axiosInstance.post(
+          "/api/v1/merchant/kyc-documents",
+          logoFormData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          },
+        );
+        const kycResp = await axiosInstance.get(
+          "/api/v1/merchant/kyc-documents",
+        );
+        setKycInfo(kycResp?.data?.data?.documents ?? []);
+      }
+
+      queryClient.invalidateQueries();
+      setStoreEditLoader(false);
+      toast({
+        title: "Store Information",
+        description: "Store information updated successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+    } catch (error) {
+      setStoreEditLoader(false);
+      toast({
+        title: "Error",
+        description: error.response?.data?.message || "Something went wrong.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
   };
 
   const SubmitEditFuncChange = () => {
-    console.log(editProfile);
     setEditLoader(true);
     const changedFields = getChangedFields();
     const formData = new FormData();
 
-    changedFields?.fullname &&
-      formData.append("fullname", changedFields?.fullname);
+    changedFields?.fullname && formData.append("name", changedFields.fullname);
     changedFields?.password &&
-      formData.append("password", changedFields?.password);
+      formData.append("password", changedFields.password);
     changedFields?.password &&
-      formData.append("password_confirmation", changedFields?.password);
-    changedFields?.email && formData.append("email", changedFields?.email);
+      formData.append("password_confirmation", changedFields.password);
+    changedFields?.email && formData.append("email", changedFields.email);
     changedFields?.phoneNumber &&
-      formData.append("phone", changedFields?.phoneNumber);
+      formData.append("phone", changedFields.phoneNumber);
+    changedFields?.date && formData.append("date", changedFields.date);
+    changedFields?.location &&
+      formData.append("location", changedFields.location);
     changedFields?.user_image &&
-      formData.append("user_image", changedFields?.user_image);
+      formData.append("user_image", changedFields.user_image);
+
     axiosInstance
-      .post(`/api/v1/edit-profile`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data", // Let Axios set the boundary
-        },
+      .post(PROFILE_UPDATE_ENDPOINT, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       })
-      .then((resp) => {
-        console.log(resp);
+      .then(() => {
+        // Reflect changes back into the Zustand store
+        const updatedProfile = {
+          ...storeProfile,
+          ...(changedFields.fullname && { fullname: changedFields.fullname }),
+          ...(changedFields.email && { email: changedFields.email }),
+          ...(changedFields.phoneNumber && {
+            phone: changedFields.phoneNumber,
+          }),
+          ...(changedFields.date && { date: changedFields.date }),
+          ...(changedFields.location && { country: changedFields.location }),
+        };
+        setProfile(updatedProfile);
         queryClient.invalidateQueries();
         setEditLoader(false);
         toast({
           title: "Profile",
-          description: "Profile Edit successfull",
+          description: "Profile updated successfully",
           status: "success",
           duration: 5000,
           isClosable: true,
@@ -178,9 +253,16 @@ function Page() {
       })
       .catch((error) => {
         setEditLoader(false);
-        console.log(error);
+        toast({
+          title: "Error",
+          description:
+            error.response?.data?.message || "Failed to update profile.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top-right",
+        });
       });
-    // alert('Error')
   };
   const passReff = {
     currentPassword: "",
@@ -193,83 +275,70 @@ function Page() {
   };
   const Validation = () => {
     const errors = {};
-    // State parameters to be made compulsory in the form for submission to go through //
-    const objectKeys = ["currentPassword", "newPassword", "confirmPassword"];
-    objectKeys.forEach((field) => {
-      if (!changePassword[field]) {
-        errors[field] = `Input ${field.replace(/_/g, " ")}`;
-      }
-      errors[field];
-      console.log(errors[field]);
+    ["currentPassword", "newPassword", "confirmPassword"].forEach((field) => {
+      if (!changePassword[field]) errors[field] = true;
     });
-    //note:This function returns boolean which can be either true or false... Object.keys get an array of Keys //
     return Object.keys(errors).length === 0;
   };
   const [changePasswordLoader, setChangePasswordLoader] = useState(false);
   const submitPasswordFunc = () => {
-    if (Validation()) {
-      console.log(changePassword);
-      setChangePasswordLoader(true);
-      const formData = new FormData();
-      //formData.append('password',changePassword?.currentPassword)
-      formData.append("password_confirmation", changePassword?.confirmPassword);
-      formData.append("password", changePassword?.newPassword);
-      axiosInstance
-        .post(`/api/v1/edit-profile`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data", // Let Axios set the boundary
-          },
-        })
-        .then((resp) => {
-          console.log(resp);
-          queryClient.invalidateQueries();
-          setChangePasswordLoader(false);
-          toast({
-            title: "Password",
-            description: "Password changed successfull",
-            status: "success",
-            duration: 5000,
-            isClosable: true,
-            position: "top-right",
-          });
-          setChangePassword(passReff);
-        })
-        .catch((error) => {
-          setChangePasswordLoader(false);
-          console.log(error);
-        });
+    if (!Validation()) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all password fields.",
+        status: "warning",
+        duration: 4000,
+        isClosable: true,
+        position: "top-right",
+      });
+      return;
     }
+    if (changePassword.newPassword !== changePassword.confirmPassword) {
+      toast({
+        title: "Validation Error",
+        description: "New password and confirm password do not match.",
+        status: "warning",
+        duration: 4000,
+        isClosable: true,
+        position: "top-right",
+      });
+      return;
+    }
+    setChangePasswordLoader(true);
+    const formData = new FormData();
+    formData.append("password", changePassword.newPassword);
+    formData.append("password_confirmation", changePassword.confirmPassword);
+    axiosInstance
+      .post(CHANGE_PASSWORD_ENDPOINT, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then(() => {
+        queryClient.invalidateQueries();
+        setChangePasswordLoader(false);
+        toast({
+          title: "Password",
+          description: "Password changed successfully",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "top-right",
+        });
+        setChangePassword(passReff);
+      })
+      .catch((error) => {
+        setChangePasswordLoader(false);
+        toast({
+          title: "Error",
+          description:
+            error.response?.data?.message || "Failed to change password.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top-right",
+        });
+      });
   };
   //For billing validation//
-
-  const [billingInfo, setBillingInfo] = useState({
-    fullName: "",
-    CompanyName: "",
-    Address: "",
-    TaxID: "",
-  });
-  const ValidationBills = () => {
-    const errors = {};
-    // State parameters to be made compulsory in the form for submission to go through //
-    const objectKeys = ["fullName", "CompanyName", "Address", "TaxID"];
-    objectKeys.forEach((field) => {
-      if (!signInDetails[field]) {
-        errors[field] = `Input ${field.replace(/_/g, " ")}`;
-      }
-      errors[field];
-      console.log(errors[field]);
-    });
-    //note:This function returns boolean which can be either true or false... Object.keys get an array of Keys //
-    return Object.keys(errors).length === 0;
-  };
-  const handleBillingChange = (e) => {
-    setBillingInfo({ ...billingInfo, [e.target.name]: e.target.value });
-  };
-  const handleBillSubmission = () => {
-    if (ValidationBills()) {
-      console.log(billingInfo);
-    }
-  };
   return (
     <div className=" min-h-screen">
       {!subscription ? (
@@ -688,45 +757,21 @@ function Page() {
                             }
                           </Box>
                         </Box>
-                        <Box>
-                          {/* <Button border="1px" borderColor="gray.300" borderRadius="lg" height={42} backgroundColor={'transparent'}>
-                    <Text color={'#4B5563'} className=' text-[14px]'>Delete</Text>
-                  </Button> */}
-                        </Box>
                       </Box>
                     </Box>
-                    <Box>
-                      {/* <Button height={42} backgroundColor={'#007460'}>
-                    <Text color={'white'} className=' text-[14px]'>Invite  new</Text>
-                  </Button> */}
-                    </Box>
+                    <Box></Box>
                   </Box>
                   <Box className=" pt-[20px]">
                     <Box className="">
                       <DashBoardInput
-                        placing={ProfileObject?.fullname || "Naruto Uzumaki"}
+                        placing={ProfileObject?.name || "Full Name"}
                         names={"fullname"}
-                        values={editProfile.firstName}
+                        values={editProfile.fullname}
                         handleChange={editFuncChange}
                         label={"Full Name"}
                       />
                     </Box>
                     <Box className=" grid lg:grid-cols-2 gap-x-[20px] gap-y-[20px] mt-[20px]">
-                      {/* <Box>
-                    <DashBoardInput placing={'Naruto'} 
-names={'firstName'} 
-values={editProfile.firstName}
- handleChange={editFuncChange}
-  label={'First Name'} /> 
-  
-                  </Box> */}
-                      {/* <Box>
-                    <DashBoardInput placing={'Uzumaki'} 
-names={'lastName'} 
-values={editProfile.lastName}
- handleChange={editFuncChange}
-  label={'Last Name'} /> 
-                  </Box> */}
                       <Box>
                         <DashBoardInput
                           placing={"2345267"}
@@ -743,15 +788,13 @@ values={editProfile.lastName}
                           values={editProfile.phoneNumber}
                           names={"phoneNumber"}
                           label={"Phone Number"}
-                          placing={ProfileObject?.phone || "+256- 89070943"}
+                          placing={ProfileObject?.phone || "Phone Number"}
                           changes={editFuncChange}
                         />
                       </Box>
                       <Box>
                         <DashBoardInput
-                          placing={
-                            ProfileObject?.email || "Narutouzumaki@gmail.com"
-                          }
+                          placing={ProfileObject?.email || "Email address"}
                           names={"email"}
                           values={editProfile.email}
                           handleChange={editFuncChange}
@@ -760,7 +803,7 @@ values={editProfile.lastName}
                       </Box>
                       <Box>
                         <DashBoardInput
-                          placing={"Narutouzumaki@gmail.com"}
+                          placing={""}
                           types={"date"}
                           names={"date"}
                           values={editProfile.date}
@@ -772,10 +815,7 @@ values={editProfile.lastName}
                     <Box>
                       <Box className=" mt-[20px]">
                         <DashBoardInput
-                          placing={
-                            ProfileObject?.country ||
-                            "Plot 2, Parliament Avenue, Kampala, Uganda."
-                          }
+                          placing={ProfileObject?.country || "Location"}
                           names={"location"}
                           values={editProfile.location}
                           handleChange={editFuncChange}
@@ -799,15 +839,12 @@ values={editProfile.lastName}
                  <CreditCardInfo value={editProfile}  changes={editFuncChange} />
                 </Box> */}
                   </Box>
-                  <Box></Box>
-                  <Box></Box>
-                  <Box></Box>
                 </Box>
               </Box>
             </Box>
           </Box>
           <Box>
-            <Box className=" mt-[15px] w-11/12 m-auto">
+            <Box className=" pt-[40px] w-11/12 m-auto">
               <Text className=" text-[18px] font-semibold">
                 Store information
               </Text>
@@ -897,37 +934,38 @@ values={editProfile.lastName}
                     </div>
                   </Box>
 
-                  {/* Store Name */}
-                  <DashBoardInput
-                    placing={"Store Name"}
-                    names={"name"}
-                    values={editStoreInfo.name}
-                    handleChange={handleStoreInfoChange}
-                    label={"Store Name"}
-                  />
+                  {/* Store Name & Category */}
+                  <Box className="grid lg:grid-cols-2 grid-cols-1 gap-x-[20px] gap-y-[20px]">
+                    <DashBoardInput
+                      placing={"Store Name"}
+                      names={"name"}
+                      values={editStoreInfo.name}
+                      handleChange={handleStoreInfoChange}
+                      label={"Store Name"}
+                    />
 
-                  {/* Category */}
-                  <Box>
-                    <Text className="text-[15px] font-semibold">
-                      Category
-                    </Text>
-                    <div className="w-full rounded-l-lg rounded-r-lg h-[48px] grid items-center mt-[10px] bg-[#F6F6F6] text-[15px]">
-                      <Box className="w-11/12 m-auto">
-                        <Select
-                          name="category"
-                          value={editStoreInfo.category}
-                          onChange={handleStoreInfoChange}
-                          placeholder="Select Category"
-                          border="none"
-                          backgroundColor="#F6F6F6"
-                          className="text-[#7C7C7C] text-[14px]"
-                        >
-                          <option value="supermarket">Supermarket</option>
-                          <option value="electronics">Electronics</option>
-                          <option value="fashion">Fashion</option>
-                        </Select>
-                      </Box>
-                    </div>
+                    <Box>
+                      <Text className="text-[15px] font-semibold">
+                        Category
+                      </Text>
+                      <div className="w-full rounded-l-lg rounded-r-lg h-[48px] grid items-center mt-[10px] bg-[#F6F6F6] text-[15px]">
+                        <Box className="w-11/12 m-auto">
+                          <Select
+                            name="category"
+                            value={editStoreInfo.category}
+                            onChange={handleStoreInfoChange}
+                            placeholder="Select Category"
+                            border="none"
+                            backgroundColor="#F6F6F6"
+                            className="text-[#7C7C7C] text-[14px]"
+                          >
+                            <option value="supermarket">Supermarket</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="fashion">Fashion</option>
+                          </Select>
+                        </Box>
+                      </div>
+                    </Box>
                   </Box>
 
                   {/* Description */}

@@ -201,29 +201,8 @@ export default function Home() {
           await axiosInstance.post(
             "/api/v1/merchant/kyc-documents",
             logoFormData,
-            {
-              headers: { "Content-Type": "multipart/form-data" },
-            },
+            { headers: { "Content-Type": "multipart/form-data" } },
           );
-
-          // Fetch supporting data after logo upload
-          const [countries, kycRes, Profile] = await Promise.all([
-            fetchCountry(),
-            fetchKycDocuments(),
-            fetchProfile(),
-          ]);
-
-          /* FIX 2: was setCountry(countries) — fetchCountry returns res.data,
-             so the actual array lives at .data.countries, not at the root.
-             Passing the full object meant state.country was always an object,
-             never the array consumers expect.                                */
-          useStore.getState().setCountry(countries?.data?.countries);
-
-          /* FIX 3: was setKycInfo(kycRes) — same issue. fetchKycDocuments
-             returns res.data, documents array is at .data.documents.        */
-          useStore.getState().setKycInfo(kycRes?.data?.documents ?? []);
-          //Fetch profile Information since he needs to be verified before getting to this page
-          useStore.getState().setProfile(Profile?.data?.user ?? []);
         } catch (logoError) {
           console.warn("Logo upload failed:", logoError);
           toast({
@@ -236,6 +215,20 @@ export default function Home() {
             position: "top-right",
           });
         }
+      }
+
+      // 3️⃣ Always fetch supporting data so Zustand store is populated
+      try {
+        const [countries, kycRes, Profile] = await Promise.all([
+          fetchCountry(),
+          fetchKycDocuments(),
+          fetchProfile(),
+        ]);
+        useStore.getState().setCountry(countries?.data?.countries);
+        useStore.getState().setKycInfo(kycRes?.data?.documents ?? []);
+        useStore.getState().setProfile(Profile?.data?.user ?? []);
+      } catch (fetchError) {
+        console.warn("Post-store fetch failed:", fetchError);
       }
 
       /* FIX 7: toast must fire BEFORE router.push() — navigating away
@@ -278,7 +271,21 @@ export default function Home() {
         handleChange,
         handleBlur,
         handleSubmit,
-      }) => (
+        validateForm,
+        setTouched,
+      }) => {
+        const advancePage0 = async () => {
+          const errs = await validateForm();
+          const page0Errors = ["fullname", "country", "email"].some(
+            (f) => errs[f],
+          );
+          if (page0Errors) {
+            setTouched({ fullname: true, country: true, email: true });
+            return;
+          }
+          pagination_function();
+        };
+        return (
         <Form>
           <div>
             <Box>
@@ -346,6 +353,7 @@ export default function Home() {
                               <OTP
                                 profile={reroute ? reroute : profile || ""}
                                 setSignUpPage={setSignUpPage}
+                                inCreasePage={pagination_function}
                               />
                             )}
                             {signUpPage === 3 && (
@@ -373,7 +381,7 @@ export default function Home() {
                             ? submitStore
                             : signUpPage === 1
                               ? handleSubmit
-                              : pagination_function
+                              : advancePage0
                         }
                       />
                     </Box>
@@ -449,7 +457,7 @@ export default function Home() {
                             submit_func={
                               signUpPage === 1
                                 ? handleSubmit
-                                : pagination_function
+                                : advancePage0
                             }
                             invalid={
                               signUpPage === 1
@@ -489,7 +497,8 @@ export default function Home() {
             </Box>
           </div>
         </Form>
-      )}
+        );
+      }}
     </Formik>
   );
 }

@@ -5,6 +5,7 @@ const nextConfig = {
       "store.bringofresh.net",
       "api.bringodirect.com/api",
       "https://api.bringodirect.com/api",
+      "api.bringodirect.com",
     ],
     //  remotePatterns:[
     //   {

@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { uploadSingleDocument } from "./Component/UploadSingleDocument";
 import { Chevron } from "./Component/KycVerificationIcon";
 import { ArrowRight } from "./Component/KycVerificationIcon";
@@ -13,7 +14,7 @@ import { UploadZone } from "./Component/FileUploadZone";
 import { StepBar } from "./Component/StepBar";
 import { useToast } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { isPdf } from "./Component/PdfHaandler";
+//import imp from "../../../main_pages/Dashboard/existing_user_dashboard"
 import { GetKycStatus } from "@/app/api/reactQuery";
 import axiosInstance from "@/app/api/Api_Instance";
 
@@ -70,7 +71,7 @@ function UploadPage({
   setFiles,
   onSubmit,
   onBack,
-  onSkip,
+  onNext,
   isFirst,
   isSubmitting,
   submitError,
@@ -112,7 +113,7 @@ function UploadPage({
       <h2 className="page-heading">{heading}</h2>
       <p className="page-sub">{subtext}</p>
       <div className="doc-id-row">
-        <div className="field-wrap">
+        <div className="field-wrap lg:mb-0 pb-[20px] ">
           <label className="field-label" htmlFor="doc-select">
             Document type
           </label>
@@ -228,27 +229,14 @@ function UploadPage({
           </button>
         )}
 
-        {/* Skip — lets the user jump straight to the status page without uploading */}
-        {onSkip && (
+        {onNext && (
           <button
             type="button"
-            onClick={onSkip}
+            className="btn-proceed"
+            onClick={onNext}
             disabled={isSubmitting}
-            style={{
-              marginLeft: "auto",
-              marginRight: 12,
-              background: "none",
-              border: "none",
-              padding: "0 4px",
-              fontSize: 13,
-              color: "#A5A6AB",
-              cursor: isSubmitting ? "not-allowed" : "pointer",
-              textDecoration: "underline",
-              textUnderlineOffset: 3,
-              whiteSpace: "nowrap",
-            }}
           >
-            Skip for now
+            Next <ArrowRight />
           </button>
         )}
 
@@ -257,7 +245,8 @@ function UploadPage({
           disabled={isSubmitting}
           style={isSubmitting ? { opacity: 0.75, cursor: "not-allowed" } : {}}
           onClick={() => {
-            if (validate()) onSubmit();
+            validate();
+            onSubmit();
           }}
         >
           {isSubmitting ? (
@@ -279,6 +268,7 @@ function UploadPage({
 function StatusPage({ documents, onReset }) {
   const toast = useToast();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   /* ── Delete — DELETE /api/v1/merchant/kyc-documents/{id} ─────────────── */
   const {
@@ -795,13 +785,20 @@ function StatusPage({ documents, onReset }) {
   }
 
   return (
-    <div className="page-body">
+    <div
+      style={
+        {
+          //  marginTop: 10,
+        }
+      }
+      className="page-body"
+    >
       <div
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
           gap: 20,
-          margin: "24px 0",
+          marginBottom: "24px",
         }}
       >
         {documents.map((doc) => (
@@ -829,6 +826,25 @@ function StatusPage({ documents, onReset }) {
           <strong>1–3 business days</strong>. You&apos;ll receive an email
           notification once your documents have been verified.
         </span>
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: 32,
+        }}
+      >
+        <button
+          className="btn-submit-page"
+          onClick={() =>
+            router.push(
+              "/../../../main_pages/Dashboard/existing_user_dashboard",
+            )
+          }
+        >
+          Return to Dashboard
+        </button>
       </div>
     </div>
   );
@@ -969,7 +985,7 @@ export default function Page() {
             files={idFiles}
             setFiles={setIdFiles}
             onSubmit={submitId}
-            onSkip={() => setStep(2)}
+            onNext={() => setStep(1)}
             isFirst
             isSubmitting={isSubmitting}
             submitError={submitError}
@@ -989,7 +1005,7 @@ export default function Page() {
             setFiles={setBizFiles}
             onSubmit={submitBiz}
             onBack={goBack}
-            onSkip={() => setStep(2)}
+            onNext={() => setStep(2)}
             isSubmitting={isSubmitting}
             submitError={submitError}
           />

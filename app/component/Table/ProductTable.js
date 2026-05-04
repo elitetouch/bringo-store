@@ -3,15 +3,12 @@ import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import { Box, Text } from "@chakra-ui/react";
 import { IconButton } from "@chakra-ui/react";
-import productOne from "../../../public/productOne.svg";
-import productTwo from "../../../public/productTwo.svg";
-import productThree from "../../../public/productThree.svg";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import axiosInstance from "@/app/api/Api_Instance";
 import { useToast } from "@chakra-ui/react";
 import { useQueryClient } from "@tanstack/react-query";
-// import imp from '../../main_pages/Dashboard/AddProduct'
+import MobileProductTable from "./MobileProductTable";
 
 export const TableOptions = ({ productId, outletId, inventoryId }) => {
   console.log("productId", productId);
@@ -225,14 +222,15 @@ function ProductTable({ setDisplayBtn, data, outletId }) {
   ];
 
   return (
-    <Box className=" lg:grid hidden">
-      <Box
-        border="1px"
-        borderColor="gray.300"
-        borderRadius="lg"
-        className="pt-[5px] pb-[20px] bg-white rounded-lg "
-      >
-        <Box>
+    <>
+      {/* Desktop */}
+      <Box className="lg:grid hidden">
+        <Box
+          border="1px"
+          borderColor="gray.300"
+          borderRadius="lg"
+          className="pt-[5px] pb-[20px] bg-white rounded-lg"
+        >
           <DataTable
             columns={column}
             data={data}
@@ -241,7 +239,10 @@ function ProductTable({ setDisplayBtn, data, outletId }) {
           />
         </Box>
       </Box>
-    </Box>
+
+      {/* Mobile */}
+      <MobileProductTable data={data} outletId={outletId} />
+    </>
   );
 }
 

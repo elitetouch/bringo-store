@@ -4,7 +4,7 @@ import DataTable from "react-data-table-component";
 import { Box, Text, Tooltip, Button } from "@chakra-ui/react";
 import { IconButton } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
-
+import MobileProductTable from "./MobileProductTable";
 export const TableOptions = ({ id, onEdit }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -20,9 +20,11 @@ export const TableOptions = ({ id, onEdit }) => {
             size="sm"
             backgroundColor="transparent"
             onClick={() =>
-              onEdit ? onEdit(id) : router.push(
-                `/../../main_pages/Dashboard/existing_user_dashboard?outletId=${id}`,
-              )
+              onEdit
+                ? onEdit(id)
+                : router.push(
+                    `/../../main_pages/Dashboard/existing_user_dashboard?outletId=${id}`,
+                  )
             }
             icon={
               <svg
@@ -125,17 +127,20 @@ function OutletsTable({ data, onEdit, onRowClick }) {
     },
   };
 
+  const rows = data ?? [];
+
   return (
-    <Box className="lg:grid hidden">
+    <Box className="grid">
+      {/* Desktop table */}
       <Box
         border="1px"
         borderColor="gray.300"
         borderRadius="lg"
-        className="pt-[5px] pb-[20px] bg-white rounded-lg"
+        className="hidden lg:block pt-[5px] pb-[20px] bg-white rounded-lg"
       >
         <DataTable
           columns={column}
-          data={data ?? []}
+          data={rows}
           highlightOnHover
           onRowClicked={onRowClick}
           pointerOnHover={!!onRowClick}
@@ -149,6 +154,85 @@ function OutletsTable({ data, onEdit, onRowClick }) {
           }
         />
       </Box>
+
+      {/* Mobile card list */}
+      <div className="flex flex-col gap-y-[12px] lg:hidden">
+        {rows.length === 0 ? (
+          <div className="py-10 text-center">
+            <Text className="text-[#B0B0B0] text-[14px]">
+              No outlets found.
+            </Text>
+          </div>
+        ) : (
+          rows.map((row) => (
+            <div
+              key={row.id}
+              className="bg-white border border-gray-200 rounded-xl px-[16px] py-[14px] shadow-sm"
+              onClick={() => onRowClick && onRowClick(row)}
+              style={{ cursor: onRowClick ? "pointer" : "default" }}
+            >
+              {/* Header row: name + status */}
+              <div className="flex items-center justify-between mb-[10px]">
+                <Text className="text-[14px] font-semibold text-[#111827]">
+                  {row.name}
+                </Text>
+                <Box
+                  className={`px-2 py-[2px] rounded-full ${
+                    row.status === "active"
+                      ? "bg-green-100 text-green-600"
+                      : "bg-red-100 text-red-500"
+                  }`}
+                >
+                  <Text className="text-[11px] font-semibold capitalize">
+                    {row.status}
+                  </Text>
+                </Box>
+              </div>
+
+              {/* Details grid */}
+              <div className="grid grid-cols-2 gap-x-[12px] gap-y-[6px] mb-[12px]">
+                <div>
+                  <Text className="text-[10px] text-[#9CA3AF] uppercase font-semibold">
+                    Store Brand
+                  </Text>
+                  <Text className="text-[12px] text-[#374151]">
+                    {row.store_brand?.name ?? "—"}
+                  </Text>
+                </div>
+                <div>
+                  <Text className="text-[10px] text-[#9CA3AF] uppercase font-semibold">
+                    City
+                  </Text>
+                  <Text className="text-[12px] text-[#374151]">
+                    {row.city || "—"}
+                  </Text>
+                </div>
+                <div>
+                  <Text className="text-[10px] text-[#9CA3AF] uppercase font-semibold">
+                    State
+                  </Text>
+                  <Text className="text-[12px] text-[#374151]">
+                    {row.state || "—"}
+                  </Text>
+                </div>
+                <div>
+                  <Text className="text-[10px] text-[#9CA3AF] uppercase font-semibold">
+                    Country
+                  </Text>
+                  <Text className="text-[12px] text-[#374151]">
+                    {row.country?.name ?? "—"}
+                  </Text>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="border-t border-gray-100 pt-[10px]">
+                <TableOptions id={row.id} onEdit={onEdit} />
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </Box>
   );
 }
