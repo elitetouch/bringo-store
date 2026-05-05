@@ -104,6 +104,14 @@ export default function Home() {
   }, [addNewStore]);
 
   useEffect(() => {
+    const savedStep = sessionStorage.getItem("signupReturnStep");
+    if (savedStep) {
+      setSignUpPage(parseInt(savedStep, 10));
+      sessionStorage.removeItem("signupReturnStep");
+    }
+  }, []);
+
+  useEffect(() => {
     reroute && setSignUpPage(2);
   }, [reroute]);
 

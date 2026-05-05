@@ -251,6 +251,7 @@ function Page() {
         resp?.data?.data?.product?.id || resp?.data?.data?.product?.id;
       console.log("newProductId", newProductId);
       queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["outletInventory"] });
       showToast("Product", "Product added successfully", "success");
       resetForm();
       setImages([null, null, null]);
@@ -260,7 +261,11 @@ function Page() {
         `/main_pages/Dashboard/AssignProduct?productId=${newProductId}`,
       );
     } catch (error) {
-      showToast("Error", extractErrorMessage(error), "error");
+      showToast(
+        "Error",
+        error?.response?.data?.message || error?.message || "Something went wrong. Please try again.",
+        "error",
+      );
     } finally {
       setSubmitting(false);
     }

@@ -961,7 +961,11 @@ function Page() {
                           >
                             <option value="supermarket">Supermarket</option>
                             <option value="electronics">Electronics</option>
+                            <option value="grocery_store">Grocery store</option>
                             <option value="fashion">Fashion</option>
+                            <option value="farmers_market">
+                              Farmers' market
+                            </option>
                           </Select>
                         </Box>
                       </div>

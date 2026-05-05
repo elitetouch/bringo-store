@@ -670,6 +670,8 @@ export default function CreateNewOutletForm({
         onClose={handleSuccessClose}
         title=""
         size="sm"
+        className="lg:!w-[50%] !w-60% !rounded-2xl"
+        showCloseButton={false}
       >
         <div className="flex flex-col items-center py-[24px] gap-y-[16px]">
           <div
@@ -814,38 +816,6 @@ export default function CreateNewOutletForm({
               </div>
 
               {/* ── Schedule section (conditional) ── */}
-
-              {/* ── Opening hours preview ── */}
-              {/* {formik.values.openingHours && (
-                <div className="mb-[32px] p-[16px] bg-[#F8F9F8] rounded-[12px]">
-                  <p className="text-[12px] font-semibold text-[#343538] mb-[8px]">
-                    Opening hours preview:
-                  </p>
-                  {(() => {
-                    const preview =
-                      formik.values.openingHours === "always"
-                        ? transformToggles(toggles)
-                        : transformSchedule(scheduleData);
-
-                    return preview.length > 0 ? (
-                      <div className="flex flex-wrap gap-[8px]">
-                        {preview.map((entry, i) => (
-                          <span
-                            key={i}
-                            className="text-[11px] bg-white border border-[#ECECEC] rounded-full px-[10px] py-[4px] text-[#343538]"
-                          >
-                            {entry}
-                          </span>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="text-[12px] text-[#A5A6AB]">
-                        No days selected yet
-                      </p>
-                    );
-                  })()}
-                </div>
-              )} */}
             </div>
             <div className=" lg:grid lg:grid-cols-2 flex flex-col-reverse items-center lg:w-10/12 m-auto gap-y-[20px]">
               <div className=" pb-[56px]">

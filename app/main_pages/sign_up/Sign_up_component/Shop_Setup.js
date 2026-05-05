@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef } from "react";
+import Link from "next/link";
 import { Box, Text } from "@chakra-ui/react";
 import Unboarding_input from "@/app/component/Inputs/Unboarding_input";
 import { Checkbox } from "@chakra-ui/react";
@@ -194,8 +195,23 @@ function Shop_Setup({ signUpDetails, handleSignUpChange, onLogoSelect }) {
             <Text>
               I hereby agreed that i have read and agree to the BringoDirect
               sellers contract{" "}
-              <span className="text-[#A8E545]">Terms & Condition,</span> and{" "}
-              <span className="text-[#A8E545]">Privacy policy</span>
+              <Link
+                href="/main_pages/TermsAndConditions"
+                onClick={() => sessionStorage.setItem("signupReturnStep", "3")}
+                style={{ color: "#A8E545" }}
+                className="underline underline-offset-2 hover:opacity-80"
+              >
+                Terms & Conditions
+              </Link>
+              , and{" "}
+              <Link
+                href="/main_pages/PrivacyPolicy"
+                onClick={() => sessionStorage.setItem("signupReturnStep", "3")}
+                style={{ color: "#A8E545" }}
+                className="underline underline-offset-2 hover:opacity-80"
+              >
+                Privacy Policy
+              </Link>
             </Text>
           </Box>
         </Box>

@@ -421,33 +421,6 @@ function DashboardDeskSide({
                             )}
                           </Box>
                         </Box>
-                        {dropdown && item.showdropdown && (
-                          <Box
-                            borderLeft="3px"
-                            borderColor="gray.300"
-                            pl={4}
-                            className="border-l"
-                          >
-                            <Box>
-                              <Box display="flex" alignItems="center" mb={2}>
-                                <Box bg="gray.700" h="5px" w="15px" mr={2} />
-                                <Text fontSize="15px">Produce</Text>
-                              </Box>
-                              <Box display="flex" alignItems="center" mb={2}>
-                                <Box bg="gray.700" h="5px" w="15px" mr={2} />
-                                <Text fontSize="15px">Bakery</Text>
-                              </Box>
-                              <Box display="flex" alignItems="center" mb={2}>
-                                <Box bg="gray.700" h="5px" w="15px" mr={2} />
-                                <Text fontSize="15px">Beverage</Text>
-                              </Box>
-                              <Box display="flex" alignItems="center" mb={2}>
-                                <Box bg="gray.700" h="5px" w="15px" mr={2} />
-                                <Text fontSize="15px">Meat & sea food</Text>
-                              </Box>
-                            </Box>
-                          </Box>
-                        )}
                       </Box>
                     </Box>
                   );
