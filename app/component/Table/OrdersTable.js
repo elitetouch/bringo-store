@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React from "react";
 import DataTable from "react-data-table-component";
 import { Box, Text, Tooltip, Button } from "@chakra-ui/react";
@@ -23,7 +23,7 @@ export const TableOptions = ({ id, onEdit }) => {
               onEdit
                 ? onEdit(id)
                 : router.push(
-                    `/../../main_pages/Dashboard/existing_user_dashboard?outletId=${id}`,
+                    `/existing_user_dashboard?outletId=${id}`,
                   )
             }
             icon={
@@ -56,7 +56,7 @@ export const TableOptions = ({ id, onEdit }) => {
           _hover={{ backgroundColor: "#005a4a" }}
           onClick={() =>
             router.push(
-              `/../../main_pages/Dashboard/AssignProduct?outletId=${id}&productId=${productId}`,
+              `/AssignProduct?outletId=${id}&productId=${productId}`,
             )
           }
         >

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { Text, Box } from "@chakra-ui/react";
 import Learn_More from "./component/Buttons/Learn_More";
 import Image from "next/image";
@@ -64,7 +64,7 @@ export const Login_mobile = ({
             Please use your credentials to login. If you are not a member,
             please register{" "}
             <span
-              onClick={() => router.push("/./main_pages/sign_up")}
+              onClick={() => router.push("/sign_up")}
               className=" text-[#85CB14]"
             >
               here.
@@ -130,7 +130,7 @@ export const Login_mobile = ({
             <Box>
               <Box
                 cursor={"pointer"}
-                onClick={() => router.push(`/./main_pages/ForgetPassword`)}
+                onClick={() => router.push(`/./ForgetPassword`)}
                 backgroundColor={"transparent"}
                 height={"fit-content"}
               >
@@ -252,11 +252,11 @@ export default function Home() {
       const user = resp?.data?.data?.user;
       console.log("userzz", resp?.data?.data?.user);
       if (user?.emailVerifiedAt != null && user?.defaultStoreId === null) {
-        router.push("/./main_pages/Dashboard/new_user_dashboard");
+        router.push("/new_user_dashboard");
       } else if (user?.email_verified_at) {
-        router.push("/./main_pages/Dashboard/existing_user_dashboard");
+        router.push("/existing_user_dashboard");
       } else if (user?.emailVerifiedAt === null) {
-        router.push(`/./main_pages/sign_up?reroute=${user?.email}`);
+        router.push(`/sign_up?reroute=${user?.email}`);
       }
     } catch (error) {
       toast({
@@ -346,7 +346,7 @@ export default function Home() {
                       Please use your credentials to login. If you are not a
                       member, please register{" "}
                       <span
-                        onClick={() => router.push("/./main_pages/sign_up")}
+                        onClick={() => router.push("/sign_up")}
                         className=" text-[#85CB14]"
                       >
                         here.
@@ -419,7 +419,7 @@ export default function Home() {
                       <Box
                         cursor={"pointer"}
                         onClick={() =>
-                          router.push(`/./main_pages/ForgetPassword`)
+                          router.push(`/./ForgetPassword`)
                         }
                         backgroundColor={"transparent"}
                         height={"fit-content"}

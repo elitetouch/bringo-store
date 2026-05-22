@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React from "react";
 import SearchInput from "../../Inputs/SearchInput";
 import { Box } from "@chakra-ui/react";
@@ -101,7 +101,7 @@ function DashboardNav() {
           <Box
             cursor={"pointer"}
             onClick={() =>
-              router.push(`/../../../main_pages/Dashboard/AccountSettings`)
+              router.push(`/AccountSettings`)
             }
             borderLeft="1px"
             borderColor="gray.300"

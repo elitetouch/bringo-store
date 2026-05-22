@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React, { useEffect } from "react";
 import { Box, Button, Text } from "@chakra-ui/react";
 import { useState } from "react";
@@ -66,7 +66,7 @@ export const ProfileComponent = ({ toogleSideMenu, profileData }) => {
         <Box
           cursor={"pointer"}
           onClick={() =>
-            router.push(`/../../../main_pages/Dashboard/AccountSettings`)
+            router.push(`/AccountSettings`)
           }
           className="flex justify-between w-full text-[15px]"
         >
@@ -202,7 +202,7 @@ function DashboardDeskSide({
     });
   };
 
-  const STORE_SETUP_DEST = "/../../../main_pages/Dashboard/new_user_dashboard";
+  const STORE_SETUP_DEST = "/new_user_dashboard";
 
   return (
     <div
@@ -257,7 +257,7 @@ function DashboardDeskSide({
                         SetUpStoreQuery();
                       } else {
                         // setShowStorePopup((prev) => !prev);
-                        router.push(`/../../../main_pages/Dashboard/Market`);
+                        router.push(`/Market`);
                         toogleMobile();
                       }
                     }}
@@ -300,7 +300,7 @@ function DashboardDeskSide({
                             onClick={(e) => {
                               e.stopPropagation();
                               router.push(
-                                `/../../../main_pages/Dashboard/new_user_dashboard`,
+                                `/new_user_dashboard`,
                               );
                             }}
                           >
@@ -335,7 +335,7 @@ function DashboardDeskSide({
                       }
                       onClick={() => {
                         storeBrand?.length >= 1
-                          ? router.push(`/../../../main_pages/Dashboard/Market`)
+                          ? router.push(`/Market`)
                           : SetUpStoreQuery();
                         toogleMobile();
                       }}

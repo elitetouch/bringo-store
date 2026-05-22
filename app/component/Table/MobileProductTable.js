@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import React, { useState } from 'react'
 import { Box, Text, IconButton, useToast } from '@chakra-ui/react'
 import { Checkbox } from '@chakra-ui/react'
@@ -164,7 +164,7 @@ const TableCard = ({ item, outletId }) => {
                 aria-label="Edit product"
                 onClick={() =>
                   router.push(
-                    `/../../main_pages/Dashboard/AssignProduct?outletId=${resolvedOutletId}&productId=${item?.product?.id}`,
+                    `/AssignProduct?outletId=${resolvedOutletId}&productId=${item?.product?.id}`,
                   )
                 }
                 icon={

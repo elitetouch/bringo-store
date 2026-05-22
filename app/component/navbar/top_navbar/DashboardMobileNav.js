@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React from "react";
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
@@ -17,7 +17,7 @@ function DashboardMobileNav({ toogleSideNav }) {
         <Box
           cursor={"pointer"}
           onClick={() =>
-            router.push(`/../../../main_pages/Dashboard/AccountSettings`)
+            router.push(`/AccountSettings`)
           }
           className=" flex items-center gap-x-[20px] pl-[10px] "
         >

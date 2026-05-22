@@ -1,11 +1,11 @@
-// import imp from '../../main_pages/Dashboard/Product'
+﻿// import imp from '../Product'
 
 export const SideNavData = [
   {
     id: 1,
     title: "Dashboard",
     showdropdown: false,
-    destination: "/../../main_pages/Dashboard/existing_user_dashboard",
+    destination: "/existing_user_dashboard",
     icon: (
       <svg
         width="18"
@@ -28,7 +28,7 @@ export const SideNavData = [
     id: 2,
     title: "Product",
     showdropdown: true,
-    destination: "/../../main_pages/Dashboard/Product",
+    destination: "/Product",
     icon: (
       <svg
         width="20"
@@ -51,7 +51,7 @@ export const SideNavData = [
     id: 3,
     title: "Orders",
     showdropdown: false,
-    destination: "/../../main_pages/Dashboard/Orders",
+    destination: "/Orders",
     icon: (
       <svg
         width="20"
@@ -74,7 +74,7 @@ export const SideNavData = [
     id: 4,
     title: "Shop",
     showdropdown: false,
-    destination: "/../../main_pages/Dashboard/Market",
+    destination: "/Market",
     icon: (
       <svg
         width="20"
@@ -107,7 +107,7 @@ export const sideNavTools = [
   {
     id: 1,
     title: "Account & Settings",
-    destination: "/../../main_pages/Dashboard/AccountSettings",
+    destination: "/AccountSettings",
     icon: (
       <svg
         width="18"
@@ -137,7 +137,7 @@ export const sideNavTools = [
   {
     id: 2,
     title: "Help",
-    destination: "/../../main_pages/Dashboard/Help",
+    destination: "/Help",
     icon: (
       <svg
         width="20"

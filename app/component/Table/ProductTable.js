@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import { Box, Text } from "@chakra-ui/react";
@@ -60,7 +60,7 @@ export const TableOptions = ({ productId, outletId, inventoryId }) => {
       <IconButton
         onClick={() =>
           router.push(
-            `/../../main_pages/Dashboard/AssignProduct?outletId=${outletId}&productId=${productId}`,
+            `/AssignProduct?outletId=${outletId}&productId=${productId}`,
           )
         }
         icon={

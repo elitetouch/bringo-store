@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import React from 'react' 
 import DataTable from 'react-data-table-component'
 import { Box, Text } from '@chakra-ui/react'
@@ -9,7 +9,7 @@ import productThree from '../../../public/productThree.svg'
 import Image from 'next/image'
 import { Select } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
-// import imp from '/../../main_pages/Dashboard/Product'
+// import imp from '/Product'
 function NewDashTable({setDisplayBtn}) {
   const router = useRouter()
   const column=[
@@ -158,7 +158,7 @@ const Data = []
     <Box className=' w-11/12 m-auto flex items-center justify-between  mb-[20px]'>
       <Text className=' text-[15px] font-semibold'>Latest Orders</Text>
       <IconButton
-      onClick={()=>router.push('/../../main_pages/Dashboard/Orders')}
+      onClick={()=>router.push('/Orders')}
      icon={<Box className=' flex items-center gap-x-[5px] p-[10px]'>
       <Text className=' text-[15px]'>More</Text>
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
