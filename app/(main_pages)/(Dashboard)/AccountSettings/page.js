@@ -563,7 +563,7 @@ function Page() {
                       />
                       <Box
                         onClick={() =>
-                          router.push(`/../ForgetPassword`)
+                          router.push(`/../ForgetPassword?from=settings`)
                         }
                         cursor={"pointer"}
                       >

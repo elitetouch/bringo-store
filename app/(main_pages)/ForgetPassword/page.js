@@ -1,6 +1,6 @@
 ﻿"use client";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Box, Button, Text, useToast } from "@chakra-ui/react";
 import Image from "next/image";
 import bringologo from "../../../public/bringologo.svg";
@@ -9,6 +9,8 @@ import DashBoardInput from "@/app/component/dashboard_components/DashboardInput"
 
 function Page() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const from = searchParams.get("from") || "";
   const toast = useToast();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -54,7 +56,7 @@ function Page() {
           isClosable: true,
           position: "top-right",
         });
-        router.push(`/PasswordOTP?email=${encodeURIComponent(email)}`);
+        router.push(`/PasswordOTP?email=${encodeURIComponent(email)}${from ? `&from=${from}` : ""}`);
       })
       .catch((error) => {
         setLoading(false);

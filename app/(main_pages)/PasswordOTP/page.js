@@ -10,6 +10,7 @@ function Page() {
   const toast = useToast();
   const searchParams = useSearchParams();
   const emailFromParams = searchParams.get("email") || "";
+  const from = searchParams.get("from") || "";
 
   const [form, setForm] = useState({
     otp: "",
@@ -74,7 +75,7 @@ function Page() {
           isClosable: true,
           position: "top-right",
         });
-        router.push("/sign_in");
+        router.push(from === "settings" ? "/AccountSettings" : "/");
       })
       .catch((error) => {
         setLoading(false);
