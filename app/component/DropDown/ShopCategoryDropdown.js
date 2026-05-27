@@ -35,6 +35,8 @@ function ShopCategoryDropdown({ value, handleChange }) {
             backgroundColor="white"
           >
             <option value="supermarket">Supermarket</option>
+            <option value="farmers_market">Farmers' market</option>
+            <option value="grocery_store">Grocery store</option>
             <option value="electronics">Electronics</option>
             <option value="fashion">Fashion</option>
             {/* add more as needed */}

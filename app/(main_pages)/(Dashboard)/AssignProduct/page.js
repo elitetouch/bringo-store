@@ -11,7 +11,13 @@ import { useToast } from "@chakra-ui/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useStore } from "@/app/component/Store/useStore";
 
-// ── UGXInput ──
+const CURRENCIES = [
+  { code: "UGX", label: "UGX" },
+  { code: "NGN", label: "NGN" },
+  { code: "KES", label: "KES" },
+];
+
+// ── CurrencyInput ──
 function UGXInput({
   value,
   onChange,
@@ -20,6 +26,8 @@ function UGXInput({
   error,
   name,
   onBlur,
+  currency,
+  onCurrencyChange,
 }) {
   const [focused, setFocused] = useState(false);
   return (
@@ -40,17 +48,32 @@ function UGXInput({
         <Box
           className="flex items-center justify-center h-full flex-shrink-0"
           style={{
-            width: "63px",
             backgroundColor: "rgba(0,0,0,0.08)",
             borderRight: "1px solid #D4D4D4",
           }}
         >
-          <Text
-            className="text-[14px]"
-            style={{ color: "#8A8A8A", fontWeight: 500 }}
+          <select
+            value={currency}
+            onChange={(e) => onCurrencyChange?.(e.target.value)}
+            style={{
+              height: "100%",
+              padding: "0 6px 0 10px",
+              background: "transparent",
+              border: "none",
+              outline: "none",
+              fontSize: "13px",
+              color: "#8A8A8A",
+              fontWeight: 500,
+              cursor: "pointer",
+              appearance: "auto",
+            }}
           >
-            UGX
-          </Text>
+            {CURRENCIES.map((c) => (
+              <option key={c.code} value={c.code}>
+                {c.label}
+              </option>
+            ))}
+          </select>
         </Box>
         <Input
           name={name}
@@ -129,6 +152,7 @@ function Page() {
   });
   const [prefillProduct, setPrefillProduct] = useState(null);
   const [isFetchingInventory, setIsFetchingInventory] = useState(false);
+  const [selectedCurrency, setSelectedCurrency] = useState("UGX");
 
   useEffect(() => {
     if (!outletId || !productId) return;
@@ -361,6 +385,8 @@ function Page() {
                   onBlur={handleBlur}
                   placeholder="0"
                   error={touched.price && errors.price}
+                  currency={selectedCurrency}
+                  onCurrencyChange={setSelectedCurrency}
                 />
 
                 {/* Stock quantity */}

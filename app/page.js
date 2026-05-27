@@ -347,7 +347,7 @@ export default function Home() {
                       member, please register{" "}
                       <span
                         onClick={() => router.push("/sign_up")}
-                        className=" text-[#85CB14]"
+                        className=" text-[#85CB14] cursor-pointer"
                       >
                         here.
                       </span>
