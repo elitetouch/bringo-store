@@ -150,7 +150,7 @@ function ProductTable({ setDisplayBtn, data, outletId }) {
           >
             {row?.product?.images && row?.product?.images?.length > 0 && (
               <Image
-                src={row.product.images[0]}
+                src={row.product.images[0]?.url}
                 alt="Profile"
                 width={500}
                 height={500}
@@ -165,7 +165,9 @@ function ProductTable({ setDisplayBtn, data, outletId }) {
             <Text className=" text-[#007460]">
               {String(row?.product?.id ?? "").slice(0, 5)}
             </Text>
-            <Text className="text-[12px]">{row?.product?.title}</Text>
+            <Text className="text-[12px]">
+              {String(row?.product?.title ?? "").slice(0, 8)}...
+            </Text>
           </Box>
         </div>
       ),

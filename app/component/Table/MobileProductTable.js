@@ -1,57 +1,59 @@
-﻿'use client'
-import React, { useState } from 'react'
-import { Box, Text, IconButton, useToast } from '@chakra-ui/react'
-import { Checkbox } from '@chakra-ui/react'
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import axiosInstance from '@/app/api/Api_Instance'
-import { useQueryClient } from '@tanstack/react-query'
+﻿"use client";
+import React, { useState } from "react";
+import { Box, Text, IconButton, useToast } from "@chakra-ui/react";
+import { Checkbox } from "@chakra-ui/react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import axiosInstance from "@/app/api/Api_Instance";
+import { useQueryClient } from "@tanstack/react-query";
 
 const TableCard = ({ item, outletId }) => {
-  const router = useRouter()
-  const toast = useToast()
-  const queryClient = useQueryClient()
-  const [open, setOpen] = useState(false)
-  const [deleteLoader, setDeleteLoader] = useState(false)
+  const router = useRouter();
+  const toast = useToast();
+  const queryClient = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const [deleteLoader, setDeleteLoader] = useState(false);
 
   const deleteFunc = () => {
-    setDeleteLoader(true)
+    setDeleteLoader(true);
     axiosInstance
       .delete(`/api/v1/merchant/outlets/${outletId}/inventory/${item.id}`)
       .then(() => {
-        queryClient.invalidateQueries({ queryKey: ['Products'] })
-        queryClient.invalidateQueries({ queryKey: ['Outlets'] })
+        queryClient.invalidateQueries({ queryKey: ["Products"] });
+        queryClient.invalidateQueries({ queryKey: ["Outlets"] });
         if (outletId) {
-          queryClient.invalidateQueries({ queryKey: ['outletInventory', outletId] })
+          queryClient.invalidateQueries({
+            queryKey: ["outletInventory", outletId],
+          });
         }
         toast({
-          title: 'Delete',
-          description: 'Product deleted successfully',
-          status: 'success',
+          title: "Delete",
+          description: "Product deleted successfully",
+          status: "success",
           duration: 5000,
           isClosable: true,
-          position: 'top-right',
-        })
-        setDeleteLoader(false)
+          position: "top-right",
+        });
+        setDeleteLoader(false);
       })
       .catch(() => {
         toast({
-          title: 'Error',
-          description: 'Something went wrong. Please try again.',
-          status: 'error',
+          title: "Error",
+          description: "Something went wrong. Please try again.",
+          status: "error",
           duration: 5000,
           isClosable: true,
-          position: 'top-right',
-        })
-        setDeleteLoader(false)
-      })
-  }
+          position: "top-right",
+        });
+        setDeleteLoader(false);
+      });
+  };
 
-  const isActive = item?.product?.is_active === true
+  const isActive = item?.product?.is_active === true;
   const createdAt = item?.product?.created_at
     ? new Date(item.product.created_at).toLocaleDateString()
-    : '—'
-  const resolvedOutletId = outletId ?? item?.store_outlet_id
+    : "—";
+  const resolvedOutletId = outletId ?? item?.store_outlet_id;
 
   return (
     <Box className="bg-white rounded-lg overflow-hidden border border-gray-200 shadow-sm">
@@ -62,7 +64,7 @@ const TableCard = ({ item, outletId }) => {
           <Box className="bg-gray-100 w-[42px] h-[42px] overflow-hidden rounded-full shrink-0 flex items-center justify-center">
             {item?.product?.images?.length > 0 && (
               <Image
-                src={item.product.images[0]}
+                src={item?.product?.images[0]?.url}
                 alt="Product"
                 width={42}
                 height={42}
@@ -73,7 +75,7 @@ const TableCard = ({ item, outletId }) => {
           </Box>
           <Box>
             <Text className="text-[11px] text-[#007460] leading-tight">
-              {String(item?.product?.id ?? '').slice(0, 5)}
+              {String(item?.product?.id ?? "").slice(0, 5)}
             </Text>
             <Text className="text-[12px] font-semibold text-[#111827] leading-tight">
               {item?.product?.title}
@@ -116,17 +118,21 @@ const TableCard = ({ item, outletId }) => {
       {open && (
         <Box className="grid gap-y-[14px] px-[16px] pb-[16px] pt-[4px] border-t border-gray-100">
           {[
-            { label: 'Price', value: item?.price ?? '—' },
-            { label: 'Brand', value: item?.product?.product_brand_name ?? '—' },
-            { label: 'QTY', value: item?.stock_qty ?? '—' },
-            { label: 'Date', value: createdAt },
+            { label: "Price", value: item?.price ?? "—" },
+            { label: "Brand", value: item?.product?.product_brand_name ?? "—" },
+            { label: "QTY", value: item?.stock_qty ?? "—" },
+            { label: "Date", value: createdAt },
           ].map(({ label, value }) => (
             <Box key={label} className="grid grid-cols-5 gap-x-[12px]">
               <Box className="col-span-2">
-                <Text className="text-right text-[13px] text-[#737373]">{label}</Text>
+                <Text className="text-right text-[13px] text-[#737373]">
+                  {label}
+                </Text>
               </Box>
               <Box className="col-span-3">
-                <Text className="text-[13px] font-semibold text-[#111827]">{value}</Text>
+                <Text className="text-[13px] font-semibold text-[#111827]">
+                  {value}
+                </Text>
               </Box>
             </Box>
           ))}
@@ -134,20 +140,22 @@ const TableCard = ({ item, outletId }) => {
           {/* Status */}
           <Box className="grid grid-cols-5 gap-x-[12px]">
             <Box className="col-span-2">
-              <Text className="text-right text-[13px] text-[#737373]">Status</Text>
+              <Text className="text-right text-[13px] text-[#737373]">
+                Status
+              </Text>
             </Box>
             <Box className="col-span-3">
               <Box
                 className={`w-fit px-[10px] py-[3px] rounded-full ${
-                  isActive ? 'bg-green-100' : 'bg-red-100'
+                  isActive ? "bg-green-100" : "bg-red-100"
                 }`}
               >
                 <Text
                   className={`text-[12px] font-semibold ${
-                    isActive ? 'text-green-600' : 'text-red-500'
+                    isActive ? "text-green-600" : "text-red-500"
                   }`}
                 >
-                  {isActive ? 'Active' : 'Inactive'}
+                  {isActive ? "Active" : "Inactive"}
                 </Text>
               </Box>
             </Box>
@@ -156,7 +164,9 @@ const TableCard = ({ item, outletId }) => {
           {/* Actions */}
           <Box className="grid grid-cols-5 gap-x-[12px]">
             <Box className="col-span-2">
-              <Text className="text-right text-[13px] text-[#737373]">Action</Text>
+              <Text className="text-right text-[13px] text-[#737373]">
+                Action
+              </Text>
             </Box>
             <Box className="col-span-3 flex items-center gap-x-[5px]">
               <IconButton
@@ -229,8 +239,8 @@ const TableCard = ({ item, outletId }) => {
         </Box>
       )}
     </Box>
-  )
-}
+  );
+};
 
 function MobileProductTable({ data, outletId }) {
   return (
@@ -249,7 +259,7 @@ function MobileProductTable({ data, outletId }) {
         ))
       )}
     </div>
-  )
+  );
 }
 
-export default MobileProductTable
+export default MobileProductTable;
