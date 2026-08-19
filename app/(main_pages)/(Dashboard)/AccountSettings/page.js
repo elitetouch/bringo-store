@@ -383,9 +383,7 @@ function Page() {
                   </Text>
                 </Button>
                 <Button
-                  onClick={() =>
-                    router.push("/Subscription")
-                  }
+                  onClick={() => router.push("/Subscription")}
                   _hover={{ backgroundColor: "#E6F1EF", color: "#007460" }}
                   backgroundColor={(pages === 1 && "#E6F1EF") || "transparent"}
                   color={"#737373"}
@@ -960,12 +958,8 @@ function Page() {
                             className="text-[#7C7C7C] text-[14px]"
                           >
                             <option value="supermarket">Supermarket</option>
-                            <option value="electronics">Electronics</option>
                             <option value="grocery_store">Grocery store</option>
-                            <option value="fashion">Fashion</option>
-                            <option value="farmers_market">
-                              Farmers' market
-                            </option>
+                            <option value="local_market">Local market</option>
                           </Select>
                         </Box>
                       </div>
